@@ -1,0 +1,57 @@
+<div  id="print">
+    <!-- style="margin-left: 190px"  -->
+    <div style="margin-left: 30%;">
+      <h2 style="text-align: center">Approved Incity Requests</h2>
+    </div>
+    <div *ngIf="Length !=0" 
+    id="InCityTable" 
+    class="col-lg-12 col-md-12 col-xl-12"
+    >
+    <hr />
+  
+      <table        
+      class="table table-hover table-bordered table-condenced table-sm table-shadow"
+      id="viewdatatable">
+        <thead>
+          <tr>
+            <td>ID</td>
+            <th>Requested By</th>
+            <th>Passenger (s)</th>
+            <th>Destination</th>
+            <th>Vehicle Needed From Date</th>
+            <!-- <th>Vehicle Needed From</th>
+            <th>Vehicle Needed To Date</th>
+            <th>Vehicle Needed To</th> -->
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          <tr *ngFor="let req of incity">
+            <td>{{req.id}}</td>
+            <td>{{req.requestBy}}</td>
+            <td>{{req.passenger}}</td>
+            <td>{{req.destination}}</td>
+            <td>{{req.dateFrom | date}}</td>
+            <!-- <td>{{req.requestTimeFrom | convertFrom24To12Format}}</td>
+            <td>{{req.dateTo | date}}</td>
+            <td>{{req.requestTimeTo | convertFrom24To12Format}}</td> -->
+            <td>
+                {{req.status}}
+            </td>
+            <td>
+              <div *ngIf="req.status == 'Approved'" class="btn-group">
+                <button type="button" class="btn btn-outline-success btn-spacing" (click)="printDetail(req.id)">Detail</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-info" style="margin-left: 290px" *ngIf="Length==0">
+      <p class="text-center">No Incity Request Found</p>
+    </div>
+ 
+    </div>
+  

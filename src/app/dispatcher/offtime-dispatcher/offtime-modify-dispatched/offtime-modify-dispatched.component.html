@@ -1,0 +1,353 @@
+<div id="vehicle">
+  <div style="margin-left: 50%; margin-top: 100px">
+    <h3>Dispatched Off-Time Requests</h3>
+  </div>
+  <div
+    style="margin-left: 190px"
+    class="col-lg-12 col-md-12 col-xl-12"
+    *ngIf="hasData"
+  >
+    <hr />
+    <table
+      class="table table-hover table-bordered table-condenced table-sm table-shadow"
+      id="datatableexample"
+    >
+      <thead>
+        <tr>
+          <th>requested By</th>
+          <th>requested Date</th>
+          <th>Passenger(s)</th>
+          <th>Residence</th>
+          <th>Reason</th>
+          <th>Phone Number</th>
+
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of data">
+          <td>{{ request.reqBy }}</td>
+          <td>{{ request.date }}</td>
+          <td>{{ request.nameOfPassengers }}</td>
+          <td>{{ request.residentialArea }}</td>
+          <td>{{ request.reason }}</td>
+          <td>{{ request.telephone }}</td>
+
+          <td>
+            <span>
+              <a
+                style="display: inline-block"
+                class="btn btn-outline-info"
+                data-original-title="Detail"
+                (click)="onOpenModal(request, 'detail')"
+                >Detail
+              </a>
+              <a
+                style="display: inline-block"
+                class="btn btn-outline-primary"
+                data-original-title="Detail"
+                (click)="onOpenModal(request.id, 'modify')"
+                >Modify
+              </a>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-info" style="margin-left: 190px" *ngIf="noData">
+    {{ noDatamessage }}
+  </div>
+
+  <div class="container" id="main-container">
+    <!-- Detail Modal -->
+    <div
+      class="modal fade in"
+      id="detailRequestModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="detailRequestModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="detailRequestModalLabel">
+              Full Request Detail
+            </h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <p>
+                  Request Id:
+                  <strong
+                    ><span>{{ requestDetail?.id }}</span></strong
+                  >
+                </p>
+                <p>
+                  Requested By:
+                  <strong
+                    ><span>{{ requestDetail?.reqBy }}</span></strong
+                  >
+                </p>
+                <p>
+                  Requested Date:
+                  <strong
+                    ><span>{{ requestDetail?.date }}</span></strong
+                  >
+                </p>
+                <p>
+                  Reason for Request:
+                  <strong
+                    ><span>{{ requestDetail?.reason }}</span></strong
+                  >
+                </p>
+                <p>
+                  Vehicle Needed From:
+                  <strong
+                    ><span>{{
+                      requestDetail?.vehicleNeededFrom | convertFrom24To12Format
+                    }}</span></strong
+                  >
+                </p>
+                <p>
+                  Vehicle Needed To:
+                  <strong
+                    ><span>{{
+                      requestDetail?.vehicleNeededTo | convertFrom24To12Format
+                    }}</span></strong
+                  >
+                </p>
+                <p>
+                  Name of Passengers:
+                  <strong
+                    ><span>{{ requestDetail?.nameOfPassengers }}</span></strong
+                  >
+                </p>
+                <p>
+                  Residential Area:
+                  <strong
+                    ><span>{{ requestDetail?.residentialArea }}</span></strong
+                  >
+                </p>
+                <p>
+                  Telephone:
+                  <strong
+                    ><span>{{ requestDetail?.telephone }}</span></strong
+                  >
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p>
+                  Departure Date:
+                  <strong
+                    ><span>{{ requestDetail?.departureDate }}</span></strong
+                  >
+                </p>
+                <p>
+                  Morning Time:
+                  <strong
+                    ><span>{{
+                      requestDetail?.morningTime | convertFrom24To12Format
+                    }}</span></strong
+                  >
+                </p>
+                <p>
+                  Night Time:
+                  <strong
+                    ><span>{{
+                      requestDetail?.nightTime | convertFrom24To12Format
+                    }}</span></strong
+                  >
+                </p>
+                <p>
+                  Return Date:
+                  <strong
+                    ><span>{{ requestDetail?.returnDate }}</span></strong
+                  >
+                </p>
+                <p>
+                  Return Time:
+                  <strong
+                    ><span>{{
+                      requestDetail?.returnTime | convertFrom24To12Format
+                    }}</span></strong
+                  >
+                </p>
+                <p>
+                  Kilometer:
+                  <strong
+                    ><span>{{ requestDetail?.km }}</span></strong
+                  >
+                </p>
+                <p>
+                  Status:
+                  <strong
+                    ><span>{{ requestDetail?.status }}</span></strong
+                  >
+                </p>
+                <p>
+                  Authorized By:
+                  <strong
+                    ><span>{{ requestDetail?.authorizedBy }}</span></strong
+                  >
+                </p>
+                <p>
+                  Authorized Date:
+                  <strong
+                    ><span>{{
+                      requestDetail?.authorizedDate | date
+                    }}</span></strong
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modify Modal -->
+    <div
+      class="modal fade in"
+      id="modifyDispatchedModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="detailRequestModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="detailRequestModalLabel">
+              Update Dispatched Request
+            </h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="form" (ngSubmit)="updateDispatched()">
+              <input type="hidden" name="id" class="form-control" id="id" />
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="plateNo">Vehicle plate number</label>
+                  <input
+                    ngModel
+                    formControlName="plateNo"
+                    id="plateNo"
+                    class="form-control"
+                    readonly
+                  />
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="driverName">Assigned Driver name</label>
+                  <input
+                    type="text"
+                    formControlName="driverName"
+                    class="form-control"
+                    id="driverName"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="appBy">Approved By</label>
+                  <input
+                    type="text"
+                    formControlName="appBy"
+                    class="form-control"
+                    id="appBy"
+                    readonly
+                  />
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="appDate">Approval Date</label>
+                  <input
+                    type="date"
+                    formControlName="appDate"
+                    class="form-control"
+                    id="appDate"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div><p>Kilometer Reading to respective Vehicle on:</p></div>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="kmOnDep">Departure</label>
+                  <input
+                    type="text"
+                    formControlName="kmOnDep"
+                    class="form-control"
+                    id="kmOnDep"
+                    readonly
+                  />
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="kmOnRet">Return</label>
+                  <input
+                    type="text"
+                    formControlName="kmOnRet"
+                    class="form-control"
+                    id="kmOnRet"
+                    [ngClass]="{
+                      'is-invalid':
+                        form.get('kmOnRet').errors ||
+                        (submitted && form.get('kmOnRet').errors)
+                    }"
+                  />
+
+                  <div
+                    *ngIf="form.get('kmOnRet').errors?.error"
+                    class="text-danger"
+                  >
+                    Kilometer on return can not be less than kilometer on
+                    departure.
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="date">Date</label>
+                  <input
+                    type="date"
+                    formControlName="date"
+                    value="{{ date }}"
+                    class="form-control"
+                    id="date"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button id="btn-dispatch" type="submit" class="btn btn-primary">
+                  Update
+                </button>
+                <button
+                  type="button"
+                  id="edit-vehicle-form"
+                  data-dismiss="modal"
+                  class="btn btn-secondary"
+                >
+                  Close
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

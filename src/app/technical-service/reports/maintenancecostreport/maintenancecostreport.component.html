@@ -1,0 +1,367 @@
+<div class="container" id="maintenancecostreport">
+  <div class="card card-shadow">
+    <div class="card-header" id="headerprint">
+      <h5 class="text-center">Vehicle Maintenance Cost Report</h5>
+    </div>
+    <div class="card-body">
+           <div class="form-row">
+            <div class="form-group col-md-4">
+              <div id="monthoption">
+                  <label for="rangeId1">Report By</label>
+                <div class="ngselectpart">
+                  <ng-select id="rangeId1"  class="custom" appearance="outline" #sels [(ngModel)]="plateVals" (change)="onPlateNoSelect()">
+                    <ng-option value="all">All Plate Number</ng-option>
+                    <ng-option value="plate">Plate Number</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+              <div class="form-group col-md-4">
+                <div style="margin-top: 30px;" id="monthoption">
+                    <label for="rangeId" >Report Range</label>
+                  <div>
+                    <ng-select  class="custom" id="rangeId" appearance="outline" #sels [(ngModel)]="vals" (change)="onSelect()">
+                      <!-- <ng-option value="AllCost">All</ng-option> -->
+                      <ng-option value="Monthly">Monthly</ng-option>
+                      <ng-option value="Yearly">Yearly</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="form-group col-md-4" *ngIf="(vals!='Monthly' && vals !='Yearly')">
+                <button style="margin-top:40px" class="btn btn-success btn-sm" 
+                  type="submit">Show</button>
+              </div> -->
+           </div>
+           <div  *ngIf="vals =='Monthly'">
+            <form #monthlyreport="ngForm" (ngSubmit)="monthlyReport(monthlyreport)">
+                <div class="form-row" >
+                  <div class="form-group col-md-4">
+                    <label for="directorate">Month</label>
+                    <input type="month" class="form-control" [(ngModel)]="maintenanceconst.fromMonth" name="fromMonth"
+                      required #fromMonth="ngModel" [ngClass]="{ 'is-invalid': monthlyreport.submitted && fromMonth.invalid }"
+                      [class.is-invalid]="fromMonth.invalid && fromMonth.touched" />
+                    <div *ngIf="fromMonth.errors && (fromMonth.invalid && fromMonth.touched)">
+                      <small class="text-danger" *ngIf="fromMonth.errors.required">from Month is required</small>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-4" *ngIf="plate==1">
+                    <label for="directorate">Plate Number</label>
+                    <input type="text" class="form-control" [(ngModel)]="maintenanceconst.plateNo" name="plateNo"
+                      required #plateNo="ngModel" [ngClass]="{ 'is-invalid': monthlyreport.submitted && plateNo.invalid }"
+                      [class.is-invalid]="plateNo.invalid && plateNo.touched" />
+                    <div *ngIf="plateNo.errors && (plateNo.invalid && plateNo.touched)">
+                      <small class="text-danger" *ngIf="plateNo.errors.required">plateNo is required</small>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <button style="margin-top:33px" [disabled]="monthlyreport.form.invalid" class="btn btn-success btn-sm" 
+                      type="submit">Show</button>
+                  </div>
+                </div>
+      
+            </form>
+           </div>
+           <div *ngIf="vals =='Yearly'">
+            <form #yearlyreport="ngForm" (ngSubmit)="yearlyReport(yearlyreport)">
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label for="directorate">Year</label>
+                    <input type="month" class="form-control" id="yearPicker" [(ngModel)]="maintenanceconst.fromYear"
+                      name="fromYear" required #fromYear="ngModel"
+                      [ngClass]="{ 'is-invalid': yearlyreport.submitted && fromYear.invalid }"
+                      [class.is-invalid]="fromYear.invalid && fromYear.touched" />
+                    <div *ngIf="fromYear.errors && (fromYear.invalid && fromYear.touched)">
+                      <small class="text-danger" *ngIf="fromYear.errors.required">Year required</small>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-4" *ngIf="plate == 1">
+                    <label for="directorate">Plate Number</label>
+                    <input type="text" class="form-control" [(ngModel)]="maintenanceconst.plateNo" name="plateNo"
+                      required #plateNo="ngModel" [ngClass]="{ 'is-invalid': yearlyreport.submitted && plateNo.invalid }"
+                      [class.is-invalid]="plateNo.invalid && plateNo.touched" />
+                    <div *ngIf="plateNo.errors && (plateNo.invalid && plateNo.touched)">
+                      <small class="text-danger" *ngIf="plateNo.errors.required">plateNo is required</small>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <button [disabled]="yearlyreport.form.invalid" class="btn btn-success btn-sm" id="yearlyshow"
+                      type="submit" style="margin-top: 33px; margin-left: 10px;">Show</button>
+                  </div>
+              </div>
+            </form>
+      
+          </div>
+    </div>
+
+
+
+    <!-- <div  class="plateNofilter" *ngIf="vals =='PlateNo'">
+      <form #plateNo="ngForm" (ngSubmit)="byPlateNoReport(plateNo)">
+        <div class="card-body">
+          <div class="form-row"id="byplatenofilterform" >
+            <div class="form-group col-md-4">
+              <label for="directorate">Plate Number</label>
+              <input type="text" class="form-control" [(ngModel)]="maintenanceconst.plateNo" name="plateNo"
+                required #fromMonth="ngModel" [ngClass]="{ 'is-invalid': plateNo.submitted && fromMonth.invalid }"
+                [class.is-invalid]="fromMonth.invalid && fromMonth.touched" />
+              <div *ngIf="fromMonth.errors && (fromMonth.invalid && fromMonth.touched)">
+                <small class="text-danger" *ngIf="fromMonth.errors.required">plateNo is required</small>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <button [disabled]="plateNo.form.invalid" class="btn btn-success btn-sm" id="monthlyshow"
+                type="submit" style="margin-top: 33px; margin-left: 10px;">Show</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div> -->
+
+
+    <div class="card-body" id="monthlycard" *ngIf="reportlength !=0">
+      <div class="card-header" *ngIf="isMonthlyShown && vals =='Monthly'">
+        <button id="" class="btn btn-primary btn-sm" (click)="monthlyPrint()" style="float: right;"><i
+            class="fa fa-print"></i></button>
+            <button id="" class="btn btn-danger btn-sm" (click)="monthlyPDF()" style="float: right; margin-right: 5px;"><i
+              class="fa fa-file-pdf"></i></button>
+              <button id="" class="btn btn-success btn-sm" (click)="monthlyEXCEL()" style="float: right; margin-right: 5px;"><i
+                class="fa fa-file-excel"></i></button>
+
+      </div>
+      <div *ngIf="isMonthlyShown && vals =='Monthly'" style="padding-bottom: 20px; padding-top: 10px;">
+
+        <table class="table table-bordered table-condenced table striped table-sm table-hover table-shadow"
+          id="costreportbymonthrange">
+          <div class="hiddendata">
+            <div class="brand-image img-circle" id="imgs">
+              <img src="./assets/img/AB1.png" class="img" style="width: 10%; height: 9%; " alt="AB Logo"
+              />
+            </div>
+            <div>
+              <img src="./assets/img/bank.png" class="imgs" style="margin-top: -70px; margin-left: 100px; height: 35px;" alt="AB Logo"/>
+              <div class="hrline" style="border: 2px solid black;"></div>
+              <div class="hrawash" style="border: 2px solid black; margin-top: -90px; margin-left: 25px;"></div>
+
+              <div class="hrtitle" style="margin-left: 90px; margin-top: 55px; font-size: 1.5em;"><strong>Monthly Vehicle Maintenance Cost Report</strong></div>
+              <div class="hrdate" style="margin-left: 550px; margin-top: -60px;"> <strong></strong> </div>
+              <div class="datetimes" style="margin-left: 550px; margin-top: -60px;"><strong>Date: {{dateToday|date}}<br>Time:{{ time | date: 'hh:mm:ss a' }}</strong> </div>
+              <div style="margin-left: 540px; margin-top: -60px; border: 2px solid black; height: 60px; width: 0.5px;"></div>
+            </div>
+
+          </div>
+
+          <thead style="margin-top: 100px;">
+
+            <tr>
+
+              <th>Plate No</th>
+              <th>Maintenance Cost</th>
+              <th>Date Taken For Garage</th>
+              <th>Date From Garage</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let req of monthlymaintenance">
+              <td>{{req.plateNo}}</td>
+              <td style="background-color: rgb(250, 251, 253);">{{req.maintenanceCost}}</td>
+              <td>{{req.dateTaken|date}}</td>
+              <td>{{req.dateFromGarage|date}}</td>
+            </tr>
+
+          </tbody>
+          <tfoot>
+            <tr class="trfoot" style="background-color: rgb(243, 240, 240)">
+              <th id="total" colspan="3">Total Maintenance Cost During The Month:  <strong style="color: rgb(15, 235, 243);">{{subMonth}}</strong>:</th>
+              <td style="font-size: 1em;"><strong>{{totalmonthlycount}}</strong></td>
+            </tr>
+          </tfoot>
+
+        </table>
+      </div>
+    </div>
+
+
+    <div class="card-body" id="plateNocard" *ngIf="reportlength !=0">
+      <div class="card-header" *ngIf="isPlateNoShown && vals =='PlateNo'">
+        <button id="" class="btn btn-primary btn-sm" (click)="monthlyPrint()" style="float: right;"><i
+            class="fa fa-print"></i></button>
+            <button id="" class="btn btn-danger btn-sm" (click)="monthlyPDF()" style="float: right; margin-right: 5px;"><i
+              class="fa fa-file-pdf"></i></button>
+              <button id="" class="btn btn-success btn-sm" (click)="monthlyEXCEL()" style="float: right; margin-right: 5px;"><i
+                class="fa fa-file-excel"></i></button>
+
+      </div>
+      <div *ngIf="isPlateNoShown && vals =='PlateNo'" style="padding-bottom: 20px; padding-top: 10px;">
+
+        <table class="table table-bordered table-condenced table striped table-sm table-hover table-shadow"
+          id="costreportbymonthrange">
+          <div class="hiddendata">
+            <div class="brand-image img-circle" id="imgs">
+              <img src="./assets/img/AB1.png" class="img" style="width: 10%; height: 9%; " alt="AB Logo"
+              />
+            </div>
+            <div>
+              <img src="./assets/img/bank.png" class="imgs" style="margin-top: -70px; margin-left: 100px; height: 35px;" alt="AB Logo"/>
+              <div class="hrline" style="border: 2px solid black;"></div>
+              <div class="hrawash" style="border: 2px solid black; margin-top: -90px; margin-left: 25px;"></div>
+
+              <div class="hrtitle" style="margin-left: 90px; margin-top: 55px; font-size: 1.5em;"><strong>Monthly Vehicle Maintenance Cost Report</strong></div>
+              <div class="hrdate" style="margin-left: 550px; margin-top: -60px;"> <strong></strong> </div>
+              <div class="datetimes" style="margin-left: 550px; margin-top: -60px;"><strong>Date: {{dateToday|date}}<br>Time:{{ time | date: 'hh:mm:ss a' }}</strong> </div>
+              <div style="margin-left: 540px; margin-top: -60px; border: 2px solid black; height: 60px; width: 0.5px;"></div>
+            </div>
+
+          </div>
+
+          <!-- <thead style="margin-top: 100px;">
+            <tr>
+              <th>Plate No</th>
+              <th>Maintenance Cost</th>
+              <th>Date Taken For Garage</th>
+              <th>Date From Garage</th>
+            </tr>
+          </thead> -->
+          <tbody>
+
+            <!-- <tr *ngFor="let req of monthlymaintenance"> -->
+              <td>{{monthlymaintenance?.plateNo}}</td>
+              <td style="background-color: rgb(250, 251, 253);">{{monthlymaintenance?.maintenanceCost}}</td>
+              <td>{{monthlymaintenance?.dateTaken|date}}</td>
+              <td>{{monthlymaintenance?.dateFromGarage|date}}</td>
+            <!-- </tr> -->
+
+          </tbody>
+          <tfoot>
+            <tr class="trfoot" style="background-color: rgb(243, 240, 240)">
+              <th id="total" colspan="3">Total Maintenance Cost by plate number <strong>{{monthlymaintenance?.plateNo}}</strong> is:</th>
+              <td style="font-size: 1em;"><strong>{{totalmonthlycount}}</strong></td>
+            </tr>
+          </tfoot>
+
+        </table>
+      </div>
+    </div>
+
+
+
+    <div *ngIf="reportlength==0" id="nomonth">
+      <div class="bd-callout bd-callout-info">
+        <p class="text-center"><strong>No Maintenance Cost Found Matching Month Filter <span style="color: rgb(10, 225, 233);">{{subMonth}}</span></strong></p>
+      </div>
+    </div>
+
+    <div class="card-body" id="yearcard" *ngIf="reporyeartlength !=0">
+      <div class="card-header" id="yearaction" *ngIf="isYearlyShown && vals =='Yearly'">
+        <button class="btn btn-primary btn-sm" (click)="yearPrint()" style="float: right;"><i
+          class="fa fa-print"></i></button>
+          <button id="" class="btn btn-danger btn-sm" (click)="yearlyPDF()" style="float: right; margin-right: 5px;"><i
+            class="fa fa-file-pdf"></i></button>
+            <button id="" class="btn btn-success btn-sm" (click)="yearlyEXCEL()" style="float: right; margin-right: 5px;"><i
+              class="fa fa-file-excel"></i></button>
+
+      </div>
+      <div *ngIf="isYearlyShown && vals =='Yearly'" style="padding-top: 10px; padding-bottom: 20px;">
+        <table class="table table-bordered table-condenced table striped table-sm table-hover table-shadow" id="costreportbyyearrange">
+          <thead>
+            <tr class="yearlyheader" style="border: none; margin-bottom: 30px;">
+              <th colspan="1" style="border: none;">
+                <img src="./assets/img/awashlogo.png" class="img" alt="AB Logo" style="width: 200px; height: 50px; ">
+              </th>
+              <th colspan="2" style="border: none;">Yearly Vehicle Maintenance Cost Report</th>
+              <th style="border: none;" colspan="1">Report Date: {{dateToday | date}} <br>
+                Time:{{ time | date: 'hh:mm:ss a' }}
+              </th>
+            </tr>
+            <tr>
+
+              <th>Plate No</th>
+              <th>Maintenance Cost</th>
+              <th>Date Taken For Garage</th>
+              <th>Date From Garage</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let req of yearlymaintenance">
+              <td>{{req.plateNo}}</td>
+              <td style="background-color: rgb(250, 251, 253);"><strong>{{req.maintenanceCost}}</strong></td>
+              <td>{{req.dateTaken|date}}</td>
+              <td>{{req.dateFromGarage|date}}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="trfoot" style="background-color: rgb(243, 240, 240)">
+              <th id="total" colspan="3">Total Maintenance Cost During The Year <span style="color: rgb(4, 239, 248);">{{subYear}}</span>:</th>
+              <td style="font-size: 1em;"><strong>{{totalyearlycount}}</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    <div *ngIf="reporyeartlength==0" id="noyear">
+      <div class="bd-callout bd-callout-info">
+        <p class="text-center"><strong>No Maintenance Cost Found Matching Year Filter <span style="color: rgb(8, 233, 240);">{{subYear}}</span></strong></p>
+      </div>
+    </div>
+    <div class="card-body" id="allcostcard" style="margin-top: -50px;">
+      <ng-container>
+        <div class="card-header" id="allaction">
+          <button class="btn btn-primary btn-sm" (click)="allPrint()" style="float: right;"><i
+            class="fa fa-print"></i></button>
+            <button id="" class="btn btn-danger btn-sm" (click)="allPDF()" style="float: right; margin-right: 5px;"><i
+              class="fa fa-file-pdf"></i></button>
+              <button id="" class="btn btn-success btn-sm" (click)="allEXCEL()" style="float: right; margin-right: 5px;"><i
+                class="fa fa-file-excel"></i></button>
+        </div>
+      </ng-container>
+
+      <ng-container >
+        <div style="padding-top: 10px;" id="allcost">
+          <table class="table table-bordered table-condenced table striped table-sm table-hover table-shadow" id="allCostReport">
+            <thead>
+              <tr class="yearlyheader" style="border: none; margin-bottom: 30px;">
+                <th colspan="1" style="border: none;">
+                  <img src="./assets/img/awashlogo.png" class="img" alt="AB Logo" style="width: 200px; height: 50px; ">
+                </th>
+                <th colspan="2" style="border: none;">All Vehicle Maintenance Cost Report</th>
+                <th style="border: none;" colspan="1">Report Date: {{dateToday | date}} <br>
+                  Time:{{ time | date: 'hh:mm:ss a' }}
+                </th>
+              </tr>
+              <tr>
+
+                <th>Plate No</th>
+                <th>Maintenance Cost</th>
+                <th>Date Taken For Garage</th>
+                <th>Date From Garage</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr *ngFor="let req of maintenance">
+                <td>{{req.plateNo}}</td>
+                <td style="background-color: rgb(250, 251, 253);"><strong>{{req.maintenanceCost}}</strong></td>
+                <td>{{req.dateTaken|date}}</td>
+                <td>{{req.dateFromGarage|date}}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="trfoot" style="background-color: rgb(243, 240, 240)">
+                <th id="total" colspan="3">Total Maintenance Cost :</th>
+                <td style="font-size: 1em;"><strong>{{totalCount}}</strong></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </ng-container>
+    </div>
+    <div *ngIf="allreportlength==0" id="noall">
+      <div class="bd-callout bd-callout-info">
+        <p class="text-center"><strong>No Maintenance Cost Found</strong></p>
+      </div>
+    </div>
+  </div>
+</div>

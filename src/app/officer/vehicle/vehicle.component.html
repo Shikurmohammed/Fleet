@@ -1,0 +1,507 @@
+<div id="vehicle" class="container" style="margin-left: 300px">
+  <div class="card card-sm shadow">
+    <div class="card-header">
+      <h3>Add Vehicle</h3>
+      <hr />
+    </div>
+    <div class="card-body">
+      <form [formGroup]="form" (ngSubmit)="addVehicle()">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="model">Model</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="model"
+                id="model"
+                [ngClass]="{
+                  'is-invalid': submitted && f['model'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['model'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['model'].errors?.['required']">
+                  Model of the vehicle is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="make">Make</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="make"
+                id="make"
+                [ngClass]="{
+                  'is-invalid': submitted && f['make'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['make'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['make'].errors?.['required']">
+                  Make of the vehicle is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="yearOfMake">Year Of Make</label>
+
+              <input
+                type="number"
+                min="1900"
+                max="2080"
+                step="1"
+                class="form-control"
+                formControlName="yearOfMake"
+                id="yearOfMake"
+                [ngClass]="{
+                  'is-invalid': submitted && f['yearOfMake'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['yearOfMake'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['yearOfMake'].errors?.['required']">
+                  Year of make for the vehicle is required.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="engineNo">Engine Number</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="engineNo"
+                id="engineNo"
+                [ngClass]="{
+                  'is-invalid': submitted && f['engineNo'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['engineNo'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['engineNo'].errors?.['required']">
+                  Engine Number is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="chassisNo">Chassis Number</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="chassisNo"
+                id="chassisNo"
+                [ngClass]="{
+                  'is-invalid': submitted && f['chassisNo'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['chassisNo'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['chassisNo'].errors?.['required']">
+                  Chassis Number is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="plateNo">Plate Number</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="plateNo"
+                id="plateNo"
+                [ngClass]="{
+                  'is-invalid': (submitted && f['plateNo'].errors) || exists
+                }"
+              />
+              <!-- *ngIf="f['plateNo'].errors?.['exist']" -->
+              <div *ngIf="exists" class="invalid-feedback">
+                Vehicle with this plate number already registered.
+              </div>
+              <div
+                *ngIf="submitted && f['plateNo'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['plateNo'].errors?.['required']">
+                  Plate Number is required.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="cc">CC</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="cc"
+                id="cc"
+                [ngClass]="{
+                  'is-invalid': submitted && f['cc'].errors
+                }"
+              />
+              <div *ngIf="submitted && f['cc'].errors" class="invalid-feedback">
+                <div *ngIf="f['cc'].errors?.['required']">
+                  Engine Size measured in cc(cubic centimeters) is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="fuelType">Fuel Type</label>
+              <!-- make it select drop down for fuel type -->
+              <ng-select 
+                class="custom"  appearance="outline"
+                formControlName="fuelType"
+                id="fuelType"
+                [ngClass]="{
+                  'is-invalid': submitted && f['fuelType'].errors
+                }"
+              >
+                <ng-option value="" disabled selected>select fuel type ..</ng-option>
+                <!-- <ng-option value="1">Benzine</ng-option>
+                <ng-option value="2">Diesel</ng-option>
+                <ng-option value="3">Airplane</ng-option> -->
+                <ng-option
+                *ngFor="let fuelType of fuelTypes"
+                value="{{ fuelType!.id }}"
+              >
+                {{ fuelType!.typeOfFuel }}
+              </ng-option>
+              </ng-select >
+              <div
+                *ngIf="submitted && f['fuelType'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['fuelType'].errors?.['required']">
+                  Fuel Type of the vehicle is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="disPerLit">Distance Per Litter</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="disPerLit"
+                id="disPerLit"
+                [ngClass]="{
+                  'is-invalid': submitted && f['disPerLit'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['disPerLit'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['disPerLit'].errors?.['required']">
+                  Distance Per Litter for the vehicle is required.
+                </div>
+                <div *ngIf="f['disPerLit'].errors?.['pattern']">
+                  Insert a valid number
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="carryingCapacity">Carrying Capacity</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="carryingCapacity"
+                id="carryingCapacity"
+                [ngClass]="{
+                  'is-invalid': submitted && f['carryingCapacity'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['carryingCapacity'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['carryingCapacity'].errors?.['required']">
+                  Carrying Capacity of the vehicle is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="lastMilege">Kilometer</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="lastMilege"
+                id="lastMilege"
+                [ngClass]="{
+                  'is-invalid': submitted && f['lastMilege'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['lastMilege'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['lastMilege'].errors?.['required']">
+                  Kilometer is required.
+                </div>
+                <div *ngIf="f['lastMilege'].errors?.['pattern']">
+                  Insert a valid number
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="description">Vehicle Description</label>
+            <input
+              type="text"
+              formControlName="description"
+              class="form-control"
+              id="description"
+              [ngClass]="{
+                'is-invalid': submitted && f['description'].errors
+              }"
+            />
+            <div
+              *ngIf="submitted && f['description'].errors"
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['description'].errors?.['required']">
+                Vehicle Description is required
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-8">
+            <label for="custodian">Custodian</label>
+            <ng-select 
+              formControlName="custodian"
+              name="custodian"
+              id="custodian"
+              class="custom"
+              appearance="outline"
+              [ngClass]="{
+                'is-invalid': submitted && f['custodian'].errors
+              }"
+            >
+              <ng-option value="" disabled selected>select custodian ..</ng-option>
+              <ng-option
+                *ngFor="let custodian of directorates"
+                value="{{ custodian!.directorate }}"
+              >
+                {{ custodian!.directorate }}
+              </ng-option>
+            </ng-select>
+
+            <div
+              *ngIf="submitted && f['custodian'].errors"
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['custodian'].errors?.['required']">
+                Custodian is required
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="owner">Owner</label>
+            <input
+              type="text"
+              formControlName="owner"
+              class="form-control"
+              id="owner"
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="insExpDate">Insurance Expiry Date</label>
+
+              <input
+                type="date"
+                class="form-control"
+                formControlName="insExpDate"
+                id="insExpDate"
+                [ngClass]="{
+                  'is-invalid': submitted && f['insExpDate'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['insExpDate'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['insExpDate'].errors?.['required']">
+                  Insurance Expiry Date is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="insRenewalDate">Insurance Renewal Date</label>
+
+              <input
+                type="date"
+                class="form-control"
+                formControlName="insRenewalDate"
+                id="insRenewalDate"
+                [ngClass]="{
+                  'is-invalid': submitted && f['insRenewalDate'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['insRenewalDate'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['insRenewalDate'].errors?.['required']">
+                  Insurance Renewal Date is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="policyNo">Policy Number</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="policyNo"
+                id="policyNo"
+                [ngClass]="{
+                  'is-invalid': submitted && f['policyNo'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['policyNo'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['policyNo'].errors?.['required']">
+                  Policy Number for the insurance is required.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class = "row">
+              <div class="form-group col-md-4">
+                <label for="vehicleTypeString">Vehicle Type</label>
+                <ng-select 
+                  formControlName="vehicleTypeString"
+                  name="vehicleTypeString"
+                  id="vehicleTypeString"
+                  class="custom"
+                  appearance="outline"
+                  [ngClass]="{
+                    'is-invalid': submitted && f['vehicleTypeString'].errors
+                  }"
+                >
+                  <ng-option value="" disabled selected>select vehicle type ..</ng-option>
+                  <ng-option
+                    *ngFor="let vehiclesType of vehicleTypes"
+                    value="{{ vehiclesType!.vehicleType }}"
+                  >
+                    {{ vehiclesType!.vehicleType }}
+                  </ng-option>
+                </ng-select>
+
+                <div
+                  *ngIf="submitted && f['vehicleTypeString'].errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f['vehicleTypeString'].errors?.['required']">
+                    Vehicle type is required
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="purposeOfUsage">Purpose of Usage</label>
+                <input
+                  type="text"
+                  formControlName="purposeOfUsage"
+                  class="form-control"
+                  id="purposeOfUsage"
+                  [ngClass]="{
+                    'is-invalid': submitted && f['purposeOfUsage'].errors
+                  }"
+                />
+                <div
+                  *ngIf="submitted && f['purposeOfUsage'].errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f['purposeOfUsage'].errors?.['required']">
+                    Purpose of Usage is required
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-4">
+                <label>Is Vehicle Stand By?</label>
+                <div class="d-block">
+      
+                  <div class="custom-control custom-radio">
+                    <input id="yes" type="radio" class="custom-control-input" value="yes" name="isStandBy" formControlName="isStandBy">
+                    <label class="custom-control-label" for="yes">Yes</label>
+                  </div>
+      
+                  <div class="custom-control custom-radio">
+                    <input id="no" type="radio" class="custom-control-input" value="no" name="isStandBy" formControlName="isStandBy">
+                    <label class="custom-control-label" for="no">No</label>
+                  </div>
+                  <div
+                  *ngIf="submitted && f['isStandBy'].errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f['isStandBy'].errors?.['required']">
+                       is stand by is required
+                  </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

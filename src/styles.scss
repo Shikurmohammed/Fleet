@@ -1,0 +1,178 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+/*Theme Toggling css*/
+@import '~material-design-icons/iconfont/material-icons.css';
+@import '~material-icons/iconfont/material-icons.css';
+
+@import 'theme';
+body {
+    background-color: white;
+    color: #1e1e1e;
+    transition: background-color 0.3s, color 0.3s;
+    
+}
+
+body.dark-mode {
+    background-color: #1e1e1e;
+    color: white;
+}
+
+
+/* Increase specificity for Angular Material components */
+
+body.dark-mode .mat-toolbar {
+    background-color: #1e1e1e !important;
+    color: white !important;
+}
+
+body.dark-mode .mat-sidenav-container,
+body.dark-mode .mat-sidenav {
+    background-color: #2c2c2c !important;
+    color: white !important;
+}
+
+body.dark-mode .main-header {
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+body.dark-mode .content-wrapper {
+    background-color: #2c2c2c;
+    color: #ffffff;
+}
+// .mat-drawer-inner-container{
+//     overflow-x: hidden !important;
+//     font: optional;
+
+// }
+
+/*Theme Toggling css End*/
+
+#vehicle {
+    margin-top: 80px;
+    margin-left: 5%;
+    margin-right: 15%;
+    width: auto;
+}
+
+.detail {
+    background-color: #dbdfe2ef;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 30px;
+}
+
+.status {
+    color: white;
+    padding: 5px;
+}
+
+.unauthorized,
+.pool {
+    background-color: orange;
+}
+
+.rejected,
+.disposed {
+    background-color: red;
+}
+
+.approved,
+.dispatched {
+    background-color: green;
+}
+
+.authorized,
+.assigned {
+    background-color: dodgerblue;
+}
+
+.standby {
+    background-color: darkcyan;
+}
+
+.maintenance {
+    background-color: brown;
+    color: white;
+}
+
+select.customDropdown {
+    outline: none;
+    overflow: hidden;
+    text-indent: 0.01px;
+    text-overflow: '';
+    background: url("/assets/img/sort-down.png") no-repeat right #fff;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td,
+th {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-wrap: nowrap;
+    white-space: nowrap;
+    font-size: 14px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+
+/* Adjust spacing between buttons of datatable */
+
+
+/* .dt-buttons {
+    display: flex !important;
+    gap: 10px;
+} */
+
+
+/* Fix z-index conflicts */
+// .mat-dialog-container {
+//     z-index: 1050 !important; /* Angular Material modal */
+//   }
+//   .modal-backdrop {
+//     z-index: 1040 !important; /* Bootstrap modal backdrop */
+//   }
+  .modal-backdrop {
+    /* bug fix - no overlay */    
+    display: none;    
+}
+
+.modal{
+  /* bug fix - custom overlay */   
+//   background-color: rgba(10,10,10,0.45);
+  z-index: 1040 !important;
+//   overflow: hidden;
+  right: 10%;
+  transform: translateX(10%);
+  margin: auto;
+  max-width: 90%;
+}
+mat-sidenav{
+    z-index: 1000;
+}
+@media( max-width:768px ){
+    .modal{
+        max-width: 90%;
+        left: 0;
+        right: 0;
+    }
+    mat-sidenav{
+        max-width: 70px;
+
+    }
+    mat-sidenav-content {
+        margin-left: 70px !important;
+        // background-color: red;
+    }
+}

@@ -1,0 +1,406 @@
+
+<div id = "mainRequests">
+    <!-- This is table on which vehicle service due displayed -->
+    <ng-container *ngIf = "custRequests.length>0">
+    <div
+      id="RequestTable"
+      style="margin-left: 190px"
+      class="col-lg-12 col-md-12 col-xl-12"
+    >
+      <hr/>
+      <h2 style="text-align: center">GS Mechanic Requests</h2>
+      <hr/>
+      <table
+        class="table table-hover table-bordered table-condenced table-sm table-shadow"
+        id="MyRequestTable"
+      >
+        <thead>
+          <tr>
+            <th>Plate Number</th>
+            <th>Requested Date</th>
+            <th>Requested By</th>
+            <th>Work/Repair Requested</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let request of custRequests">
+                <td>{{ request.plateNo }}</td>
+                <td>{{ request.requestedDate | date }}</td>
+                <td>{{ request.requestedBy }}</td>
+                <td>{{ request.workRepairRequested}}</td>
+                <td>
+                  <div class="status" style="background-color: yellowgreen;" *ngIf="request.status == 'Authorized'">
+                    {{ request.status }}
+                  </div>
+                  <div class="status maintenance" *ngIf="request.status == 'Verified'">
+                    {{ request.status }}
+                  </div>
+                  <div class="status"  style="background-color: green;"*ngIf="request.status == 'Completed'">
+                    {{ request.status }}
+                  </div>
+                  <div class="status rejected" *ngIf="request.status == 'Rejected'">
+                    {{ request.status }}
+                  </div>
+                </td>
+                <td>
+                  <span>
+                    <a
+                      style="display: inline-block"
+                      (click)="onOpenModal(request, 'view')"
+                      class="btn btn-outline-info"
+                      data-original-title="View"
+                    >
+                      Detail
+                    </a>
+      
+                    <a *ngIf="request.status=='Verified'"
+                      (click)="onOpenModal(request, 'Verify')"
+                      class="btn btn-outline-danger"
+                      data-original-title="Maintenance"
+                      >Update
+                    </a>
+                      <a
+                      *ngIf="request.status == 'Rejected'"
+                      class="btn btn-outline-primary btn-spacing"
+                      (click)="onOpenModal(request, 'reason')"
+                      >Reason</a
+                    >
+                  </span
+                  >
+                </td>
+              </tr>
+        </tbody>
+      </table>
+    </div>
+    </ng-container>
+    <ng-container *ngIf = "custRequests.length==0">
+      <div style="margin-left: 300px;">
+        <hr/>
+        <h2 style="text-align: center">GS Mechanic Requests</h2>
+         <hr />
+         <div class="callout callout-info">
+          <p>You Don't Have Request</p>
+        </div>
+      </div>
+    </ng-container>
+    <!-- End of vehicle displayer -->
+   
+
+    <div class="container" id="main-container">
+     <!-- This is to view details of maintenance request -->
+         <div
+            class="modal fade"
+            id="detailsVehicleServiceModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="detailsVehicleServiceModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" 
+                  id="detailsVehicleServiceModalLabel">
+                  Vehicle Maintenance Request Details
+                </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span style="color:red;" aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class = "col-md-6">
+                        <p>
+                            Requested By: <strong><span>{{ details?.requestedBy }}</span></strong>
+                        </p>
+                        <p>
+                            Requestor Director/Branch: <strong><span>{{ details?.reqDirectorate }}</span></strong>
+                         </p>
+                        <p>
+                            Requested Date: <strong><span>{{ details?.requestedDate | date}}</span></strong>
+                        </p>
+                        <p>
+                            Verified By: <strong><span>{{ details?.modifiedBy }}</span></strong>
+                        </p>
+                        <p>
+                            Verified Date: <strong><span>{{ details?.modifiedDate | date}}</span></strong>
+                        </p>
+                        <ng-container *ngIf="details?.status!='Verified'">
+                            <p>
+                                Authorized By: <strong><span>{{ details?.authorizedBy }}</span></strong>
+                            </p>
+                            <p>
+                               Authorized Date: <strong><span>{{ details?.authorizedDate | date}}</span></strong>
+                            </p>
+                        </ng-container>
+                        <ng-container *ngIf="details?.status=='Completed'">
+                            <p>
+                                Technical By: <strong><span>{{ details?.technicalBy }}</span></strong>
+                            </p>
+                            <p>
+                               Technical Date: <strong><span>{{ details?.technicalRespondDate | date}}</span></strong>
+                            </p>
+                        </ng-container>
+                        <p *ngIf="details?.status=='Verified'">
+                            Status: <strong><span style="color: rgb(98, 45, 45)
+                            ;">{{ details?.status }}</span></strong>
+                        </p>
+                        <p *ngIf="details?.status=='Authorized'">
+                            Status: <strong><span style="color: yellowgreen
+                            ;">{{ details?.status }}</span></strong>
+                        </p>
+                        <p *ngIf="details?.status=='Completed'">
+                            Status: <strong><span style="color: green
+                            ;">{{ details?.status }}</span></strong>
+                        </p>
+
+                      
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            Plate Number: <strong><span>{{ details?.plateNo }}</span></strong>
+                        </p>
+                        <p>
+                            Work/Repair Requested: <strong><span>{{ details?.workRepairRequested }}</span></strong>
+                        </p>
+                        <p *ngIf="details?.maintenanceType!=null">
+                            Maintenance Type: <strong><span>{{ reqMaintenanceType }}</span></strong>
+                        </p>
+                        <p>
+                            Previous Service Millage: <strong><span>{{ details?.previousServiceMilage }}km</span></strong>
+                        </p>
+                        <p>
+                            Current Millage: <strong><span>{{ details?.currentMilage }}km</span></strong>
+                        </p>
+                        <p>
+                            Millage Difference: <strong><span>{{ details?.milageDifference }}km</span></strong>
+                        </p>
+                        <p>
+                            Fuel Gauge In Amount: <strong><span>{{ details?.fuelGaugeInAmount }}L</span></strong>
+                        </p>
+                        <p>
+                            KM Inspection: <strong><span>{{ details?.kmInsp }}km</span></strong>
+                        </p>
+                        <p>
+                            <ng-container *ngIf="details?.isInsured == '0'" >
+                                Insurance Status: <strong><span style="color: red;">Not Insured</span></strong>
+                            </ng-container>
+                            <ng-container *ngIf="details?.isInsured == '1'">
+                                Insurance Status: <strong><span style="color: green;">Insured</span></strong>
+                            </ng-container>
+                        </p>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">OK</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> 
+      <!-- End of maintenance request details-->
+        <div
+        class="modal fade"
+        id="modifyRequestModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="maintenanceRequestModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="maintenanceRequestModalLabel">
+                GS Mechanic Request Modification Form
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span style="color:red;" aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form
+              [compareMilege] = "['currentMilage', 'kmInsp']"
+              #editrequestMaintenanceForm="ngForm">
+                <div class="form-row">
+                  <input type="hidden" ngModel="{{modifyForm.id}}" 
+                       name="id" class="form-control" autocomplete="off"
+                       #id="ngModel" 
+                       readonly/>
+                       <input type="hidden" ngModel="{{modifyForm.modifiedBy}}" 
+                       name="modifiedBy" class="form-control" autocomplete="off"
+                       #modifiedBy="ngModel" 
+                       readonly/>
+                  <div class="form-group col-md-8">
+                    <label for="name">Directorate</label>
+                    <input type="text" ngModel="{{modifyForm.reqDirectorate}}" 
+                       name="reqDirectorate" class="form-control" autocomplete="off"
+                       #reqDirectorate="ngModel" 
+                       readonly/>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="name">Plate No</label>
+                    <input type="text" ngModel="{{modifyForm.plateNo}}" 
+                       name="plateNo" class="form-control" autocomplete="off"
+                       #plateNo="ngModel" 
+                       readonly/>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label for="name">Current Millage(KM)</label>
+                    <input type="text" ngModel="{{modifyForm.currentMilage}}" 
+                       name="currentMilage" class="form-control" autocomplete="off"
+                       #currentMilage="ngModel" 
+                       readonly/>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="name">Previous Millage(KM)</label>
+                    <input type="text" ngModel="{{modifyForm.previousServiceMilage}}" 
+                       name="previousServiceMilage" class="form-control" autocomplete="off"
+                       #previousServiceMilage="ngModel" 
+                       readonly/>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="name">Millage Difference(KM)</label>
+                    <input type="text" ngModel="{{modifyForm.milageDifference}}" 
+                       name="milageDifference" class="form-control" autocomplete="off"
+                       #milageDifference="ngModel" 
+                       readonly/>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="name">Previous Millage Date</label>
+                    <input type="text" ngModel="{{modifyForm.previousServiceDate | date}}" 
+                       name="previousServiceDate" class="form-control" autocomplete="off"
+                       #previousServiceDate="ngModel" 
+                       readonly/>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="name">Petrol Amount(%)</label>
+                    <input type="text" ngModel="{{modifyForm.fuelGaugeInAmount}}"
+                      name="fuelGaugeInAmount" class="form-control" autocomplete="off"
+                      placeholder="petrol amount..."  #fuelGaugeInAmount="ngModel"
+                      pattern = "^\d+\.?\d*$"
+                      [class.is-invalid]="fuelGaugeInAmount.invalid && fuelGaugeInAmount.touched" 
+                      required=""/>
+            
+                    <div *ngIf="fuelGaugeInAmount.errors && (fuelGaugeInAmount.invalid && fuelGaugeInAmount.touched)">
+                      <small class="text-danger" *ngIf="fuelGaugeInAmount.errors.required">petrol amount is required</small>
+                      <small class="text-danger" *ngIf="fuelGaugeInAmount.errors.pattern">incorrect petrol amount format</small>
+                    </div>
+      
+                 </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="name">Insurance Status</label>
+                        <ng-select  type="text" ngModel="{{modifyForm.isInsured}}" 
+                           name="isInsured" 
+                           class="custom"  appearance="outline" autocomplete="off"
+                           #isInsured="ngModel"
+                           [class.is-invalid]="isInsured.invalid && isInsured.touched" required="" 
+                           >
+                           <ng-option value="" selected disabled>select insurance status..</ng-option>
+                           <ng-option value="1">Insured</ng-option>
+                           <ng-option value="0">Not Insured</ng-option>
+                        </ng-select >
+                             <!-- Error -->
+                            <div *ngIf="isInsured.errors && (isInsured.invalid && isInsured.touched)">
+                                <small class="text-danger" *ngIf="isInsured.errors.required">insurance status is required</small>
+                            </div>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="name">KM Inspection</label>
+                        <input type="text" ngModel="{{modifyForm.kmInsp}}" 
+                           name="kmInsp" class="form-control" autocomplete="off"
+                           #kmInsp="ngModel" 
+                           pattern = "^\d+\.?\d*$"
+                           [class.is-invalid]="(kmInsp.invalid && kmInsp.touched)|| kmInsp.errors" required=""
+                           />
+                                                    <!-- Error -->
+                            <div *ngIf="kmInsp.errors && (kmInsp.invalid)">
+                                <small class="text-danger" *ngIf="kmInsp.errors.required">km inspection is required</small>
+                                <small class="text-danger" *ngIf="kmInsp.errors.pattern">incorrect km inspection format</small>
+                                <small class="text-danger" *ngIf="kmInsp.errors['milege']">Km inspection can not be less than {{modifyForm.currentMilage}}</small>
+                              </div>
+                      </div>
+
+                </div>
+                <div class = "row">
+                  <div class="form-group col-md-6">
+                    <label for="name">Work/Repair Requested</label>
+                    <textarea type="text" ngModel="{{modifyForm.workRepairRequested}}"
+                      name="workRepairRequested" class="form-control" autocomplete="off"
+                      placeholder="work/repair requested..."  #workRepairRequested="ngModel"
+                     
+                      [class.is-invalid]="workRepairRequested.invalid && workRepairRequested.touched" required=""></textarea>
+           
+                    <div *ngIf="workRepairRequested.errors && (workRepairRequested.invalid && workRepairRequested.touched)">
+                      <small class="text-danger" *ngIf="workRepairRequested.errors.required">work/repair is required</small>
+                    </div>
+                 </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    id="reject-request-form"
+                    data-dismiss="modal"
+                    class="btn btn-secondary"
+                  >
+                    Close
+                  </button>
+                  <button data-dismiss="modal" (click)="EditMaintenanceRequest(editrequestMaintenanceForm)" [disabled]="editrequestMaintenanceForm.invalid" type="submit" class="btn btn-primary" >Update Verification</button>                
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+        <!-- End of  request  modification modal form -->
+         <!-- Reason for Rejection Modal -->
+    <div
+    class="modal fade in"
+    id="reasonModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="reasonModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="reasonModalLabel">
+            Reason For Rejection
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div></div>
+          <p>{{ reasonForRequest }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    </div>
+    </div>

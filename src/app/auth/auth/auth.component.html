@@ -1,0 +1,60 @@
+<section class="vh-100" style="background-color: #f6f9ff;margin:-12px;">
+    <div class="container py-5 h-100 round">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-7 col-lg-5 col-xl-4">
+                <div class="card shadow-2-strong">
+                    <div class="card-body p-5 ">
+                        <div class="flex justify-content-between">
+                            <div>
+                                <img src="assets/img/awashlogo.png" style="width: 200px;" />
+                            </div>
+                            <div>
+                                <h6 class="mb-2">
+                                    <i>Welcome to Awash Fleet!</i>
+                                </h6>
+                            </div>
+                        </div>
+                        <hr>
+                        <ng-container *ngIf="credentialError !=null">
+                            <div style="color:#991717;">
+                                {{credentialError}}
+                            </div>
+                        </ng-container>
+                        <form #loginform="ngForm" (ngSubmit)="generateJwt(loginform)">
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="typeEmailX-2">
+									<i class="fa fa-user"></i>
+									Username</label>
+                                <input type="text" id="typeEmailX-2" class="form-control form-control-md" ngModel name="username" #username="ngModel" required/>
+                                <div *ngIf="username.invalid && (username.dirty || username.touched)" style="color:rgb(153, 23, 23);">
+                                    username should be valid
+                                </div>
+                            </div>
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="typePasswordX-2">
+									<i class="fa fa-lock"></i>
+									Password</label>
+                                <input type="password" id="typePasswordX-2" class="form-control form-control-md" ngModel name="password" #password="ngModel" required/>
+                                <div *ngIf="password.invalid && (password.dirty || password.touched)" class="p-2" style="color:rgb(153, 23, 23); margin-bottom: 2px;">
+                                    password should be valid
+                                </div>
+                            </div>
+
+                            <button [disabled]="loginform.invalid" [ngClass]="loginform.invalid ? 'btn-disabled background-color:gray' : 'btn-enabled'" class="btn login btn-lg btn-block" type="submit">Login</button>
+                            <div class="form-outline mb-4" style="margin-top: 5px;float: right;">
+                                <a style="font-size: 20px; color:#21205f;" href="./assets/userguide/LoginPage.pdf" target="_blank">Get Help</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<footer style="width: 100%; margin-left: 0;" class="main-footer">
+    <strong>Copyright &copy;
+		{{currentYear}}, AWASH BANK.</strong> All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+        <b>Awash FMS</b>
+    </div>
+</footer>

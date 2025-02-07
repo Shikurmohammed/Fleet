@@ -1,0 +1,150 @@
+<div id="driverregisteration" class="container">
+  <div class="card card-sm shadow">
+    <div class="card-header">
+      <h2>Driver Registeration Form</h2>
+    </div>
+    <!-- pattern="^[a-zA-Z]{3,}(?: [a-zA-Z]+){0,2}$" -->
+
+    <form #addForm="ngForm" (ngSubmit)="driverRegister(addForm)">
+      <div class="card-body">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="name">Full Name (including grandfather)</label>
+
+            <input type="text" [(ngModel)]="driver.fullName" name="fullName" class="form-control" autocomplete="off"
+              placeholder="fullname..." required  #fullName="ngModel"  pattern="^[a-zA-Z]{3,}(?: [a-zA-Z]{3,}){2,}$"
+              [ngClass]="{'is-invalid': (addForm.submitted && fullName.invalid) || driverExist }"
+              [class.is-invalid]="fullName.invalid && fullName.touched"
+              #drivname (keyup)="checkDriverName(drivname.value)"/>
+            <!-- Error -->
+            <small class="text-danger">{{driverFound}}</small>
+            <div *ngIf="fullName.errors && (fullName.invalid && fullName.touched)">
+              <small class="text-danger" *ngIf="fullName.errors.required">fullName is required</small>
+              <small class="text-danger" *ngIf="fullName.errors.pattern">incorrect fullName format</small>
+              <small class="invalid-feedback" *ngIf="fullName.errors.driverExist">Driver {{fullname}} Already Registered"</small>
+            </div>
+
+          </div>
+          <div class="form-group col-md-4">
+            <label for="directorate">Telephone</label>
+            <input type="text" [(ngModel)]="driver.tellNo" name="tellNo" class="form-control"
+              pattern="[0]{1}[9/7]{1}[0-9]{8}" [ngClass]="{ 'is-invalid': (addForm.submitted && tellNo.invalid) || exist}"
+              [class.is-invalid]="tellNo.invalid && tellNo.touched" #tellNo="ngModel" placeholder="telephone"
+              autocomplete="off" required
+              #phone (keyup)="checkPhone(phone.value)"
+              />
+
+            <small class="text-danger">{{phoneFound}}</small>
+            <div *ngIf="tellNo.errors && (tellNo.invalid && tellNo.touched)">
+              <small class="text-danger" *ngIf="tellNo.errors.required">phone is required</small>
+              <small class="text-danger" *ngIf="tellNo.errors.pattern">incorrect phone format</small>
+              <small class="invalid-feedback" *ngIf="phone.errors.exist">phone already exist</small>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="purposeoftravel">Residence Place</label>
+            <input type="text" [(ngModel)]="driver.residentPlace" name="residentPlace" class="form-control"
+              #residentPlace="ngModel" [ngClass]="{ 'is-invalid': addForm.submitted && residentPlace.invalid }"
+              [class.is-invalid]="residentPlace.invalid && residentPlace.touched" placeholder="resident place"
+              autocomplete="off" required />
+            <div *ngIf="residentPlace.errors && (residentPlace.invalid && residentPlace.touched)">
+              <small class="text-danger" *ngIf="residentPlace.errors.required">residentPlace is required</small>
+              <!-- <small class="text-danger" *ngIf="tellNo.errors.pattern">incorrect residentPlace format</small> -->
+            </div>
+
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="name">Address</label>
+            <input type="text" [(ngModel)]="driver.address" name="address" class="form-control" autocomplete="off"
+              placeholder="Address..." required #address="ngModel"
+              [ngClass]="{ 'is-invalid': addForm.submitted && address.invalid }"
+              [class.is-invalid]="address.invalid && address.touched" />
+            <div *ngIf="address.errors && (address.invalid && address.touched)">
+              <small class="text-danger" *ngIf="address.errors.required">address is required</small>
+              <!-- <small class="text-danger" *ngIf="tellNo.errors.pattern">incorrect residentPlace format</small> -->
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="directorate">Age</label>
+            <input type="number" [(ngModel)]="driver.age" name="age" class="form-control" placeholder="Age"
+              autocomplete="off" required #age="ngModel" [ngClass]="{ 'is-invalid': addForm.submitted && age.invalid }"
+              [class.is-invalid]="age.invalid && age.touched" pattern="[1-9]{1}[0-9]{1}" max="90" />
+            <div *ngIf="age.errors && (age.invalid && age.touched)">
+              <small class="text-danger" *ngIf="age.errors.required">age is required</small>
+              <small class="text-danger" *ngIf="age.errors.pattern || age.errors.max">incorrect age</small>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="purposeoftravel">License Number</label>
+            <input type="text" [(ngModel)]="driver.licenseNo" name="licenseNo" class="form-control"
+              placeholder="license number" autocomplete="off" required #licenseNo="ngModel"
+              [ngClass]="{ 'is-invalid': addForm.submitted && licenseNo.invalid }"
+              [class.is-invalid]="licenseNo.invalid && licenseNo.touched" />
+            <div *ngIf="licenseNo.errors && (licenseNo.invalid && licenseNo.touched)">
+              <small class="text-danger" *ngIf="licenseNo.errors.required">licenseNo is required</small>
+              <!-- <small class="text-danger" *ngIf="age.errors.pattern">incorrect age</small> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="name">Grade</label>
+            <input type="text" [(ngModel)]="driver.grade" name="grade" class="form-control" autocomplete="off"
+              placeholder="Grade..." required #grade="ngModel"
+              [ngClass]="{ 'is-invalid': addForm.submitted && grade.invalid }"
+              [class.is-invalid]="grade.invalid && grade.touched" />
+            <div *ngIf="grade.errors && (grade.invalid && grade.touched)">
+              <small class="text-danger" *ngIf="grade.errors.required">grade is required</small>
+              <!-- <small class="text-danger" *ngIf="age.errors.pattern">incorrect age</small> -->
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="directorate">Expiry Date</label>
+            <input type="date" [(ngModel)]="driver.expiryDate" name="expiryDate" class="form-control"
+              placeholder="telephone" autocomplete="off" required #expiryDate="ngModel"
+              [ngClass]="{ 'is-invalid': addForm.submitted && expiryDate.invalid }"
+              [class.is-invalid]="expiryDate.invalid && expiryDate.touched" />
+            <div *ngIf="expiryDate.errors && (expiryDate.invalid && expiryDate.touched)">
+              <small class="text-danger" *ngIf="expiryDate.errors.required">expiryDate is required</small>
+              <!-- <small class="text-danger" *ngIf="age.errors.pattern">incorrect age</small> -->
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="purposeoftravel">Plate Number</label>
+            <ng-select appearance="outline"  [(ngModel)]="driver.plateNo" name="plateNo" required #plateNo="ngModel"
+            [ngClass]="{ 'is-invalid': (addForm.submitted && plateNo.invalid)}"
+            [class.is-invalid]="plateNo.invalid && plateNo.touched" #plates (change)="getVehicleID(plates.value)" >
+              <ng-option *ngFor="let plate of vehicle" value="{{plate.plateNo}}">
+                {{plate.plateNo}}
+              </ng-option>
+
+            </ng-select>
+            <!-- <select class="form-select " [(ngModel)]="driver.plateNo" name="plateNo" required #plateNo="ngModel"
+              [ngClass]="{ 'is-invalid': (addForm.submitted && plateNo.invalid)}"
+              [class.is-invalid]="plateNo.invalid && plateNo.touched" #plates (change)="getVehicleID(plates.value)">
+              <option *ngFor="let plate of vehicle" value="{{plate.plateNo}}">
+                {{plate.plateNo}}
+              </option>
+            </select> -->
+
+            <div *ngIf="plateNo.errors && (plateNo.invalid && plateNo.touched)">
+              <small class="text-danger" *ngIf="plateNo.errors.required">plateNo is required</small>
+              <!-- <small class="text-danger" *ngIf="age.errors.exist">phone already exist</small> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button [disabled]="addForm.form.invalid || exist || driverExist" type="submit" class="btn btn-success btn-raised btn-sm col-md-2"
+          style="float: right">{{actionBtn}}</button>
+        <!-- <button type="reset" class="btn btn-danger btn-sm col-md-5" style="margin-left: 10px;">Clear</button> -->
+      </div>
+    </form>
+
+
+  </div>
+</div>

@@ -1,0 +1,281 @@
+<div id="vehicle" class="container" style="margin-left: 300px">
+  <button
+    *ngIf="editMode"
+    (click)="goBack()"
+    class="btn btn-primary btn-sm"
+    style="width: 60px; margin-bottom: 10px"
+  >
+    Back
+  </button>
+  <div class="card card-sm shadow">
+    <div class="card-header">
+      <h3>{{ title }}</h3>
+      <hr />
+    </div>
+    <div class="card-body">
+      <form [formGroup]="form" (ngSubmit)="advPayment()">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="staffName">Staff Name</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="staffName"
+                id="staffName"
+                [ngClass]="{
+                  'is-invalid': submitted && f['staffName'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['staffName'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['staffName'].errors?.['required']">
+                  Staff name is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="staffAcc">Staff Account</label>
+            <input
+              type="text"
+              formControlName="staffAcc"
+              class="form-control"
+              id="staffAcc"
+              [ngClass]="{
+                'is-invalid': submitted && f['staffAcc'].errors
+              }"
+            />
+            <div
+              *ngIf="submitted && f['staffAcc'].errors"
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['staffAcc'].errors?.['required']">
+                Staff account is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="purpose">Purpose</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="purpose"
+                id="purpose"
+                [ngClass]="{
+                  'is-invalid': submitted && f['purpose'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['purpose'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['purpose'].errors?.['required']">
+                  Purpose is required.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="reqBy">Requested By</label>
+              <input
+                *ngIf="editMode"
+                formControlName="userName"
+                id="reqBy"
+                class="form-control"
+                readonly
+              />
+              <input
+                *ngIf="!editMode"
+                [ngModel]="userName"
+                formControlName="reqBy"
+                id="reqBy"
+                class="form-control"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="grade">Grade</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="grade"
+                id="grade"
+                [ngClass]="{
+                  'is-invalid': submitted && f['grade'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['grade'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['grade'].errors?.['required']">
+                  Grade is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="claimBranch">Claim Branch</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="claimBranch"
+                id="claimBranch"
+                [ngClass]="{
+                  'is-invalid': submitted && f['claimBranch'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['claimBranch'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['claimBranch'].errors?.['required']">
+                  Claim branch is required.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="typeOfSettlment">Type of Settlement</label>
+              <ng-select
+                formControlName="typeOfSettlment"
+                id="typeOfSettlment"
+                class="custom"
+                appearance="outline"
+                [ngClass]="{
+                  'is-invalid': submitted && f['typeOfSettlment'].errors
+                }"
+              >
+                <ng-option
+                  *ngFor="let type of settlementType"
+                  value="{{ type!.id }}"
+                >
+                  {{ type!.advanceType }}
+                </ng-option>
+              </ng-select>
+              <div
+                *ngIf="submitted && f['typeOfSettlment'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['typeOfSettlment'].errors?.['required']">
+                  Type of settlment is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="noOfDays">Number of Days</label>
+            <input
+              type="text"
+              formControlName="noOfDays"
+              class="form-control"
+              id="noOfDays"
+              [ngClass]="{
+                'is-invalid': submitted && f['noOfDays'].errors
+              }"
+            />
+            <div
+              *ngIf="submitted && f['noOfDays'].errors"
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['noOfDays'].errors?.['required']">
+                Number of days is required.
+              </div>
+              <div *ngIf="f['noOfDays'].errors?.['pattern']">
+                Insert a valid number
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="reqDir">Directorate</label>
+            <input
+              *ngIf="editMode"
+              formControlName="dir"
+              id="reqDir"
+              class="form-control"
+              readonly
+            />
+            <input
+              *ngIf="!editMode"
+              [ngModel]="directorate"
+              formControlName="reqDir"
+              id="reqDir"
+              class="form-control"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="totalAmount">Total Amount</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="totalAmount"
+                id="totalAmount"
+                [ngClass]="{
+                  'is-invalid': submitted && f['totalAmount'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['totalAmount'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['totalAmount'].errors?.['required']">
+                  Total amount is required.
+                </div>
+                <div *ngIf="f['totalAmount'].errors?.['pattern']">
+                  Insert a valid number
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="departureDate">Departure Date</label>
+
+              <input
+                type="date"
+                class="form-control"
+                formControlName="departureDate"
+                id="departureDate"
+                [ngClass]="{
+                  'is-invalid': submitted && f['departureDate'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['departureDate'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['departureDate'].errors?.['required']">
+                  Departure date is required.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">
+            {{ buttonText }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,113 @@
+
+mat-toolbar {
+    background-color: #21205f;
+    color: #fff;
+}
+
+mat-sidenav-container {
+    height: calc(100vh - 64px);
+    overflow: hidden;
+    /* overflow-y: scroll; */
+    display: flex; /* Use flexbox to layout the container */
+    flex-direction: column; /* Stack children vertically */
+}
+
+mat-sidenav {
+    width: 200px;
+    height: 100%;
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: unset;
+    white-space: nowrap;
+}
+.custom-sidenav {
+    overflow: hidden; /* Prevent scrolling */
+    height: 100%; /* Full height */
+    transition: width 0.3s ease;
+  }
+mat-sidenav-content {
+  display: flex; /* Flexbox for the content area */
+  flex-direction: column; /* Stack content vertically */
+  flex-grow: 1; /* Allow this area to grow */
+  transition: margin-left 0.3s ease;
+  
+}
+.main-content{
+    flex: 1; /* This will take up the remaining space */
+  padding: 20px; /* Padding for the main content */
+}
+
+/* app.component.css */
+
+:host ::ng-deep .mat-menu-panel {
+    background-color: #f0f0f0;
+    /* Custom background color */
+}
+
+:host ::ng-deep .mat-menu-item {
+    color: #333;
+    /* Custom text color */
+}
+
+:host ::ng-deep .mat-menu-item:hover {
+    background-color: #e0e0e0;
+    /* Background on hover */
+    color: #000;
+    /* Text color on hover */
+}
+
+:host ::ng-deep .mat-menu-item mat-icon {
+    font-size: 20px;
+    /* Custom icon size */
+    margin-right: 8px;
+    /* Space between icon and text */
+}
+
+:host ::ng-deep .mat-menu-item {
+    padding: 12px 16px;
+    /* Custom padding for menu items */
+}
+
+.toolbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+
+
+a {
+    color: #fff;
+}
+
+a:hover {
+    color: #fff;
+}
+
+aside a {
+    color: #fff;
+}
+
+aside li {
+    color: #fff;
+}
+
+#examples {
+    background-color: #f79239;
+}
+
+#miscel {
+    background-color: #f79239;
+}
+
+@media screen and (max-width: 600px) {
+    /* .toolbar-content {
+        flex-direction: column;
+    } */
+     /* .custom-sidenav{
+        width: 70px;
+     } */
+    
+}

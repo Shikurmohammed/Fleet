@@ -1,0 +1,55 @@
+<div id="vehicle">
+  <div style="margin-left: 50%; margin-top: 100px">
+    <h3>Authorized Off-Time Requests</h3>
+  </div>
+  <div
+    style="margin-left: 190px"
+    class="col-lg-12 col-md-12 col-xl-12"
+    *ngIf="hasData"
+  >
+    <hr />
+    <table
+      class="table table-hover table-bordered table-condenced table-sm table-shadow"
+      id="datatableexample"
+    >
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>requested By</th>
+          <th>requested Date</th>
+          <th>Passenger(s)</th>
+          <th>Residence</th>
+          <th>Kilometer</th>
+          <th>Reason</th>
+          <!-- <th>Phone Number</th> -->
+
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of data">
+          <td>{{ request.id }}</td>
+          <td>{{ request.reqBy }}</td>
+          <td>{{ request.date | date }}</td>
+          <td>{{ request.nameOfPassengers }}</td>
+          <td>{{ request.residentialArea }}</td>
+          <td>{{ request.km }}</td>
+          <td>{{ request.reason }}</td>
+          <!-- <td>{{ request.telephone }}</td> -->
+
+          <td>
+            <a
+              class="btn btn-block btn-outline-info"
+              data-original-title="Detail"
+              (click)="fullDetail(request.id)"
+              >Detail
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-info" style="margin-left: 190px" *ngIf="noData">
+    {{ noDatamessage }}
+  </div>
+</div>

@@ -1,0 +1,427 @@
+<div class="container" id="viewdriver">
+  <div class="card shadow">
+    <div class="card-header">
+      <h3 class="text-center">Driver Information.!</h3>
+      <button (click)="addMore()" class="btn btn-primary btn-sm" style="float: right;"><i
+          class="fa fa-plus nav-icon"></i>Add More</button>
+    </div>
+    <div *ngIf="driverlength!=0">
+      <div class="card-body">
+
+        <table class="table table-bordered table striped table-sm table-shadow table-hover" id="driverdatatable">
+          <thead>
+            <tr>
+              <th>Full Name</th>
+              <th>TellNo</th>
+              <th>ResidentPlace</th>
+              <th>Age</th>
+              <th>Lisence No</th>
+              <th>Plate No</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let req of request">
+              <td>{{req.fullName}}</td>
+              <td>{{req.tellNo}}</td>
+              <td>{{req.residentPlace}}</td>
+              <td>{{req.age}}</td>
+              <td>{{req.licenseNo}}</td>
+              <td>{{req.plateNo}}</td>
+              <td>
+                <button class="btn btn-outline-primary btn-sm" style="margin-left: 4px; margin-top: 2px;"
+                  (click)="onOpenModal(req,'updatedriver')">Update
+                </button>
+                <!-- <button class="btn btn-outline-danger btn-sm" style="margin-left: 4px;margin-top: 2px;"
+                  (click)="onOpenModal(req,'deletedriv')">Delete
+                </button> -->
+                <button class="btn btn-outline-success btn-sm" style="margin-left: 4px; margin-top: 2px;"
+                  (click)="onOpenModal(req,'viewdriver')">Detail
+                </button>
+                <button *ngIf="req.isAvailable ==1 " class="btn btn-outline-danger btn-sm" style="margin-left: 4px; margin-top: 2px;"
+                  (click)="onOpenModal(req,'disabledriver')">Deactivate
+                </button>
+                <button  *ngIf="req.isAvailable ==0 " class="btn btn-outline-danger btn-sm" style="margin-left: 4px; margin-top: 2px;"
+                  (click)="onOpenModal(req,'enabledriver')">Activate
+                </button>
+
+              </td>
+
+              <!-- </ng-container> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div *ngIf="driverlength==0">
+      <div class="bd-callout bd-callout-info">
+        <p class="text-center">No Registered Driver Found</p>
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="container" id="maindriver">
+
+  <!-- *******************************************ENABLE DRIVER******************************** -->
+  <div class="modal fade" id="enabledriverModal" tabindex="-1" role="dialog" aria-labelledby="disableModelLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" style="margin-left: 100px;" id="deleteModelLabel">Enable Driver Info</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: red;">&times;</span>
+          </button>
+        </div>
+        <form #enableDriver="ngForm">
+          <div class="modal-body">
+            <div class="form-row">
+              <p>
+                Are you sure want to activate driver:<strong> {{ enabledriver?.fullName }} ?</strong>
+              </p>
+
+
+              <div class="form-group col-md-6" hidden>
+                <label for="name">Reason To Disable</label>
+                <input type="text" [ngModel]="enabledriver?.reasonToDisable"
+                  name="reasonToDisable" class="form-control"
+                  #inactivate="ngModel" required />
+               </div>
+              <div class="form-group col-md-6" hidden>
+                <label for="name">Driver ID</label>
+                <input type="text" [ngModel]="enabledriver?.id" name="id" class="form-control" required />
+
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button (click)="driverEnable(enableDriver.value)" class="btn btn-success"
+              data-dismiss="modal">Yes</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+          </div>
+
+        </form>
+
+
+
+
+          <div class="modal-body">
+
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- *******************************************DISABLE DRIVER******************************** -->
+  <div class="modal fade" id="disabledriverModal" tabindex="-1" role="dialog" aria-labelledby="disableModelLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" style="margin-left: 100px;" id="deleteModelLabel">Disable Driver Info</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: red;">&times;</span>
+          </button>
+        </div>
+        <form #disableDriver="ngForm">
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label for="name">Reason To Disable</label>
+                <input type="text" [(ngModel)]="driver.reasonToDisable" name="reasonToDisable" class="form-control"
+                  autocomplete="off" placeholder="why you want to disable this driver..." #inactivate="ngModel" required
+                  [ngClass]="{'is-invalid': disableDriver.submitted && inactivate.invalid }"
+                  [class.is-invalid]="inactivate.invalid && inactivate.touched" />
+                <!-- Error -->
+                <div *ngIf="inactivate.errors && (inactivate.invalid && inactivate.touched)">
+                  <small class="text-danger" *ngIf="inactivate.errors.required">Please Specify your reason</small>
+                </div>
+
+              </div>
+              <div class="form-group col-md-6" hidden>
+                <label for="name">Driver ID</label>
+                <input type="text" [ngModel]="disabledriver?.id" name="id" class="form-control" required />
+
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button [disabled]="disableDriver.form.invalid" type="submit" class="btn btn-primary btn-sm"
+            data-dismiss="modal" (click)="driverDisable(disableDriver.value)">
+              Disable
+            </button>
+            <button type="button" id="edit-vehicle-form" data-dismiss="modal" class="btn btn-danger btn-sm">
+              Close
+            </button>
+
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- *********************DELETE DRIVER INFO MODAL***************************************** -->
+
+  <div class="modal fade" id="deletedriver" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" style="margin-left: 100px;" id="deleteModelLabel">Delete Driver Info</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: red;">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Are you sure want to delete driver:<strong> {{ deletedriver?.fullName }} ?</strong>
+          </p>
+          <div class="modal-footer">
+            <button (click)="deleteDriverData(deletedriver?.id)" class="btn btn-danger"
+              data-dismiss="modal">Yes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- =======================================UPDATE DRIVER INFORMATION MODAL======================= -->
+  <div class="modal fade in" id="updatedriverModal" tabindex="-1" role="dialog" aria-labelledby="updatedriverModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateModal">
+            Edit Driver Information
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: red;">&times;</span>
+          </button>
+        </div>
+        <form #editFormDriver="ngForm">
+          <div class="modal-body">
+            <div class="form-row" hidden>
+              <div class="form-group col-md-4">
+                <label for="fullname">ID</label>
+                <input type="text" [ngModel]="updatedriver?.id" name="id" class="form-control" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="fullname">Full Name</label>
+                <input type="text" [ngModel]="updatedriver?.fullName" name="fullName" class="form-control"
+                required  #fullName="ngModel"  pattern="^[a-zA-Z]{3,}(?: [a-zA-Z]{3,}){2,}$"
+              [ngClass]="{'is-invalid': (editFormDriver.submitted && fullName.invalid) || driverExist }"
+              [class.is-invalid]="fullName.invalid && fullName.touched"
+              />
+
+              <div *ngIf="fullName.errors && (fullName.invalid && fullName.touched)">
+                <small class="text-danger" *ngIf="fullName.errors.required">fullName is required</small>
+                <small class="text-danger" *ngIf="fullName.errors.pattern">incorrect fullName format</small>
+              </div>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="Telephone">Telephone</label>
+                <input type="text" [ngModel]="updatedriver?.tellNo" name="tellNo" class="form-control"
+                pattern="[0]{1}[9/7]{1}[0-9]{8}" [ngClass]="{ 'is-invalid': (editFormDriver.submitted && tellNo.invalid) || exist}"
+                [class.is-invalid]="tellNo.invalid && tellNo.touched" #tellNo="ngModel" placeholder="telephone"
+                autocomplete="off" required />
+                <div *ngIf="tellNo.errors && (tellNo.invalid && tellNo.touched)">
+                  <small class="text-danger" *ngIf="tellNo.errors.required">phone is required</small>
+                  <small class="text-danger" *ngIf="tellNo.errors.pattern">incorrect phone format</small>
+                </div>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="Residence">Residence Place</label>
+                <input type="text" [ngModel]="updatedriver?.residentPlace" name="residentPlace" class="form-control"
+                #residentPlace="ngModel" [ngClass]="{ 'is-invalid': editFormDriver.submitted && residentPlace.invalid }"
+                [class.is-invalid]="residentPlace.invalid && residentPlace.touched" placeholder="resident place"
+                autocomplete="off" required />
+              <div *ngIf="residentPlace.errors && (residentPlace.invalid && residentPlace.touched)">
+                <small class="text-danger" *ngIf="residentPlace.errors.required">residentPlace is required</small>
+                <!-- <small class="text-danger" *ngIf="tellNo.errors.pattern">incorrect residentPlace format</small> -->
+              </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="fullname">Address</label>
+                <input type="text" [ngModel]="updatedriver?.address" name="address" class="form-control"
+                required #address="ngModel"
+              [ngClass]="{ 'is-invalid': editFormDriver.submitted && address.invalid }"
+              [class.is-invalid]="address.invalid && address.touched" />
+            <div *ngIf="address.errors && (address.invalid && address.touched)">
+              <small class="text-danger" *ngIf="address.errors.required">address is required</small>
+              <!-- <small class="text-danger" *ngIf="tellNo.errors.pattern">incorrect residentPlace format</small> -->
+            </div>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="Telephone">Age</label>
+                <input type="text" [ngModel]="updatedriver?.age" name="age" class="form-control"
+                required #age="ngModel" [ngClass]="{ 'is-invalid': editFormDriver.submitted && age.invalid }"
+                [class.is-invalid]="age.invalid && age.touched" pattern="[1-9]{1}[0-9]{1}" max="90" />
+              <div *ngIf="age.errors && (age.invalid && age.touched)">
+                <small class="text-danger" *ngIf="age.errors.required">age is required</small>
+                <small class="text-danger" *ngIf="age.errors.pattern || age.errors.max">incorrect age</small>
+              </div>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="Residence">Lisence No.</label>
+                <input type="text" [ngModel]="updatedriver?.licenseNo" name="licenseNo" class="form-control"
+                required #licenseNo="ngModel"
+              [ngClass]="{ 'is-invalid': editFormDriver.submitted && licenseNo.invalid }"
+              [class.is-invalid]="licenseNo.invalid && licenseNo.touched" />
+            <div *ngIf="licenseNo.errors && (licenseNo.invalid && licenseNo.touched)">
+              <small class="text-danger" *ngIf="licenseNo.errors.required">licenseNo is required</small>
+              <!-- <small class="text-danger" *ngIf="age.errors.pattern">incorrect age</small> -->
+            </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="fullname">Plate No</label>
+                <input type="text" [ngModel]="updatedriver?.plateNo" name="plateNo" class="form-control"
+                required #plateNo="ngModel"
+               [ngClass]="{ 'is-invalid': (editFormDriver.submitted && plateNo.invalid)}"
+              [class.is-invalid]="plateNo.invalid && plateNo.touched"
+                 />
+                 <div *ngIf="plateNo.errors && (plateNo.invalid && plateNo.touched)">
+                  <small class="text-danger" *ngIf="plateNo.errors.required">plateNo is required</small>
+                  <!-- <small class="text-danger" *ngIf="age.errors.exist">phone already exist</small> -->
+                </div>
+              </div>
+              <!-- <ng-select appearance="outline"  [(ngModel)]="updatedriver.plateNo" name="plateNo" required #plateNo="ngModel"
+              [ngClass]="{ 'is-invalid': (editFormDriver.submitted && plateNo.invalid)}"
+              [class.is-invalid]="plateNo.invalid && plateNo.touched" >
+                <ng-option *ngFor="let plate of vehicle" value="{{plate.plateNo}}">
+                  {{plate.plateNo}}
+                </ng-option>
+
+              </ng-select> -->
+              <div class="form-group col-md-4">
+                <label for="Telephone">Expiry Date</label>
+                <input type="date" [ngModel]="updatedriver?.expiryDate" name="expiryDate" class="form-control"
+                required #expiryDate="ngModel"
+              [ngClass]="{ 'is-invalid': editFormDriver.submitted && expiryDate.invalid }"
+              [class.is-invalid]="expiryDate.invalid && expiryDate.touched" />
+            <div *ngIf="expiryDate.errors && (expiryDate.invalid && expiryDate.touched)">
+              <small class="text-danger" *ngIf="expiryDate.errors.required">expiryDate is required</small>
+              <!-- <small class="text-danger" *ngIf="age.errors.pattern">incorrect age</small> -->
+            </div>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="Residence">Grade.</label>
+                <input type="text" [ngModel]="updatedriver?.grade" name="grade" class="form-control"
+                required #grade="ngModel"
+              [ngClass]="{ 'is-invalid': editFormDriver.submitted && grade.invalid }"
+              [class.is-invalid]="grade.invalid && grade.touched" />
+            <div *ngIf="grade.errors && (grade.invalid && grade.touched)">
+              <small class="text-danger" *ngIf="grade.errors.required">grade is required</small>
+              <!-- <small class="text-danger" *ngIf="age.errors.pattern">incorrect age</small> -->
+            </div>
+              </div>
+            </div>
+
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="edit-vehicle-form" data-dismiss="modal" class="btn btn-danger btn-sm">
+              Close
+            </button>
+            <button type="submit" data-dismiss="modal" (click)="updateDriver(editFormDriver.value)"
+              class="btn btn-primary btn-sm">
+              Update
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================================View DRIVER INFORMATION MODAL======================= -->
+  <div class="modal fade in" id="viewriverModal" tabindex="-1" role="dialog" aria-labelledby="updatedriverModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-center" id="updateModal">
+            View Driver Information
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: red;">&times;</span>
+          </button>
+        </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <p>
+                  Full Name:
+                  <strong
+                    ><span>{{ viewdriver?.fullName }}</span></strong
+                  >
+                </p>
+                <p>
+                  Telephone:
+                  <strong
+                    ><span>{{ viewdriver?.tellNo }}</span></strong
+                  >
+                </p>
+                <p>
+                  Residence Place:
+                  <strong
+                    ><span>{{ viewdriver?.residentPlace }}</span></strong
+                  >
+                </p>
+                <p>
+                  Address:
+                  <strong
+                    ><span>{{ viewdriver?.address }}</span></strong
+                  >
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p>
+                  Age:
+                  <strong
+                    ><span>{{ viewdriver?.age }}</span></strong
+                  >
+                </p>
+                <p>
+                  Lisence No.:
+                  <strong
+                    ><span>{{ viewdriver?.licenseNo }}</span></strong
+                  >
+                </p>
+                <p>
+                  Plate No:
+                  <strong
+                    ><span>{{ viewdriver?.plateNo }}</span></strong
+                  >
+                </p>
+                <p>
+                  Expiry Date:
+                  <strong
+                    ><span>{{ viewdriver?.expiryDate }}</span></strong
+                  >
+                </p>
+              </div>
+            </div>
+       </div>
+      </div>
+    </div>
+  </div>
+
+</div>

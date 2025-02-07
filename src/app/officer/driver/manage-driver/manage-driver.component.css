@@ -1,0 +1,43 @@
+
+#viewdriver{
+    margin-top: 100px;
+    margin-left: 250px;
+    width: 80%;
+
+}
+.bd-callout {
+  padding: 1.25rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  border: 2px solid #eee;
+  border-left-width: .25rem;
+  border-radius: .25rem
+  }
+
+  .bd-callout h4 {
+  margin-top: 0;
+  margin-bottom: .25rem
+  }
+
+  .bd-callout p:last-child {
+  margin-bottom: 0;
+
+  }
+
+  .bd-callout code {
+  border-radius: .40rem
+  }
+
+  .bd-callout+.bd-callout {
+  margin-top: -.10rem
+  }
+
+  .bd-callout-info {
+  border-left-color: #45bfe4;
+  border-left-width: 10px;
+
+  }
+
+  .bd-callout-info h4 {
+  color: #5bc0de
+  }

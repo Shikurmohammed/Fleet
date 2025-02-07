@@ -1,0 +1,332 @@
+<div class="container" id="printrequest">
+  <div class="card">
+ 
+  </div>
+        <div class="card">
+          <div class="card-header hiddenprint">
+              <button (click)="goBack()" class="btn btn-info btn-sm col-md-2"
+                  style="float: left; width: 50px;">Back</button>
+              <button (click)="printPDF()" class="btn btn-danger" style="float: right; margin-right: 10px;"><i
+                      class="fa fa-file-pdf"></i></button>
+              <button (click)="print()" class="btn btn-primary" style="float: right; margin-right: 10px;"><i
+                      class="fa fa-print" aria-hidden="true"></i></button>
+          </div>
+      </div>
+
+  <div class="hiddendata">
+    <div class="brand-image img-circle">
+      <img src="./assets/img/AB1.png" class="img" alt="AB Logo" />
+    </div>
+    <div>
+      <img src="./assets/img/bank.png" class="imgs" alt="AB Logo" />
+      <div class="hrline"></div>
+      <div class="hrawash"></div>
+      <div class="hrtitle">Offtime Vehicle Requisition</div>
+      <div class="hrdate"><strong></strong></div>
+      <div class="datetimes">
+        <strong
+          >Date: {{ dateToday | date }}<br />Time:{{
+            time | date : "hh:mm:ss a"
+          }}</strong
+        >
+      </div>
+    </div>
+  </div>
+  <div>
+    <h4 id="headerdata" class="text-center" style="margin: 35px">
+      Approved User Request
+    </h4>
+    <table class="table table-bordered table-shadow" id="printApproval">
+      <tbody>
+        <ng-container>
+          <tr>
+            <td>
+              <div class="alignment">
+                Requested By:
+                <span
+                  ><strong>{{ printDetail?.reqBy }}</strong></span
+                >
+              </div>
+            </td>
+            <td>
+              <div class="alignment">
+                Approved By:
+                <span
+                  ><strong>{{ printDetail?.appBy }}</strong></span
+                >
+              </div>
+            </td>
+            <td>
+              <div class="alignment">
+                Kilometer on Departure:
+                <span
+                  ><strong>{{ printDetail?.kmOnDep }}</strong></span
+                >
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="alignment">
+                Requested Date:
+                <span
+                  ><strong>{{ printDetail?.reqDate }}</strong></span
+                >
+              </div>
+            </td>
+            <td>
+              <div class="alignment">
+                Approved Date:
+                <span
+                  ><strong>{{ printDetail?.appDate }}</strong></span
+                >
+              </div>
+            </td>
+            <td>
+              <div class="alignment">
+                Vehicle Needed From:
+                <span
+                  ><strong>{{
+                    printDetail?.vehicleNeededFrom | convertFrom24To12Format
+                  }}</strong></span
+                >
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="alignment">
+                Directorate:
+                <span
+                  ><strong>{{ printDetail?.directorate }}</strong></span
+                >
+              </div>
+            </td>
+            <td>
+              <div class="alignment">
+                Authorized By:
+                <span
+                  ><strong>{{ printDetail?.authorizedBy }}</strong></span
+                >
+              </div>
+            </td>
+            <td>
+              <div class="alignment">
+                Vehicle Needed To:
+                <span
+                  ><strong>{{
+                    printDetail?.vehicleNeededTo | convertFrom24To12Format
+                  }}</strong></span
+                >
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="alignment">
+                Name of Passengers:
+                <span
+                  ><strong>{{ printDetail?.nameOfPassengers }}</strong></span
+                >
+              </div>
+            </td>
+
+            <td>
+              <div class="alignment">
+                Authorized Date:
+                <span
+                  ><strong>{{ printDetail?.authorizedDate }}</strong></span
+                >
+              </div>
+            </td>
+            <td>
+              <div class="alignment">
+                Departure Date:
+                <span
+                  ><strong>{{ printDetail?.departureDate }}</strong></span
+                >
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="alignment">
+                Residential Area:
+                <span
+                  ><strong>{{ printDetail?.residentialArea }}</strong></span
+                >
+              </div>
+            </td>
+
+            <td>
+              <div class="alignment">
+                Driver Name:
+                <span
+                  ><strong>{{ printDetail?.driverName }}</strong></span
+                >
+              </div>
+            </td>
+            <td>
+              <div class="alignment" *ngIf="printDetail?.nightTime == ''">
+                Morning Time:
+                <span
+                  ><strong>{{
+                    printDetail?.morningTime | convertFrom24To12Format
+                  }}</strong></span
+                >
+              </div>
+              <div class="alignment" *ngIf="printDetail?.morningTime == ''">
+                Night Time:
+                <span
+                  ><strong>{{
+                    printDetail?.nightTime | convertFrom24To12Format
+                  }}</strong></span
+                >
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="alignment">
+                Phone number:
+                <span
+                  ><strong>{{ printDetail?.telephone }}</strong></span
+                >
+              </div>
+            </td>
+
+            <td>
+              <div class="alignment">
+                Driver Phone Number:
+                <span
+                  ><strong>{{ printDetail?.tellNo }}</strong></span
+                >
+              </div>
+            </td>
+            <td>
+              <div class="alignment">
+                Return Date:
+                <span
+                  ><strong>{{ printDetail?.returnDate }}</strong></span
+                >
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="alignment">
+                Kilometer:
+                <span
+                  ><strong>{{ printDetail?.km }}</strong></span
+                >
+              </div>
+            </td>
+
+            <td>
+              <div class="alignment">
+                Plate Number:
+                <span
+                  ><strong>{{ printDetail?.plateNo }}</strong></span
+                >
+              </div>
+            </td>
+            <td>
+              <div class="alignment">
+                Return Time:
+                <span
+                  ><strong>{{
+                    printDetail?.returnTime | convertFrom24To12Format
+                  }}</strong></span
+                >
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="alignment">
+                Requested Time:
+                <span
+                  ><strong>{{
+                    printDetail?.requestedTime | convertFrom24To12Format
+                  }}</strong></span
+                >
+              </div>
+            </td>
+            <td>
+              <div class="alignment">
+                Requested For:
+                <span
+                  ><strong>{{
+                    printDetail?.requestedFor
+                  }}</strong></span
+                >
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <!-- </div> -->
+
+  <div class="approvalform" id="appform">
+    <table class="table table-sm" style="width: 100%">
+      <tr style="width: 100%">
+        <td class="passremark" colspan="3" style="width: 50%">
+          Passenger(s) Remark:
+          <span
+            ><Strong
+              ><sub
+                >...........................................
+                .............................................................................................................
+                .......................................................................................
+              </sub></Strong
+            ></span
+          >
+        </td>
+      </tr>
+      <tr>
+        <td class="passremark" colspan="3" style="width: 50%">
+          Driver Remark:
+          <span
+            ><Strong
+              ><sub
+                >...........................................
+                .............................................................................................................
+                .......................................................................................
+              </sub></Strong
+            ></span
+          >
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Milege On Return:
+          <span
+            ><Strong><sub>...............km</sub></Strong></span
+          >
+        </td>
+        <td style="margin-left: -200px">
+          Return Date: <sub>...............</sub>
+        </td>
+        <td>
+          Driver Sign:
+          <span
+            ><Strong><sub>...............</sub></Strong></span
+          >
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="hiddenfooter">
+    <!-- <button
+      (click)="print()"
+      class="btn btn-success"
+      style="float: right; width: 70px; margin: 5px"
+    >
+      Print
+    </button> -->
+  </div>
+</div>

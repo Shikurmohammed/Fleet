@@ -1,0 +1,95 @@
+#dispatcherreports{
+  margin-top: 100px;
+  margin-left: 250px;
+  width: 80%;
+
+}
+.fieldheader{
+  display: none;
+}
+/* #nofield{
+  margin-top: -150px;
+}
+#noallincity{
+  margin-top: -150px;
+}
+#noallofftime{
+  margin-top: -150px;
+} */
+.ngselectpart{
+  width: 15%;
+  margin-left: 160px;
+  margin-top: -30px;
+  /* padding-bottom: 50px; */
+  margin-bottom: 30px;
+}
+.ngselectranges{
+  width: 10%;
+  margin-left: 530px;
+  margin-top: -36px;
+  margin-bottom: 35px;
+}
+.fieldFilter{
+  margin-left: 700px;
+  margin-top: -182px;
+  padding-bottom: 50px;
+  /* margin-bottom: 100px; */
+}
+.incityFilter{
+  margin-left: 700px;
+  margin-top: -182px;
+  padding-bottom: 50px;
+}
+#incitycard{
+  width: 100%;
+}
+.offtimeFilter{
+  margin-left: 700px;
+  margin-top: -182px;
+  padding-bottom: 50px;
+
+}
+@media print {
+  #incitycard{
+    width: 10%;
+  }
+}
+
+.bd-callout {
+  padding: 1.25rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  border: 2px solid #eee;
+  border-left-width: .25rem;
+  border-radius: .25rem;
+  margin-left: 10px;
+  margin-right: 10px;
+  }
+
+  .bd-callout h4 {
+  margin-top: 0;
+  margin-bottom: .25rem
+  }
+
+  .bd-callout p:last-child {
+  margin-bottom: 0;
+
+  }
+
+  .bd-callout code {
+  border-radius: .40rem
+  }
+
+  .bd-callout+.bd-callout {
+  margin-top: -.10rem
+  }
+
+  .bd-callout-info {
+  border-left-color: #45bfe4;
+  border-left-width: 10px;
+
+  }
+
+  .bd-callout-info h4 {
+  color: #5bc0de
+  }

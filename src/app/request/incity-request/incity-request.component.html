@@ -1,0 +1,159 @@
+<div id="incity" class="container">
+  <div class="card shadow">
+    <div class="card-header">
+      <h5 class="text-left">In City Vehicle Requisition Form</h5>
+    </div>
+    <div class="card-body">
+      <form #addForm="ngForm" (ngSubmit)="incityRequest(addForm)">
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="fullName">Requested By</label>
+            <input type="text" [ngModel]="userName" name="requestBy" class="form-control" id="fullName" required
+              readonly />
+          </div>
+
+          <div class="form-group col-md-4">
+            <label for="directorate">Directorate/Branch</label>
+            <input type="text" [ngModel]="direct" name="directorate" id="directorate" readonly class="form-control">
+          </div>
+
+          <div class="form-group col-md-4">
+            <label for="loginDate">Request Date</label>
+            <input type="date" [ngModel]="currentDate" name="requestedDate" class="form-control" id="loginDate" required
+              readonly />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="passengers">Passenger (s)</label>
+            <input type="text" [(ngModel)]="incity.passenger" name="passenger" placeholder="enter passenger (s)"
+              class="form-control" #passenger="ngModel"
+              [ngClass]="{'is-invalid':addForm.submitted && passenger.invalid}"
+              [class.is-invalid]="passenger.invalid && passenger.touched" minlength="3" required />
+            <div *ngIf="passenger.errors && (passenger.invalid && passenger.touched)">
+              <small class="text-danger" *ngIf="passenger.errors.required">Passenger (s) is required</small>
+              <small class="text-danger" *ngIf="passenger.errors.minlength">Minimum length not reached!</small>
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label for="passTelephone">Passenger's Telephone No</label>
+            <input type="text" [(ngModel)]="incity.passTelephone" 
+            pattern="^[0-9]{10}$"
+            name="passTelephone" placeholder="enter passenger's tel. No."
+              class="form-control" #passTelephone="ngModel"
+              [ngClass]="{'is-invalid':addForm.submitted && passTelephone.invalid}"
+              [class.is-invalid]="passTelephone.invalid && passTelephone.touched"  required />
+            <div *ngIf="passTelephone.errors && (passTelephone.invalid && passTelephone.touched)">
+              <small class="text-danger" *ngIf="passTelephone.errors.required">Passenger's tel. No is required</small>
+              <small class="text-danger" *ngIf="passTelephone.errors.pattern">Enter valid telephone No.!</small>
+            </div>
+          </div>
+        
+          <div class="form-group col-md-4">
+            <label for="destination">Destination</label>
+            <input type="text" [(ngModel)]="incity.destination" name="destination" class="form-control" id="destination"
+              placeholder="enter destination" #destination="ngModel"
+              [ngClass]="{'is-invalid':addForm.submitted && destination.invalid }"
+              [class.is-invalid]="destination.invalid && destination.touched" required />
+            <div *ngIf="destination.errors && (destination.invalid && destination.touched)">
+              <small class="text-danger">Destination is required</small>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="date">Vehicle Needed From Date</label>
+            <input type="date" [(ngModel)]="incity.dateFrom" class="form-control" id="date" name="dateFrom"
+              [ngModel]="incity.dateFrom | date: 'yyyy-MM-dd'"
+              [min]="currentDate"
+              #dFrom (change)="getDateFrom($event)"
+              #dateFrom="ngModel" [ngClass]="{'is-invalid':addForm.submitted && dateFrom.invalid}"
+              [class.is-invalid]="dateFrom.invalid && dateFrom.touched" required>
+            <div *ngIf="dateFrom.errors && (dateFrom.invalid && dateFrom.touched)">
+              <small class="text-danger">Vehicle needed date is required</small>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="fromTime">Vehicle Needed To Date</label>
+            <input type="date" [(ngModel)]="incity.dateTo" class="form-control" id="dateTo" name="dateTo"
+            [ngModel]="incity.dateTo | date: 'yyyy-MM-dd'"
+            [min]="from"
+            #dTo (change)="getDateTo($event)"
+            #dateTo="ngModel" [ngClass]="{'is-invalid':addForm.submitted && dateTo.invalid}"
+              [class.is-invalid]="dateTo.invalid && dateTo.touched" required />
+            <div *ngIf="dateTo.errors && (dateTo.invalid && dateTo.touched)">
+              <small class="text-danger">Vehicle needed to date is required</small>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="toTime">Number of Days Vehicle Needed </label>
+            <input type="number" [(ngModel)]="incity.numberOfDays" [ngModel]="noOfDays" class="form-control" id="numberOfDays"
+              name="numberOfDays" required readonly>
+          </div>
+        
+
+        </div>
+
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="fromTime">Vehicle Needed From Time</label>
+            <input type="time" [(ngModel)]="incity.requestTimeFrom" class="form-control" id="fromTime"
+              name="requestTimeFrom" #requestTimeFrom="ngModel"
+              [ngClass]="{'is-invalid':addForm.submitted && requestTimeFrom.invalid}"
+              [class.is-invalid]="requestTimeFrom.invalid && requestTimeFrom.touched" required />
+            <div *ngIf="requestTimeFrom.errors && (requestTimeFrom.invalid && requestTimeFrom.touched)">
+              <small class="text-danger">Vehicle needed from time is required</small>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="toTime">Vehicle Needed To Time</label>
+            <input type="time" [(ngModel)]="incity.requestTimeTo" class="form-control" id="toTime" name="requestTimeTo"
+              #requestTimeTo="ngModel" [ngClass]="{'is-invalid':addForm.submitted && requestTimeTo.invalid}"
+              [class.is-invalid]="requestTimeTo.invalid && requestTimeTo.touched" required>
+            <div *ngIf="requestTimeTo.errors && (requestTimeTo.invalid && requestTimeTo.touched)">
+              <small class="text-danger">Time is required</small>
+            </div>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label for="purpose">Purpose Of Travel</label>
+            <input type="text" [(ngModel)]="incity.purpose" name="purpose" class="form-control" id="purpose"
+              placeholder="enter purpose of travel" #purpose="ngModel"
+              [ngClass]="{'is-invalid':addForm.submitted && purpose.invalid}"
+              [class.is-invalid]="purpose.invalid && purpose.touched" required />
+            <div *ngIf="purpose.errors && (purpose.invalid && purpose.touched)">
+              <small class="text-danger">Purpose of travel is required</small>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label>Vehicle Requested For</label>
+
+            <ng-select appearance="outline" class="custom" [(ngModel)]="incity.requestedFor" name="requestedFor"
+              id="vehiclerequest" required #requestedFor="ngModel"
+              [ngClass]="{ 'is-invalid': addForm.submitted && requestedFor.invalid }"
+              [class.is-invalid]="requestedFor.invalid && requestedFor.touched">
+              <ng-option value="Transportaion">Transportaion</ng-option>
+              <ng-option value="Loading">Loading</ng-option>
+              <ng-option value="Crane">Crane</ng-option>
+              <ng-option value="Both">Both Load & Transport</ng-option>
+            </ng-select>
+
+            <div *ngIf="requestedFor.errors && (requestedFor.invalid && requestedFor.touched)">
+              <small class="text-danger" *ngIf="requestedFor.errors.required">requestedFor is required</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button [disabled]="addForm.form.invalid" type="submit" class="btn btn-primary">{{actionbtn}}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

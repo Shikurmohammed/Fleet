@@ -1,0 +1,346 @@
+<div id="authorize">
+  <ng-container *ngIf="verifiedRequests.length > 0">
+    <div
+      id="vehicleMaintTable"
+      style="margin-left: 190px"
+      class="col-lg-12 col-md-12 col-xl-12"
+    >
+      <hr />
+      <h2 style="text-align: center">
+        Manage Verified Vehicle Maintenance Requests
+      </h2>
+      <hr />
+      <table
+        class="table table-hover table-bordered table-condenced table-sm table-shadow"
+        id="VerifiedDataTable"
+      >
+        <thead>
+          <tr>
+            <th>Requested By</th>
+            <th>Requested Date</th>
+            <th>Plate Number</th>
+            <th>Modified By</th>
+            <th>Modified Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of verifiedRequests">
+            <td>{{ request.requestedBy }}</td>
+            <td>{{ request.requestedDate | date }}</td>
+            <td>{{ request.plateNo }}</td>
+            <td>{{ request.modifiedBy }}</td>
+            <td>{{ request.modifiedDate | date }}</td>
+            <td>
+              <a
+                style="display: inline-block"
+                (click)="onOpenModal(request, 'view')"
+                class="btn btn-outline-info"
+                data-original-title="view"
+              >
+                Detail
+              </a>
+              <a
+                (click)="onOpenModal(request, 'authorizeRequest')"
+                class="btn btn-outline-primary"
+                data-original-title="Authorize"
+              >
+                Authorize
+              </a>
+              <a
+                (click)="onOpenModal(request, 'rejectRequest')"
+                class="btn btn-outline-danger"
+                data-placement="top"
+                data-original-title="Reject"
+              >
+                Reject
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="verifiedRequests.length == 0">
+    <div style="margin-left: 300px">
+      <hr />
+      <h2 style="text-align: center">
+        Manage Verified Vehicle Maintenance Requests
+      </h2>
+      <hr />
+      <div class="callout callout-info">
+        <p>No Verified requests for vehicle maintenance are available</p>
+      </div>
+    </div>
+  </ng-container>
+  <div class="container" id="main-container">
+    <!-- Start of maintenance authorization -->
+    <div
+      class="modal fade"
+      id="authorizeMaintRequestModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="authorizeMaintRequestModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="authorizeMaintRequestModalLabel">
+              Authorize Vehicle Maintenance Request
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Are you sure you want to authorize request by
+              {{ vehicleAuthorize?.requestedBy }}?
+            </p>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                (click)="authorizeVerifiedRequest(vehicleAuthorize!)"
+                class="btn btn-primary"
+                data-dismiss="modal"
+              >
+                Authorize
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Of Request Authorization -->
+    <!-- Beginning of modal Request rejection -->
+    <div
+      class="modal fade"
+      id="rejectMaintRequestModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="rejectMaintRequestModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="rejectMaintRequestModalLabel">
+              Reject Vehicle Maintenance Request
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form #rejectForm="ngForm">
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label for="reasonForRejection">Reason For Rejection</label>
+                  <textarea
+                    ngModel="{{ vehicleReject?.reasonForRejection }}"
+                    name="reasonForRejection"
+                    class="form-control"
+                    id="reasonForRejection"
+                    required
+                  >
+                  </textarea>
+                  <input
+                    type="hidden"
+                    ngModel="{{ vehicleReject?.id }}"
+                    name="id"
+                    class="form-control"
+                    id="id"
+                    required
+                  />
+                  <input
+                    type="hidden"
+                    ngModel="{{ vehicleReject?.requestedBy }}"
+                    name="requestedBy"
+                    class="form-control"
+                    id="requestedBy"
+                    required
+                  />
+                  <input
+                  type="hidden"
+                  ngModel="{{ vehicleReject?.plateNo }}"
+                  name="plateNo"
+                  class="form-control"
+                  id="plateNo"
+                  required
+                />
+                <input
+                type="hidden"
+                ngModel="{{ vehicleReject?.reqDirectorate }}"
+                name="reqDirectorate"
+                class="form-control"
+                id="reqDirectorate"
+                required
+              />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  id="reject-request-form"
+                  data-dismiss="modal"
+                  class="btn btn-secondary"
+                >
+                  Close
+                </button>
+                <button
+                  [disabled]="rejectForm.invalid"
+                  (click)="onRejectVerifiedRequest(rejectForm.value)"
+                  data-dismiss="modal"
+                  class="btn btn-danger"
+                >
+                  Reject Request
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of modal offtime rejection -->
+    <!-- This is to show details of the offtime request -->
+    <div
+      class="modal fade"
+      id="detailsMaintRequestModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="detailsMaintRequestModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="detailsMaintRequestModalLabel">
+              Vehicle Maintenance Request Details
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <p>
+                  Requested By:
+                  <strong
+                    ><span>{{ requestDetails?.requestedBy }}</span></strong
+                  >
+                </p>
+                <p>
+                  Requested Date:
+                  <strong
+                    ><span>{{
+                      requestDetails?.requestedDate | date
+                    }}</span></strong
+                  >
+                </p>
+                <p>
+                  Plate Number:
+                  <strong
+                    ><span>{{ requestDetails?.plateNo }}</span></strong
+                  >
+                </p>
+                <p>
+                  Previous Service Mileage:
+                  <strong
+                    ><span>{{
+                      requestDetails?.previousServiceMilage
+                    }}</span></strong
+                  >
+                </p>
+                <p>
+                  Current Mileage:
+                  <strong
+                    ><span>{{ requestDetails?.currentMilage }}</span></strong
+                  >
+                </p>
+                <p>
+                  Mileage Difference:
+                  <strong
+                    ><span>{{ requestDetails?.milageDifference }}</span></strong
+                  >
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p>
+                  Previous Service Date:
+                  <strong
+                    ><span>{{
+                      requestDetails?.previousServiceDate
+                    }}</span></strong
+                  >
+                </p>
+                <p>
+                  Fuel Gauge Amount:
+                  <strong
+                    ><span>{{
+                      requestDetails?.fuelGaugeInAmount
+                    }}</span></strong
+                  >
+                </p>
+                <p>
+                  Work/Repair Requested:
+                  <strong
+                    ><span>{{
+                      requestDetails?.workRepairRequested
+                    }}</span></strong
+                  >
+                </p>
+                <p>
+                  Verified By:
+                  <strong
+                    ><span>{{ requestDetails?.modifiedBy }}</span></strong
+                  >
+                </p>
+                <p>
+                  Verified Date:
+                  <strong
+                    ><span>{{
+                      requestDetails?.modifiedDate | date
+                    }}</span></strong
+                  >
+                </p>
+                <p>
+                  Status:
+                  <strong
+                    ><span>{{ requestDetails?.status }}</span></strong
+                  >
+                </p>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of vehicle maintenance request details -->
+  </div>
+</div>

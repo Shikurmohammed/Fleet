@@ -1,0 +1,358 @@
+<div id="vehicle" class="container" >
+  <div class="card card-sm shadow">
+    <div class="card-header">
+      <h5>{{ title }}</h5>
+      <hr />
+    </div>
+    <div class="card-body">
+      <form [formGroup]="form" (ngSubmit)="offtimeRequest()">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="reqDir">Directorate</label>
+            <input
+              *ngIf="editMode"
+              formControlName="dir"
+              id="reqDir"
+              class="form-control"
+              readonly
+            />
+            <input
+              *ngIf="!editMode"
+              [ngModel]="directorate"
+              formControlName="reqDir"
+              id="reqDir"
+              class="form-control"
+              readonly
+            />
+          </div>
+          <div class="form-group col-md-4">
+            <label for="reqBy">Requested By</label>
+
+            <input
+              *ngIf="editMode"
+              formControlName="userName"
+              id="reqBy"
+              class="form-control"
+              readonly
+            />
+            <input
+              *ngIf="!editMode"
+              [ngModel]="userName"
+              formControlName="reqBy"
+              id="reqBy"
+              class="form-control"
+              readonly
+            />
+          </div>
+          <div class="form-group col-md-4">
+            <label for="reqDate">Requested Date</label>
+            <input
+              class="form-control"
+              type="date"
+              id="reqDate"
+              formControlName="date"
+              readonly
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <div class="form-group">
+              <label for="reqTimefrom">Vehicle Needed From</label>
+
+              <input
+                type="time"
+                class="form-control"
+                formControlName="vehicleNeededFrom"
+                id="reqTimefrom"
+                [ngClass]="{
+                  'is-invalid': submitted && f['vehicleNeededFrom'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['vehicleNeededFrom'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['vehicleNeededFrom'].errors?.['required']">
+                  Time for when vehicle is needed for is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <div class="form-group">
+              <label for="reqTimeTo">Vehicle Needed To</label>
+
+              <input
+                type="time"
+                class="form-control"
+                formControlName="vehicleNeededTo"
+                id="reqTimeTo"
+                [ngClass]="{
+                  'is-invalid': submitted && f['vehicleNeededTo'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['vehicleNeededTo'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['vehicleNeededTo'].errors?.['required']">
+                  Time till when vehicle is needed for is required
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="passenger">Name of Passenger(s)</label>
+            <input
+              type="text"
+              formControlName="nameOfPassengers"
+              class="form-control"
+              id="passenger"
+              [ngClass]="{
+                'is-invalid': submitted && f['nameOfPassengers'].errors
+              }"
+            />
+            <div
+              *ngIf="submitted && f['nameOfPassengers'].errors"
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['nameOfPassengers'].errors?.['required']">
+                Name of Passenger(s) is required
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="residence">Residential Area</label>
+            <input
+              type="text"
+              formControlName="residentialArea"
+              class="form-control"
+              id="residence"
+              [ngClass]="{
+                'is-invalid': submitted && f['residentialArea'].errors
+              }"
+            />
+            <div
+              *ngIf="submitted && f['residentialArea'].errors"
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['residentialArea'].errors?.['required']">
+                Residential Area of passenger(s) is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="depDate">Departure Date</label>
+
+              <input
+                type="date"
+                class="form-control"
+                formControlName="departureDate"
+                id="depDate"
+                (change)="getDateFrom($event)"
+                [min]="date"
+                [ngClass]="{
+                  'is-invalid': submitted && f['departureDate'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['departureDate'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['departureDate'].errors?.['required']">
+                  Departure Date is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="morningTime">Morning Time</label>
+
+              <input
+                type="time"
+                class="form-control"
+                (change)="clearNightTime($event)"
+                formControlName="morningTime"
+                id="morningTime"
+              />
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="nightTime">Night Time</label>
+
+              <input
+                type="time"
+                class="form-control"
+                (change)="clearMorningTime($event)"
+                formControlName="nightTime"
+                id="nightTime"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="retDate">Return Date</label>
+
+              <input
+                type="date"
+                class="form-control"
+                formControlName="returnDate"
+                id="retDate"
+                [min]="from"
+                [ngClass]="{
+                  'is-invalid': submitted && f['returnDate'].errors || from>f['returnDate'].value
+                }"
+              />
+              <div
+                *ngIf="submitted && f['returnDate'].errors || from>f['returnDate'].value"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['returnDate'].errors?.['required']">
+                  Return Date is required
+                </div>
+                <div *ngIf="from>f['returnDate'].value && !f['returnDate'].errors?.['required']">
+                  Return Date can not be less than Departure Date
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="time">Return Time</label>
+
+              <input
+                type="time"
+                class="form-control"
+                formControlName="returnTime"
+                id="time"
+                [ngClass]="{
+                  'is-invalid': submitted && f['returnTime'].errors
+                }"
+              />
+              <div
+                *ngIf="submitted && f['returnTime'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['returnTime'].errors?.['required']">
+                  Return Time is required
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="km">Kilometer</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="km"
+                id="km"
+                [ngClass]="{
+                  'is-invalid': submitted && f['km'].errors
+                }"
+              />
+              <div *ngIf="submitted && f['km'].errors" class="invalid-feedback">
+                <div *ngIf="f['km'].errors?.['required']">
+                  Distance in Kilometer is required
+                </div>
+                <div *ngIf="f['km'].errors?.['pattern']">
+                  Insert a valid number
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="reason">Reason for Off-Time</label>
+            <input
+              type="text"
+              formControlName="reason"
+              class="form-control"
+              id="reason"
+              [ngClass]="{
+                'is-invalid': submitted && f['reason'].errors
+              }"
+            />
+            <div
+              *ngIf="submitted && f['reason'].errors"
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['reason'].errors?.['required']">
+                Reason for Request is required
+              </div>
+
+              <div *ngIf="f['reason'].errors?.['minlength']">
+                Reason must be at least 15 characters long
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="telephone">Phone Number</label>
+            <input
+              type="text"
+              formControlName="telephone"
+              class="form-control"
+              id="telephone"
+              [ngClass]="{
+                'is-invalid': submitted && f['telephone'].errors
+              }"
+            />
+            <div
+              *ngIf="submitted && f['telephone'].errors"
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['telephone'].errors?.['required']">
+                Phone Number is required
+              </div>
+              <div *ngIf="f['telephone'].errors?.['pattern']">
+                Phone Number must be a valid
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label>Vehicle Requested For</label>
+
+            <ng-select appearance="outline" class="custom"  formControlName="requestedFor"
+              [ngClass]="{
+                'is-invalid': submitted && f['requestedFor'].errors
+              }" required
+              >
+              <ng-option value="Transportaion">Transportaion</ng-option>
+              <ng-option value="Loading">Loading</ng-option>
+              <ng-option value="Crane">Crane</ng-option>
+              <ng-option value="Both">Both Load & Transport</ng-option>
+            </ng-select>
+            <div
+            *ngIf="submitted && f['requestedFor'].errors"
+            class="invalid-feedback"
+          >
+            <div *ngIf="f['requestedFor'].errors?.['required']">
+              Requested for is required
+            </div>
+          </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">
+            {{ buttonText }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

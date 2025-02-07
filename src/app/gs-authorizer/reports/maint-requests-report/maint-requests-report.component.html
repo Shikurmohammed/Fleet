@@ -1,0 +1,132 @@
+<div id="reportReq">
+  <ng-container>
+    <label style="display: block; text-align: end; margin-right: 21%"
+      >Date Range</label
+    >
+
+    <div class="form-row" style="display: block">
+      <div class="form-group col-md-2" style="float: left">
+        <label for="listing">Select Listing</label>
+
+        <select
+          name="listing"
+          id="listing"
+          class="form-select"
+          #listing
+          (change)="onSelectedListing(listing.value)"
+        >
+          <option value="Authorized">Authorized</option>
+          <option value="Non-Authorized">Non-Authorized</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-2" style="float: right">
+        <label for="dateTo">To:</label>
+
+        <input
+          type="date"
+          class="form-control"
+          id="dateTo"
+          #to
+          (change)="onSelectedTo(to.value)"
+        />
+      </div>
+      <div class="form-group col-md-2" style="float: right">
+        <label for="datdateFromeTo">From:</label>
+
+        <input
+          type="date"
+          class="form-control"
+          id="dateFrom"
+          #from
+          (change)="onSelectedFrom(from.value)"
+        />
+      </div>
+    </div>
+
+    <hr style="margin-top: 110px" />
+  </ng-container>
+
+  <ng-container *ngIf="requestsReport.length > 0">
+    <div id="RequestTable" class="col-lg-12 col-md-12 col-xl-12">
+      <h4 style="text-align: center">
+        {{ report.listing }} Maintenance Requests
+      </h4>
+      <hr />
+       <div style="margin-left: 500px;">
+              <button
+              (click)="printExcel()"
+              class="btn btn-success btn-sm"
+              style="float: center; margin-right: 10px; height: 40px; width: 40px"
+            >
+              <i class="fa fa-file-excel"></i>
+            </button>
+            <button
+              (click)="printPDF()"
+              class="btn btn-danger btn-sm"
+              style="float: center; margin-right: 10px; height: 40px; width: 40px"
+            >
+              <i class="fa fa-file-pdf"></i>
+            </button>
+            <button
+              (click)="print()"
+              class="btn btn-primary"
+              style="float: center; margin-right: 10px; height: 40px; width: 40px"
+            >
+              <i class="fa fa-print" aria-hidden="true"></i>
+            </button>
+       </div>
+      <table
+        class="table table-hover table-bordered table-condenced table-sm table-shadow"
+        id="RequestsDataTable"
+        style="width: 100%"
+      >
+        <thead>
+          <tr class="myPrint" style="border: none; margin-bottom: 30px">
+            <th style="border: none" colspan="2">
+              <img
+                src="./assets/img/awashlogo.png"
+                class="img"
+                alt="AB Logo"
+                style="width: 150px; height: 60px"
+              />
+            </th>
+
+            <th style="border: none" colspan="4">
+              {{ report.listing }} Maintenance Requests
+            </th>
+
+            <th style="border: none" colspan="2">
+              Report Date: {{ myDate | date }}
+            </th>
+          </tr>
+          <tr>
+            <th>Requested By</th>
+            <th>Requested Date</th>
+            <th>Plate Number</th>
+            <th>Modified By</th>
+            <th>Modified Date</th>
+            <th>Authorized By</th>
+            <th>Authorized Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of requestsReport">
+            <td>{{ request.requestedBy }}</td>
+            <td>{{ request.requestedDate | date }}</td>
+            <td>{{ request.plateNo }}</td>
+            <td>{{ request.modifiedBy }}</td>
+            <td>{{ request.modifiedDate | date }}</td>
+            <td>{{ request.authorizedBy }}</td>
+            <td>{{ request.authorizedDate | date }}</td>
+            <td>{{ request.status }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+  <div class="callout callout-info" style="width: 250px" *ngIf="noData">
+    {{ noDatamessage }}
+  </div>
+</div>

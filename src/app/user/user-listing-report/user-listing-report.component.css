@@ -1,0 +1,18 @@
+
+   table, td, th {  
+    border: 1px solid #ddd;
+    text-align: left;
+    
+  }
+  .myPrint{
+    display: none;
+  }
+  thead {display: table-header-group;}
+
+  @media print { thead {display: table-header-group;} }
+  
+  /* @media print {
+    .myPrint {
+      display: table;
+    }
+  } */

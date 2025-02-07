@@ -1,0 +1,163 @@
+<div id="advance">
+    <ng-container *ngIf="advancePaymentRequests?.length > 0">
+        <div id="advanceTable" style="margin-left: 190px" class="col-lg-12 col-md-12 col-xl-12">
+            <hr />
+            <h2 style="text-align: center">Manage Advance Payment</h2>
+            <hr />
+            <table class="table table-hover table-bordered table-condenced table-sm table-shadow"
+                id="AdvancePaymentTable">
+                <thead>
+                    <tr>
+                        <th>Staff Name</th>
+                        <th>Staff Account</th>
+                        <th>Amount</th>
+                        <th>Requested Date</th>
+                        <th>No Of Days</th>
+                        <th>Advance Type</th>
+                        <th>Directorate</th>
+                        <th>Claimed Directorate</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let advancePayment of advancePaymentRequests">
+                        <td>{{ advancePayment.staffName }}</td>
+                        <td>{{ advancePayment.staffAcc }}</td>
+                        <td>{{ advancePayment.totalAmount | currency:'ETB' }}</td>
+                        <td>{{ advancePayment.crtDate | date }}</td>
+                        <td>{{ advancePayment.noOfDays }}</td>
+                        <td>{{ advancePayment.typeOfSettlment }}</td>
+                        <td>{{ advancePayment.reqDir }}</td>
+                        <td>{{ advancePayment.claimBranch }}</td>
+
+                        <td>
+                            <a style="display: inline-block" (click)="printDetail(advancePayment.id)"
+                                class="btn btn-outline-info" data-original-title="view">
+                                Details
+                            </a>
+                            <a (click)="onOpenModal(advancePayment, 'grantAdvance')" class="btn btn-outline-primary"
+                                data-original-title="grant">
+                                Grant
+                            </a>
+                            <a (click)="onOpenModal(advancePayment, 'rejectAdvance')" class="btn btn-outline-danger"
+                                data-placement="top" data-original-title="Reject">
+                                Reject
+                            </a>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="advancePaymentRequests?.length == 0">
+        <div style="margin-left: 300px;">
+            <hr />
+            <h2 style="text-align: center">Manage Advance Payment</h2>
+            <hr />
+            <div class="callout callout-info">
+                <p>No Advance Payment Requests</p>
+            </div>
+        </div>
+    </ng-container>
+    <div class="container" id="main-container">
+        <!-- Start of field request authorization -->
+        <div class="modal fade" id="grantAdvanceRequestModal" tabindex="-1" role="dialog"
+            aria-labelledby="grantAdvanceRequestModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="grantAdvanceRequestModalLabel">Grant Advance Payment</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Are you sure you want to grant advance payment requested by {{ grantAdvance?.reqDir }}({{grantAdvance?.reqBy}})?
+                        </p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                Cancel
+                            </button>
+                            <button (click)="grantAdvanceRequest(grantAdvance!)" class="btn btn-primary"
+                                data-dismiss="modal">Grant</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of field request authorization -->
+          <!-- Beginning of advance request rejection Modal -->
+          <div
+          class="modal fade"
+          id="rejectAdvanceModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="rejectAdvanceModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="rejectAdvanceModalLabel">
+                  Reject Advance Payment Request
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form #rejectAdvanceForm="ngForm">
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <label for="reasonForRejection">Reason For Rejection</label>
+                      <textarea 
+                      ngModel="{{ advanceReject?.reasonForRejection }}"
+                      name="reasonForRejection"
+                      class="form-control"
+                      id="reasonForRejection"
+                      required>
+                      </textarea>
+                      <input
+                      type="hidden"
+                      ngModel="{{ advanceReject?.id }}"
+                      name="id"
+                      class="form-control"
+                      id="id"
+                      required
+                     />
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      id="reject-request-form"
+                      data-dismiss="modal"
+                      class="btn btn-secondary"
+                    >
+                      Close
+                    </button>
+                    <button
+                       [disabled]="rejectAdvanceForm.invalid"
+                      (click)="onRejectAdvanceRequest(rejectAdvanceForm.value)"
+                      data-dismiss="modal"
+                      class="btn btn-danger"
+                    >
+                      Reject
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+     <!-- End of advance request Rejection Modal -->
+    </div>
+
+</div>

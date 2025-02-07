@@ -1,0 +1,58 @@
+<div id="vehicle">
+    <div style="margin-left: 50%; margin-top: 100px">
+      <h2>Approved Off-Time Requests</h2>
+    </div>
+  
+    <div
+      class="col-lg-12 col-md-12 col-xl-12"
+      *ngIf="hasData"
+      style="margin-left: 210px"
+    >
+      <hr />
+      <table
+        class="table table-hover table-bordered table-condenced table-sm table-shadow"
+        id="datatableexample"
+      >
+        <thead>
+          <tr>
+            <td>ID</td>
+            <th>Requested By</th>
+            <th>Requested Date</th>
+            <th>Passenger(s)</th>
+            <th>Residence</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of data">
+            <td>{{ request.id }}</td>
+            <td>{{ request.reqBy }}</td>
+            <td>{{ request.date }}</td>
+            <td>{{ request.nameOfPassengers }}</td>
+            <td>{{ request.residentialArea }}</td>
+            <td>{{ request.reason }}</td>
+  
+            <td>
+                {{ request.status }}
+            </td>
+            <td>
+              <span>
+                <a
+                  *ngIf="request.status == 'Approved'"
+                  class="btn btn-outline-success btn-spacing"
+                  (click)="print(request.id)"
+                  >Detail</a
+                >
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-info" style="margin-left: 190px" *ngIf="noData">
+      {{ noDatamessage }}
+    </div>
+  </div>
+  

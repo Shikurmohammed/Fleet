@@ -1,0 +1,77 @@
+
+<div class="container" id="requestdetail">
+    <div class="card shadow">
+        <div class="card-header">
+           <button (click)="backView()" class="btn btn-primary btn-sm">Back</button>
+            <button  class="btn btn-success btn-sm"
+            style="float: right; margin-left: 10px;"><i class="fa fa-file-excel"></i></button>
+            <button  class="btn btn-danger btn-sm"
+            style="float: right;"><i class="fa fa-file-pdf"></i></button>
+            </div>
+        <div class="card-body">
+            <table class="table table-bordered table-condenced table striped table-sm table-shadow">
+               
+                <tbody>
+
+                    <tr *ngFor="let req of request">
+                        <ng-container *ngIf="role =='Requester' && req.id == id && req.requestedBy ==username ">
+                            <td><b>Transport Mode :</b> {{req.transportMode}}</td><br>
+                            <td><b>Reason Requested For :</b> {{req.requestedFor}}</td><br>
+                            <td><b>Destination Branch :</b> {{req.destBranch}}</td><br>
+                            <td><b>Requested By :</b> {{req.requestedBy}}</td><br>
+                            <td style="background-color: dodgerblue;"> <b>Status :</b>{{req.status}}</td><br>
+                        </ng-container>
+                    </tr>
+                    <tr *ngFor="let req of request">
+                        <ng-container *ngIf="role =='Requester' && req.id == id && req.requestedBy ==username ">
+                            <td><b>Passengers :</b> {{req.passengers}}</td><br>
+                            <td><b>Reason Requested For :</b> {{req.requestedFor}}</td><br>
+                            <td><b>Destination Branch :</b> {{req.destBranch}}</td><br>
+                            <td><b>Destination City :</b> {{req.destCity}}</td><br>
+                           
+                        </ng-container>
+                    </tr>
+                    <tr *ngFor="let req of request">
+                        <ng-container *ngIf="role =='Requester' && req.id == id && req.requestedBy ==username ">
+                            <td><b>Departure Date :</b> {{req.departureDate}}</td><br>
+                            <td><b>Reason Requested For :</b> {{req.returnDate}}</td><br>
+                            <td><b>Material Loaded(Kg) :</b> {{req.materialloaded}}</td><br>
+                            <td><b>Km :</b> {{req.destKM}}</td><br>
+                        </ng-container>
+                    </tr>
+                    <tr *ngFor="let req of request">
+                        <ng-container *ngIf="role =='Requester' && req.id == id && req.requestedBy ==username ">
+                            <td><b>Contingency :</b> {{req.contingency}}</td><br>
+                            <td><b>Total KM :</b> {{req.totalKM}}</td><br>
+                            <td><b>Directorate :</b> {{req.directorate}}</td><br>
+                            
+                        </ng-container>
+                    </tr>
+                    <tr><td colspan="4">Data from Approver</td></tr>
+                    <tr *ngFor="let req of approve">
+                        <ng-container *ngIf="role =='Requester' && req.requestedBy ==username && id == req.requesterID">
+                            <td><b>Approved By :</b> {{req.approvedBy}}</td><br>
+                            <td><b>Approved Date :</b> {{req.approvedDate}}</td><br>
+                            <td><b>Plate No :</b> {{req.plateNo}}</td><br>
+                            <td><b>Requester Id :</b> {{req.requesterID}}</td><br>
+                            
+                        </ng-container>
+                    </tr>
+                    <tr *ngFor="let req of approve">
+                        <ng-container *ngIf="role =='Requester' && req.requestedBy ==username && id == req.requesterID">
+                            <td><b>Driver Name :</b> {{req.driverName}}</td><br>
+                            <td><b>Total KM on Single Trip :</b> {{req.totalKMAllowedOnSingleTrip}}</td><br>
+                            <td><b>Total KM on Double Trip :</b> {{req.doubleTrip}}</td><br>
+                            <td><b>Estimated Fuel :</b> {{req.estimatedfuelRequired}}</td><br>
+                            
+                        </ng-container>
+                    </tr>
+                    
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

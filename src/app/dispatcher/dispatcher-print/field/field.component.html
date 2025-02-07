@@ -1,0 +1,69 @@
+<div class="container" id="viewrequest">
+    <div class="card card-shadow"
+       style="margin-left: 195px;margin-top: 100px;"
+   >
+      <div class="card-header">
+        <h4 class="text-center">My Field Requests</h4>
+        <!-- <button class="btn btn-primary btn-sm" style="float: right;"><i class="fa fa-plus"></i> Add Request</button> -->
+      </div>
+      <div class="card-body">
+        <div *ngIf="myfieldLenth !=0">
+          <table
+          class="table table-hover table-bordered table-condenced table-sm table-shadow"
+            id="myrequestdatatable">
+            <thead>
+              <tr>
+                 <th>ID</th>
+                <th>Date</th>
+                <th>Passengers</th>
+                <!-- <th>TransportMode</th> -->
+                <th>RequestedFor</th>
+                <th>DestBranch</th>
+                <th>Requested By</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+  
+              <tr *ngFor="let req of request">
+                <!-- <ng-container *ngIf="req.requestedBy ==username "> -->
+                  <td>{{req.id}}</td>
+                  <td>{{req.date|date}}</td>
+                  <td>{{req.passengers}}</td>
+                  <!-- <td>{{req.transportMode}}</td> -->
+                  <td>{{req.requestedFor}}</td>
+                  <td>{{req.destBranch}}</td>
+                  <td>{{req.requestedBy}}</td>
+                  <td class="text-center">
+                    {{req.status}}
+                  </td>
+                  <td>
+                    <span>
+                        <a
+                          *ngIf="req.status == 'Approved'"
+                          class="btn btn-outline-success btn-spacing"
+                          (click)="printDetail(req.id)"
+                          >Detail</a
+                        >
+                      </span>
+                  </td>
+                <!-- </ng-container> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="myfieldLenth==0">
+          <div class="bd-callout bd-callout-info">
+            <p class="text-center">No Field Request Found</p>
+          </div>
+  
+        </div>
+  
+      </div>
+  
+    </div>
+  
+  </div>
+  
+  

@@ -1,0 +1,91 @@
+
+<div class="container" id="printrequest">
+    <!-- <div class="card card-shadow"> -->
+  <div class="card">
+    <div class="card-header hiddenprint">
+      
+        <button  (click)="goBack()" class="btn btn-primary btn-sm col-md-2"
+          style="float: left; width: 50px;">Back</button>
+  
+      
+      <!-- <button (click)="exportExcel()" class="btn btn-success" style="float: right;"><i
+          class="fa fa-file-excel"></i></button> -->
+      <!-- <button (click)="exportPDF()" class="btn btn-danger" style="float: right; margin-right: 10px;"><i
+          class="fa fa-file-pdf"></i></button> -->
+          <button (click)="print()" class="btn btn-primary" style="float: right; margin-right: 10px;"><i
+            class="fa fa-print" aria-hidden="true"></i></button>
+    </div>
+  
+  </div>
+      <!-- class="brand-image img-circle elevation-4" style="width: 500px; height: 70px;  -->
+  
+      <!-- <div class="card-body" id="tabledatas"> -->
+      <div class="hiddendata">
+        <div class="brand-image img-circle">
+          <img src="./assets/img/AB1.png" class="img" alt="AB Logo"
+          />
+        </div>
+        <div>
+          <img src="./assets/img/bank.png" class="imgs" alt="AB Logo"/>
+          <div class="hrline"></div>
+          <div class="hrawash"></div>
+          <div class="hrtitle">Advance Payment Form</div>
+          <div class="hrdate"> <strong></strong> </div>
+          <div class="datetimes"><strong>Date: {{dateToday|date}}<br>Time:{{ time | date: 'hh:mm:ss a' }}</strong> </div>
+        </div>
+       
+      </div>
+        <table class="table table-sm" style="width: 100%;">
+            <tr>
+            <td><Strong>To: <span>Director, Finance and Treasury Directorate</span></Strong></td>
+            </tr>
+            <tr>
+                <td><Strong>From: <span>{{settlementdetails?.reqDir}}</span></Strong></td>
+            </tr>
+            <tr>
+                <td><Strong>Date: <span>{{settlementdetails?.crtDate|date}}</span></Strong></td>
+            </tr>
+            <tr>
+                <td><Strong>Subject: <span>Request for Advance Payment</span></Strong></td>
+            </tr>
+
+        </table>
+        <table class="table table-shadow" id="printApproval">
+          <tbody>
+            <tr>
+              <td>
+                <p>
+                    Please Advance The Sum Of Birr <strong>{{settlementdetails?.totalAmount|currency:'ETB'}} ( {{amount}} ) </strong>
+                    To <strong>{{settlementdetails?.staffName}}</strong> by crediting to his/her Account <strong>{{settlementdetails?.staffAcc}}</strong> for purchase/travel which shall be settled 
+                    with in <strong>{{noOfdays}}</strong> days up on completion of the purpose of the advance payment. If the advance is not settled with in the 
+                    specified date you are authorized to deduct from the specified employees account. 
+                </p>  
+              </td>
+            </tr>
+            <tr>
+                <td> Up on settlement of the advance, please claim the expense from <strong>{{settlementdetails?.claimBranch}} Branch</strong></td>
+            </tr>
+            <tr>
+                <td>Thank you,</td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <table class="table table-sm" style="width: 100%;">
+          <tr>
+            <td><Strong>Requested By:</Strong> <span>{{settlementdetails?.reqDir}}({{settlementdetails?.reqBy}})</span></td>
+          </tr>
+          <tr>
+            <td><Strong>Approved By:</Strong> <span>{{directorName}}({{settlementdetails?.approvedBy}})</span></td>
+          </tr>
+        </table>
+  
+  
+      <!-- </div> -->
+  
+  
+  
+    <!-- </div> -->
+  
+  </div>
+  

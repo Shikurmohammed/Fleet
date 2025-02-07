@@ -1,0 +1,239 @@
+<div class="container" id="modifyrequest">
+  <div class="card shadow">
+    <div class="card-header">
+      <h4 class="text-center">Approved Field Request</h4>
+    </div>
+    <div class="card-body">
+      <div *ngIf="approvedLength!=0">
+        <table class="table table-bordered table-condenced table striped table-hover table-sm table-shadow"
+          id="modifyfieldDispatcherdatatable"  datatable [dtOptions]="dtOptions">
+          <thead>
+            <tr>
+
+              <th>Plate Number</th>
+              <th>Driver Name</th>
+              <th>Requested By</th>
+              <th>GivenKM</th>
+              <th>No Of Days</th>
+              <!-- <th>Km Reading OnDeparture</th> -->
+              <th>Approved By</th>
+              <th>Date Departed</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let req of approved">
+              <td>{{req.plateNo}}</td>
+              <td>{{req.driverName}}</td>
+              <td>{{req.requestedBy}}</td>
+              <td>{{req.givenKM}}</td>
+              <td>{{req.noOfDaysRequired}}</td>
+              <!-- <td>{{req.kmReadingOnDeparture}}</td> -->
+              <td>{{req.approvedBy}}</td>
+              <td>{{req.dispdate}}</td>
+
+              <td>
+                <button (click)="onOpenModal(req,'updaterequest')" class="btn btn-sm btn-outline-primary btn-raised" style="margin-left: 10px;">
+                  Modify</button>
+                <button (click)="onOpenModal(req,'viewrequest')" class="btn btn-sm btn-outline-success btn-raised" style="margin-left: 10px;">
+                  Detail</button>
+                  <button (click)="printDetail(req.requesterID)" class="btn  btn-outline-info btn-raised" style="margin-left: 10px;">
+                    Print</button>
+              </td>
+
+            </tr>
+
+          </tbody>
+        </table>
+
+      </div>
+      <div *ngIf="approvedLength==0">
+        <div class="bd-callout bd-callout-info">
+          <p class="text-center"><strong>No Approved Field Request Found</strong></p>
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="container" id="modifyfieldrequest">
+  <!-- ==================================UPDATE USER REQUEST=================================== -->
+  <div class="modal fade" id="updateapprovedrequest" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModelLabel" style="margin-left: 150px;">Modify Approved Request</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: red;">&times;</span>
+          </button>
+        </div>
+
+        <form #modifyForm="ngForm">
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label for="name">Km Reading On Departure </label>
+                <input type="text" [ngModel]="updaterequest?.kmReadingOnDeparture" name="kmReadingOnDeparture" class="form-control" readonly/>
+              </div>
+              <div class="form-group col-md-12">
+                <label for="name">KM Reading On Return</label>
+                <input type="number" [(ngModel)]="modifyrequest.kmReadingOnReturn" name="kmReadingOnReturn"
+                class="form-control" autocomplete="off" required
+                  #kmReadingOnReturn="ngModel" #kmreturn (keyup)="validateKmReturn(kmreturn.value)"
+                  [ngClass]="{ 'is-invalid': (modifyForm.submitted && kmReadingOnReturn.invalid) || isvalidkm }"
+                  [class.is-invalid]="(kmReadingOnReturn.invalid && kmReadingOnReturn.touched) || isvalidkm"
+                  #onreturn (keyup)="getKmOnReturn(onreturn.value)">
+                  <small class="text-danger">{{errorMSg}}</small>
+                <div *ngIf="kmReadingOnReturn.errors && (kmReadingOnReturn.invalid && kmReadingOnReturn.touched)">
+                  <small class="text-danger" *ngIf="kmReadingOnReturn.errors.required">km Reading on Return required</small>
+                  <small class="invalid-feedback" *ngIf="!(kmReadingOnReturn.errors.isvalidkm)">return km must be greater than departure km</small>
+                </div>
+              </div>
+
+            </div>
+            <div class="form-row" hidden>
+              <div class="form-group col-md-4">
+                <label for="name">Requester ID </label>
+                <input type="text" [ngModel]="updaterequest?.requesterID" name="requesterID" class="form-control" readonly/>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="name">Driver Name </label>
+                <input type="text" [ngModel]="updaterequest?.driverName" name="driverName" class="form-control" readonly/>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="name">KM Difference</label>
+                <input type="text" [ngModel]="((1*kmOnReturn)-(1*kmOnDepature))" name="kmDifference" class="form-control" readonly/>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="name">Plate No</label>
+                <input type="text" [ngModel]="updaterequest?.plateNo" name="plateNo" class="form-control" readonly/>
+              </div>
+            </div>
+
+
+
+
+          </div>
+          <div class="modal-footer">
+            <button [disabled]="modifyForm.form.invalid || isvalidkm" data-dismiss="modal" type="submit" (click)="addModify(modifyForm.value)" class="btn btn-primary">Update</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+    <!-- =======================================VIEW USER REQUEST INFORMATION MODAL======================= -->
+    <div class="modal fade in" id="viewapprovedtModal" tabindex="-1" role="dialog" aria-labelledby="updatedriverModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <strong>
+            <h5 class="modal-title text-center" id="updateModal" style="margin-left: 250px;">
+              View Approved Detail
+            </h5>
+          </strong>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: red;">&times;</span>
+          </button>
+        </div>
+
+          <div class="modal-body">
+
+            <div class="row">
+              <div class="col-md-6">
+                <p>PlateNo  :  <strong><span>{{ viewrequest?.plateNo }}</span></strong> </p>
+              </div>
+              <div class="col-md-6">
+                <p>Distance/Littre  : <strong><span>{{ viewrequest?.distancePerLitter }} km</span></strong> </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p>Requested By  :  <strong><span>{{ viewrequest?.requestedBy }}</span></strong> </p>
+              </div>
+              <div class="col-md-6">
+                <p>DriverName  : <strong><span>{{ viewrequest?.driverName }}</span></strong> </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p>Given KM  :  <strong><span>{{ viewrequest?.givenKM }} km</span></strong> </p>
+              </div>
+              <div class="col-md-6">
+                <p>Salary  : <strong><span>{{ viewrequest?.salary }} ETB</span></strong> </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p>Total Km On Single Trip  :  <strong><span>{{ viewrequest?.totalKMAllowedOnSingleTrip }} km</span></strong> </p>
+              </div>
+              <div class="col-md-6">
+                <p>Double Trip  : <strong><span>{{ viewrequest?.doubleTrip }} km</span></strong> </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p>Estimated Fuel :  <strong><span>{{ viewrequest?.estimatedfuelRequired }} L</span></strong> </p>
+              </div>
+              <div class="col-md-6">
+                <p>Littres In Birr  : <strong><span>{{ viewrequest?.littresInBirr }} L</span></strong> </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p>Fuel In Birr  : <strong><span>{{ viewrequest?.fuelInBirr }} ETB</span></strong> </p>
+              </div>
+              <div class="col-md-6">
+                <p>No Of Days :  <strong><span>{{ viewrequest?.noOfDaysRequired }} day(s)</span></strong> </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p>Perdiem/Day  : <strong><span>{{ viewrequest?.perdiemPerDay }} ETB</span></strong> </p>
+              </div>
+              <div class="col-md-6">
+                <p>Total Perdiem And Accomodation  : <strong><span>{{ viewrequest?.totalPerdiemAndAccomodation }} ETB</span></strong> </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p>Grand Total :  <strong><span>{{ viewrequest?.grandTotal }} ETB</span></strong> </p>
+              </div>
+              <div class="col-md-6">
+                <p>Cash Advanced To  : <strong><span>{{ viewrequest?.cashAdvancedTo }}</span></strong> </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p>Date Departed :  <strong><span>{{ viewrequest?.dispdate|date }}</span></strong> </p>
+              </div>
+              <div class="col-md-6">
+                <p>Km Reading On Departure : <strong><span>{{ viewrequest?.kmReadingOnDeparture }} km</span></strong> </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p>Approved By :  <strong><span>{{ viewrequest?.approvedBy }}</span></strong> </p>
+              </div>
+              <div class="col-md-6">
+                <p>Approved Date: <strong><span>{{ viewrequest?.approvedDate|date }}</span></strong> </p>
+              </div>
+            </div>
+
+
+          </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,156 @@
+<div class="container" id="maintenancerequest">
+  <div class="card card-shadow">
+    <div class="card-header">
+      <h5 class="text-center">Custodian Vehicle Maintenence Request</h5>
+      <!-- <button class="btn btn-primary btn-sm" style="float: right;"><i class="fa fa-plus"></i> Add Request</button> -->
+    </div>
+    <div class="card-body">
+      <div *ngIf="requestlength !=0">
+        <table class="table table-bordered table-condenced table striped table-sm table-hover table-shadow" id="maintrequestdatatable">
+          <thead>
+            <tr>
+
+              <th>Plate No</th>
+              <th>Directorate</th>
+              <th>Requested By</th>
+              <th>Autorized By</th>
+              <th>Repair Requested</th>
+              <th>Current Milage</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let req of maintenance">
+                <td>{{req.plateNo}}</td>
+                <td>{{req.reqDirectorate}}</td>
+                <td>{{req.requestedBy}}</td>
+                <td>{{req.authorizedBy}}</td>
+                <td>{{req.workRepairRequested}}</td>
+                <td>{{req.currentMilage}}</td>
+                <td>
+                  <div class="text-center" style="background-color: deepskyblue;">
+                    {{req.status}}
+                  </div>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary" (click)="openModal(req,'garage')">Assign Garage</button>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="requestlength==0">
+        <div class="bd-callout bd-callout-info">
+          <p class="text-center">No Authorized Vehicle Maintenance Request Found</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- *********************ADD GARAGE MODAL***************************************** -->
+
+<div class="container" id="mainmaintenancerequest">
+  <div class="modal fade" id="maintenancerequestModal" tabindex="-1" role="dialog" aria-labelledby="maintenancerequestModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="" style="margin-left: 150px;">Assign Garage</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: red;">&times;</span>
+          </button>
+        </div>
+       <form 
+       [compareMilege] = "['kmInsp', 'kmTechnical']"
+       #garageForm="ngForm">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group col-md-4" hidden>
+              <label for="fullname">ID</label>
+              <input type="text" [ngModel]="maintenancerequest?.id" name="id" class="form-control" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4" hidden>
+              <label for="fullname">Plate No</label>
+              <input type="text" [ngModel]="maintenancerequest?.plateNo" name="plateNo" class="form-control" />
+            </div>
+            <input type="text" [ngModel]="maintenancerequest?.kmInsp" ngModel name="kmInsp" #kmInsp="ngModel"  class="form-control" hidden/>
+            <div class="form-group col-md-4">
+              <label for="fullname">Technical</label>
+              <input type="text" [ngModel]="technician" name="technicalBy" class="form-control" readonly/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="fullname">Date</label>
+              <input type="date" [ngModel]="dateToday" name="technicalRespondDate" class="form-control" readonly />
+            </div>
+            <div class="form-group col-md-4">
+              <label for="Garage">Garage</label>
+              <ng-select appearance="outline" class="custom" [(ngModel)]="mainten.garage" name="garage"
+
+               required #garag="ngModel"
+              [ngClass]="{ 'is-invalid': garageForm.submitted && garag.invalid }"
+              [class.is-invalid]="garag.invalid && garag.touched">
+              <ng-option *ngFor="let garage of garages" [value]="garage.id">
+                {{garage.name}}
+              </ng-option>
+            </ng-select>
+            <div *ngIf="garag.errors && (garag.invalid && garag.touched)">
+              <small class="text-danger" *ngIf="garag.errors.required">Garage is required</small>
+            </div>
+
+            </div>
+
+          </div> 
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="fullname">Current Km on Tech</label>
+              <input type="text" ngModel
+              [ngModel]="maintenancerequest?.kmInsp"
+               name="kmTechnical" 
+               pattern = "^\d+\.?\d*$"
+               #kmTechnical = "ngModel"
+               [class.is-invalid]="(kmTechnical.invalid && kmTechnical.touched )|| (kmTechnical.errors)"
+               class="form-control" required=""/>
+               <div *ngIf="kmTechnical.errors && (kmTechnical.invalid)">
+                <small class="text-danger" *ngIf="kmTechnical.errors.required">Km on tech is required</small>
+                <small class="text-danger" *ngIf="kmTechnical.errors.pattern">Incorrect km on tech format</small>
+                <small class="text-danger" *ngIf="kmTechnical.errors['milege']">Km on Tech can not be less than {{maintenancerequest.kmInsp}}</small>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="fuelTechnical">Current Fuel on Tech</label>
+              <input type="text" 
+              [ngModel]="maintenancerequest?.fuelGaugeInAmount"
+              id="fuelTechnical" ngModel 
+              #fuelTechnical = "ngModel"
+              autocomplete="off"
+              pattern = "^\d+\.?\d*$"
+              [class.is-invalid]="(fuelTechnical.invalid && fuelTechnical.touched )|| (fuelTechnical.touched&&fuelTechnical.errors)"
+                name="fuelTechnical" class="form-control" required=""/>
+                <div *ngIf="fuelTechnical.errors && (fuelTechnical.invalid && fuelTechnical.touched)">
+                  <small class="text-danger" *ngIf="fuelTechnical.errors.required">Fuel amount is required</small>
+                  <small class="text-danger" *ngIf="fuelTechnical.errors.pattern">Incorrect fuel amount format</small>
+                  <!-- <small class="text-danger" *ngIf="fuelTechnical.errors['milege']">Fuel amount can not be less than {{maintenancerequest.kmInsp}}</small> -->
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary"
+            data-dismiss="modal" [disabled]="garageForm.invalid" (click)="assignGarage(garageForm.value)">Assign</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+        </div>
+       </form>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,93 @@
+<div class="container" id="managegarage">
+  <div class="card shadow">
+    <div class="card-header">
+      <h5 class="text-center">Registered Garage Detail</h5>
+    </div>
+    <div *ngIf="length !==0">
+      <div class="card-body">
+        <table class="table table-condenced table-sm table-shadow" id="garageTable">
+          <thead>
+            <tr>
+              <th>Garage Name</th>
+              <th>Garage Location</th>
+              <th>Garage Phone</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let req of garage">
+              <td>{{req.name}}</td>
+              <td>{{req.location}}</td>
+              <td>{{req.phone}}</td>
+              <td>
+                <button (click)="editGarage(req.id)" class="btn btn-outline-info" style="float: left;">Update</button>
+                <button (click)="openModal(req,'dispose')" data-dismiss="modal" class="btn btn-outline-danger" style="float: left;">Dispose</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div *ngIf="length==0">
+      <div class="callout callout-info text-center">
+        <p>No garage registered available</p>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- ************************************Dispose Modal************************************ -->
+  <div class="container" id="main-container">
+    <div class="modal fade" id="disposeGarageModal" tabindex="-1" role="dialog" aria-labelledby="disposeGarageModal"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Dispose Garage</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Are you sure you want to dispose garage <b>{{disposegarage?.name}}</b> ?
+            </p>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button (click)="disposeGarage(disposegarage?.id)" class="btn btn-primary"
+                data-dismiss="modal">Dispose</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <!-- <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> -->
+        <div class="modal-body">
+          <p>Modal body text goes here.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>

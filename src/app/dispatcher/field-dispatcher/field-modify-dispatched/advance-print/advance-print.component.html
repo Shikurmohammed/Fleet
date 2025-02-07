@@ -1,0 +1,122 @@
+
+<div class="container" id="printrequest">
+    <!-- <div class="card card-shadow"> -->
+  <div class="card">
+    <div class="card-header hiddenprint">
+      
+        <button  (click)="goBack()" class="btn btn-primary btn-sm col-md-2"
+          style="float: left; width: 50px;">Back</button>
+  
+      
+      <!-- <button (click)="exportExcel()" class="btn btn-success" style="float: right;"><i
+          class="fa fa-file-excel"></i></button> -->
+      <!-- <button (click)="exportPDF()" class="btn btn-danger" style="float: right; margin-right: 10px;"><i
+          class="fa fa-file-pdf"></i></button> -->
+          <button (click)="print()" class="btn btn-primary" style="float: right; margin-right: 10px;"><i
+            class="fa fa-print" aria-hidden="true"></i></button>
+    </div>
+  
+  </div>
+      <!-- class="brand-image img-circle elevation-4" style="width: 500px; height: 70px;  -->
+  
+      <!-- <div class="card-body" id="tabledatas"> -->
+      <div class="hiddendata">
+        <div class="brand-image img-circle">
+          <img src="./assets/img/AB1.png" class="img" alt="AB Logo"
+          />
+        </div>
+        <div>
+          <img src="./assets/img/bank.png" class="imgs" alt="AB Logo"/>
+          <div class="hrline"></div>
+          <div class="hrawash"></div>
+          <div class="hrtitle">Advance Payment Form</div>
+          <div class="hrdate"> <strong></strong> </div>
+          <div class="datetimes"><strong>Date: {{dateToday|date}}<br>Time:{{ time | date: 'hh:mm:ss a' }}</strong> </div>
+        </div>
+  
+      </div>
+        <table class="table table-shadow table-bordered" id="printApproval">
+          <tbody>
+            <tr>
+              <td>
+                <div><span style="width: 50%;">Plate No  :</span> <span><strong>{{plateNo}}</strong></span></div>
+               </td>
+               <td>
+                <div style="margin-left: 90px;">Distance travelled per littre  : <span><strong>{{distPerLittre}}</strong></span></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div><span style="width: 50%;">Driver Name  :</span> <span><strong>{{driverName}}</strong></span></div>
+               </td>
+               <td>
+                <div style="margin-left: 90px;">Salary  : <span><strong>{{salary | currency:'ETB'}}</strong></span></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div><span style="width: 50%;">Total km Allowed (double)  :</span> <span><strong>{{doubleKm}} km</strong></span></div>
+               </td>
+               <td>
+                <div style="margin-left: 90px;">Estimated Fuel Required  : <span><strong>{{estimatedfuelRequired}} L</strong></span></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div><span style="width: 50%;">Littres In Birr  :</span> <span><strong>{{littresInBirr}} L</strong></span></div>
+               </td>
+               <td>
+                <div style="margin-left: 90px;">No Of Days Requested  : <span><strong>{{noOfDaysRequested}}</strong></span></div>
+              </td>
+            </tr>
+  
+            <tr>
+              <td>Perdiem: <span><strong>{{perdiem | currency:'ETB'}}</strong></span></td>
+              <td>
+                <div style="margin-left: 90px;">Grand Total In Birr: <span><strong>{{grandTotal|currency:'ETB'}}</strong></span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div>Cash Advance: <span><strong>{{cashAdvance | currency:'ETB'}}</strong></span>
+                </div>
+              </td>
+  
+            </tr>
+  
+          </tbody>
+        </table>
+        <div class="approvalform">
+  
+        <table class="table table-sm" style="width: 100%;">
+          <tr>
+            <td> Cash Total (in Birr): <Strong>{{cashTotal|currency:'ETB'}}</Strong></td>
+            <td style="margin-left: 100px;">Sign: <span><Strong><sub>_______________</sub></Strong></span></td>
+            <td style="margin-left: 100px;">Date: <span><Strong><sub>_______________</sub></Strong></span></td>
+        </tr>
+         
+          <tr>
+            <td>Km reading to respective vehicle on departure: <span><Strong>{{departureKm}} km</Strong></span></td>
+            <td style="margin-left: -200px;"><span><strong>Estimated Return Km: {{returnKm}} km</strong></span></td>
+            <td>Estimated Difference: <span><Strong>{{kmDifference}} km</Strong></span></td>
+          </tr>
+
+          <tr>
+            <td> Authorized By: <Strong><sub>_____________________________</sub></Strong></td>
+            <td style="margin-left: 100px;">Sign: <span><Strong><sub>______________</sub></Strong></span></td>
+            <td style="margin-left: 100px;">Date: <span><Strong><sub>______________________</sub></Strong></span></td>
+        </tr>
+  
+        </table>
+        </div>
+  
+  
+      <!-- </div> -->
+  
+  
+  
+    <!-- </div> -->
+  
+  </div>
+  

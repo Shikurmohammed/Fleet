@@ -1,0 +1,252 @@
+
+<div id="vehicle" class="container">
+  <div class="card card-sm shadow">
+    <div class="card-header">
+      <h5>Field Vehicle Requisition Form</h5>
+    </div>
+
+    <form #addForm="ngForm" (ngSubmit)="fieldVehicleRequest(addForm)">
+      <div class="card-body">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="directorate">Directorate/Branch</label>
+            <input type="text" [ngModel]="director" name="directorate" class="form-control" readonly />
+          </div>
+          <div class="form-group col-md-4">
+            <label for="date">Date</label>
+            <input type="date" ngModel name="date" [ngModel]="dateToday" class="form-control" readonly />
+          </div>
+          <div class="form-group col-md-4">
+            <label for="requestedby">Requested By:</label>
+            <input type="text" [ngModel]="username" name="requestedBy" class="form-control" readonly />
+          </div>
+
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="name">Passengers Name</label>
+            <!-- ^[a-zA-Z]{3,}(?: [a-zA-Z]+){0,2}$ -->
+            <input type="text" [(ngModel)]="request.passengers" name="passengers" class="form-control" id="name"
+              autocomplete="off" placeholder="passenger name..." required
+              #passengers="ngModel" [ngClass]="{ 'is-invalid': addForm.submitted && passengers.invalid }"
+              [class.is-invalid]="passengers.invalid && passengers.touched" />
+            <div *ngIf="passengers.errors && (passengers.invalid && passengers.touched)">
+              <small class="text-danger" *ngIf="passengers.errors.required">passengers are required</small>
+              <small class="text-danger" *ngIf="passengers.errors.pattern">incorrect passengers name</small>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label>Vehicle Requested For</label>
+
+            <ng-select appearance="outline" class="custom" [(ngModel)]="request.requestedFor" name="requestedFor"
+              id="vehiclerequest" required #requestedFor="ngModel"
+              [ngClass]="{ 'is-invalid': addForm.submitted && requestedFor.invalid }"
+              [class.is-invalid]="requestedFor.invalid && requestedFor.touched">
+              <ng-option value="Transportaion">Transportaion</ng-option>
+              <ng-option value="Loading">Loading</ng-option>
+              <ng-option value="Crane">Crane</ng-option>
+              <ng-option value="Both">Both Load & Transport</ng-option>
+            </ng-select>
+
+            <div *ngIf="requestedFor.errors && (requestedFor.invalid && requestedFor.touched)">
+              <small class="text-danger" *ngIf="requestedFor.errors.required">requestedFor is required</small>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="purposeoftravel">Purpose of Travel</label>
+            <input type="text" [(ngModel)]="request.purpose" name="purpose" class="form-control" id="purposeoftravel"
+              placeholder="reason for travel" autocomplete="off" required #purpose="ngModel"
+              [ngClass]="{ 'is-invalid': addForm.submitted && purpose.invalid }"
+              [class.is-invalid]="purpose.invalid && purpose.touched" />
+            <div *ngIf="purpose.errors && (purpose.invalid && purpose.touched)">
+              <small class="text-danger" *ngIf="purpose.errors.required">purpose is required</small>
+              <!-- <small class="text-danger" *ngIf="passengers.errors.pattern">incorrect passengers name</small> -->
+            </div>
+          </div>
+
+
+        </div>
+
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="departuredate">Departure Date</label>
+            <input type="date" [(ngModel)]="request.departureDate" name="departureDate" class="form-control"
+              id="departuredate" [min]="dateToday" required
+              #dFrom (change)="getDateFrom($event)"
+              #departureDate="ngModel" [ngClass]="{ 'is-invalid': addForm.submitted && departureDate.invalid }"
+              [class.is-invalid]="departureDate.invalid && departureDate.touched" />
+            <!-- <small>{{lastdepartureDate}}</small> -->
+            <div *ngIf="departureDate.errors && (departureDate.invalid && departureDate.touched)">
+              <small class="text-danger" *ngIf="departureDate.errors.required">departureDate is required</small>
+              <!-- <small class="text-danger" *ngIf="passengers.errors.pattern">incorrect passengers name</small> -->
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="returndate">Return Date</label>
+            <input type="date" [(ngModel)]="request.returnDate" name="returnDate" class="form-control" id="returndate"
+              [min]="departDate" required
+              #dTo (change)="getDateTo($event)"
+              #returnDate="ngModel"
+              [ngClass]="{ 'is-invalid': addForm.submitted && returnDate.invalid }"
+              [class.is-invalid]="returnDate.invalid && returnDate.touched" />
+            <!-- <small>{{lastreturnDate}}</small> -->
+            <div *ngIf="returnDate.errors && (returnDate.invalid && returnDate.touched)">
+              <small class="text-danger" *ngIf="returnDate.errors.required">returnDate is required</small>
+              <!-- <small class="text-danger" *ngIf="passengers.errors.pattern">incorrect passengers name</small> -->
+            </div>
+          </div>
+          <!-- value="{{(lastreturnDate-lastdepartureDate)/(1000*3600*24)}}" -->
+          <div class="form-group col-md-4">
+            <label for="numberofdays">Number of Days Requested</label>
+            <input type="number"
+
+            [ngModel]="noOfDays"
+            [(ngModel)]="request.noOfDaysRequested"
+             name="noOfDaysRequested" class="form-control"
+              required readonly />
+
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="materialloaded">Material To Be Loaded In (Kg)</label>
+            <input type="number" [(ngModel)]="request.materialloaded" name="materialloaded" class="form-control"
+              id="materialloaded" placeholder="0" autocomplete="off" required #materialloaded="ngModel"
+              [ngClass]="{ 'is-invalid': addForm.submitted && materialloaded.invalid }"
+              [class.is-invalid]="materialloaded.invalid && materialloaded.touched" />
+            <div *ngIf="materialloaded.errors && (materialloaded.invalid && materialloaded.touched)">
+              <small class="text-danger" *ngIf="materialloaded.errors.required">materialloaded is required</small>
+              <!-- <small class="text-danger" *ngIf="passengers.errors.pattern">incorrect passengers name</small> -->
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="branch">Destination: Branch</label>
+            <input type="text" [(ngModel)]="request.destBranch" name="destBranch" class="form-control" id="branch"
+              placeholder="branch" autocomplete="off" required #destBranch="ngModel"
+              [ngClass]="{ 'is-invalid': addForm.submitted && destBranch.invalid }"
+              [class.is-invalid]="destBranch.invalid && destBranch.touched" />
+            <div *ngIf="destBranch.errors && (destBranch.invalid && destBranch.touched)">
+              <small class="text-danger" *ngIf="destBranch.errors.required">destination Branch is required</small>
+              <!-- <small class="text-danger" *ngIf="passengers.errors.pattern">incorrect passengers name</small> -->
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="city">City</label>
+            <input type="text" [(ngModel)]="request.destCity" name="destCity" class="form-control" id="city"
+              placeholder="city here" autocomplete="off" required #destCity="ngModel"
+              [ngClass]="{ 'is-invalid': addForm.submitted && destCity.invalid }"
+              [class.is-invalid]="destCity.invalid && destCity.touched" />
+            <div *ngIf="destCity.errors && (destCity.invalid && destCity.touched)">
+              <small class="text-danger" *ngIf="destCity.errors.required">destination City is required</small>
+              <!-- <small class="text-danger" *ngIf="passengers.errors.pattern">incorrect passengers name</small> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="km">KM</label>
+            <input type="text" [(ngModel)]="request.destKM" name="destKM" class="form-control" placeholder="0"
+              autocomplete="off" required pattern="^[0-9\.]*$" #initialKM (keyup)="getKM(initialKM.value)"
+              #destKM="ngModel" [ngClass]="{ 'is-invalid': addForm.submitted && destKM.invalid }"
+              [class.is-invalid]="destKM.invalid && destKM.touched" />
+
+            <div *ngIf="destKM.errors && (destKM.invalid && destKM.touched)">
+              <small class="text-danger" *ngIf="destKM.errors.required">destination KM is required</small>
+              <small class="text-danger" *ngIf="destKM.errors.pattern"> enter only number</small>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="contingency">Contingency</label>
+            <input type="text" [(ngModel)]="request.contingency" name="contingency" class="form-control"
+              id="contingency" placeholder="0" autocomplete="off" required pattern="^[0-9\.]*$" #contin
+              (keyup)="getContingency(contin.value)" #contingency="ngModel"
+              [ngClass]="{ 'is-invalid': addForm.submitted && contingency.invalid }"
+              [class.is-invalid]="contingency.invalid && contingency.touched" />
+            <div *ngIf="contingency.errors && (contingency.invalid && contingency.touched)">
+              <small class="text-danger" *ngIf="contingency.errors.required">contingency is required</small>
+              <small class="text-danger" *ngIf="contingency.errors.pattern">enter only number</small>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="totalkm">Total KM</label>
+            <input type="number" [ngModel]="totalKM" name="totalKM" class="form-control" placeholder="0"
+              autocomplete="off" required readonly />
+            <!-- #totalKM="ngModel"
+              value="{{(1*km)+(1*contings)}}"
+            [ngClass]="{ 'is-invalid': addForm.submitted && totalKM.invalid }"
+            [class.is-invalid] = "totalKM.invalid && totalKM.touched"
+             />
+             <div *ngIf="totalKM.errors && (totalKM.invalid && totalKM.touched)">
+              <small class="text-danger" *ngIf="totalKM.errors.required">totalKM is required</small>
+            </div> -->
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="km">Claim Expense From</label>
+            <input type="text" [(ngModel)]="request.expence" name="expence" class="form-control" id="km"
+              placeholder="claim expense from.." autocomplete="off" required #expence="ngModel"
+              [ngClass]="{ 'is-invalid': addForm.submitted && expence.invalid }"
+              [class.is-invalid]="expence.invalid && expence.touched" />
+            <div *ngIf="expence.errors && (expence.invalid && expence.touched)">
+              <small class="text-danger" *ngIf="expence.errors.required"> claim expence from is required</small>
+              <!-- <small class="text-danger" *ngIf="passengers.errors.pattern">incorrect passengers name</small> -->
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="transportmode">Mode Of Transport</label>
+            <!-- <select [(ngModel)]="request.transportMode" name="transportMode" id="transportmode" class="form-control"
+              required #transportMode="ngModel" [ngClass]="{ 'is-invalid': addForm.submitted && transportMode.invalid }"
+              [class.is-invalid]="transportMode.invalid && transportMode.touched">
+              <option value="Vehicle">Vehicle</option>
+              <option value="Airplane">Airplane</option>
+
+            </select> -->
+            <ng-select appearance="outline" class="custom" [(ngModel)]="request.transportMode" name="transportMode"
+              id="transportMode" required #requestedFor="ngModel"
+              required #transportMode="ngModel" [ngClass]="{ 'is-invalid': addForm.submitted && transportMode.invalid }"
+              [class.is-invalid]="transportMode.invalid && transportMode.touched">
+              <ng-option value="Vehicle">Vehicle</ng-option>
+              <ng-option value="Airplane">Airplane</ng-option>
+            </ng-select>
+
+            <div *ngIf="transportMode.errors && (transportMode.invalid && transportMode.touched)">
+              <small class="text-danger" *ngIf="transportMode.errors.required">transportMode is required</small>
+              <!-- <small class="text-danger" *ngIf="passengers.errors.pattern">incorrect passengers name</small> -->
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="passTelephone">Passenger's Telephone No</label>
+            <input type="text" [(ngModel)]="request.passTelephone" 
+            pattern="^[0-9]{10}$"
+            name="passTelephone" placeholder="enter passenger's tel. No."
+              class="form-control" #passTelephone="ngModel"
+              [ngClass]="{'is-invalid':addForm.submitted && passTelephone.invalid}"
+              [class.is-invalid]="passTelephone.invalid && passTelephone.touched"  required />
+            <div *ngIf="passTelephone.errors && (passTelephone.invalid && passTelephone.touched)">
+              <small class="text-danger" *ngIf="passTelephone.errors.required">Passenger's tel. No is required</small>
+              <small class="text-danger" *ngIf="passTelephone.errors.pattern">Enter valid telephone No.!</small>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="card-footer">
+          <button [disabled]="addForm.form.invalid" type="submit" class="btn btn-primary btn-sm col-md-2"
+            style="float: right">{{actionbtn}}</button>
+          <!-- <button type="reset" class="btn btn-danger btn-sm col-md-5" style="margin-left: 10px;">Clear</button> -->
+        </div>
+
+      </div>
+    </form>
+
+
+
+  </div>
+
+
+</div>

@@ -1,0 +1,127 @@
+
+<div class="container" id="printrequest">
+    <!-- <div class="card card-shadow"> -->
+  <div class="card">
+    <div class="card-header hiddenprint">
+      
+        <button  (click)="goBack()" class="btn btn-primary btn-sm col-md-2"
+          style="float: left; width: 50px;">Back</button>
+  
+      
+      <!-- <button (click)="exportExcel()" class="btn btn-success" style="float: right;"><i
+          class="fa fa-file-excel"></i></button> -->
+      <!-- <button (click)="exportPDF()" class="btn btn-danger" style="float: right; margin-right: 10px;"><i
+          class="fa fa-file-pdf"></i></button> -->
+          <button (click)="print()" class="btn btn-primary" style="float: right; margin-right: 10px;"><i
+            class="fa fa-print" aria-hidden="true"></i></button>
+    </div>
+  
+  </div>
+      <!-- class="brand-image img-circle elevation-4" style="width: 500px; height: 70px;  -->
+  
+      <!-- <div class="card-body" id="tabledatas"> -->
+      <div class="hiddendata">
+        <div class="brand-image img-circle">
+          <img src="./assets/img/AB1.png" class="img" alt="AB Logo"
+          />
+        </div>
+        <div>
+          <img src="./assets/img/bank.png" class="imgs" alt="AB Logo"/>
+          <div class="hrline"></div>
+          <div class="hrawash"></div>
+          <div class="hrtitle">Maintenance Request</div>
+          <div class="hrdate"> <strong></strong> </div>
+          <div class="datetimes"><strong>Date: {{dateToday|date}}<br>Time:{{ time | date: 'hh:mm:ss a' }}</strong> </div>
+        </div>
+  
+      </div>
+        <table class="table table-shadow table-bordered" id="printApproval">
+          <tbody>
+            <tr>
+              <td>
+                <div><span style="width: 50%;">Department/Branch  :</span> <span><strong>{{maintenanceReq.reqDirectorate}}</strong></span></div>
+               </td>
+               <td>
+                <div style="margin-left: 70px;">Garage Name  : <span><strong>{{maintenanceReq.garageName}}</strong></span></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div><span style="width: 50%;">Plate No  :</span> <span><strong>{{maintenanceReq.plateNo}}</strong></span></div>
+               </td>
+               <td>
+                <div style="margin-left: 70px;">Current Km(on technical)  : <span><strong>{{maintenanceReq.kmTechnical}} km</strong></span></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div><span style="width: 50%;">Chassis No  :</span> <span><strong>{{maintenanceReq.chassisNo}}</strong></span></div>
+               </td>
+               <td>
+                <div style="margin-left: 70px;">Prev. Service Km : <span><strong>{{maintenanceReq.previousServiceMilage}} km</strong></span></div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div><span style="width: 50%;">Engine No  :</span> <span><strong>{{maintenanceReq.engineNo}}</strong></span></div>
+               </td>
+               <td>
+                <div style="margin-left: 70px;">Km Difference  : <span><strong>{{kmDifference}} km</strong></span></div>
+              </td>
+            </tr>
+  
+            <tr>
+              <td>Fuel Amount: <span><strong>{{maintenanceReq.fuelGaugeInAmount}}</strong></span></td>
+              <td>
+                <div style="margin-left: 70px;">Current Fuel On Tech.: <span><strong>{{maintenanceReq.fuelTechnical}}</strong></span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <U><strong>Part To be Maintained</strong></U>
+                    </div>
+                    <div>
+                        {{maintenanceReq.maintenanceType}}
+                    </div>
+                    <div>
+                        {{maintenanceReq.workRepairRequested}}
+                    </div>
+                </td>
+                <td>
+                    <div style="margin-left: 70px;">
+                        <U><strong>Is Insured</strong></U>
+                    </div>
+                    <div style="margin-left: 70px;" *ngIf="maintenanceReq.insured===1">
+                        Yes
+                    </div>
+                    <div style="margin-left: 70px;" *ngIf="maintenanceReq.insured===0">
+                        No
+                    </div>
+                </td>
+            </tr>
+  
+          </tbody>
+        </table>
+        <div class="approvalform">
+  
+        <table class="table table-sm sign">
+          <tr>
+            <td style="padding-top: 20px;"> <u><strong>Requested By:</strong></u> <Strong>{{maintenanceReq.requestedBy}}</Strong></td>
+            <td style="margin-left: 100px;padding-top: 20px;"><u><strong>Requested Date:</strong> </u><span><Strong>{{maintenanceReq.requestedDate|date}}</Strong></span></td>
+            <td style="margin-left: 100px;padding-top: 20px;"><u><strong>Approved By:</strong></u> <span><Strong><sub>_______________</sub></Strong></span></td>
+            <td style="margin-left: 100px;padding-top: 20px;"><u><strong>Signature:</strong></u><span><Strong><sub>_______________</sub></Strong></span></td>
+         </tr>
+        </table>
+        </div>
+  
+  
+      <!-- </div> -->
+  
+  
+  
+    <!-- </div> -->
+  
+  </div>
+  

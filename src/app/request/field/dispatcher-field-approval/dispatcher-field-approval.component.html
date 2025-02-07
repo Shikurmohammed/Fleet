@@ -1,0 +1,329 @@
+
+
+
+<div id="requestapproval" class="container">
+    <div class="card card-sm shadow">
+      <div class="card-header">
+        <h2>Field Vehicle Requisition Form</h2>
+      </div>
+      <div class="card-body">
+        <form #addForm="ngForm" (ngSubmit)="fieldApproval()">
+          <div class="form-row">
+            <div class="form-group col-md-4">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+              <label for="name">Plate No</label>
+              <input type="text" [(ngModel)]="approvefield.plateNo" name="plateNo" class="form-control" id="plateno"
+              autocomplete="off" placeholder="plate number..." required/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="directorate">Distance Traveled Per Litre</label>
+              <input type="number" [(ngModel)]="approvefield.distancePerLitter" name="distancePerLitter" class="form-control" id="distanceperlitre"
+              placeholder="0" autocomplete="off"  required/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="purposeoftravel">KM</label>
+              <input type="number" [(ngModel)]="approvefield.givenKM" name="givenKM" class="form-control" id="km"
+              placeholder="0" autocomplete="off"  required/>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="name">Driver</label>
+                <input type="text" [(ngModel)]="approvefield.driverName" name="driverName" class="form-control" id="driver"
+                autocomplete="off" placeholder="driver name..." required/>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="name">Salary/Perdiem</label>
+                <input type="text" [(ngModel)]="approvefield.salary" name="salary" class="form-control" id="salaryperdiem"
+                autocomplete="off" placeholder="salary..." required/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="numberofdays">Total KM Allowed on Single Trip</label>
+              <input type="number" [(ngModel)]="approvefield.totalKMAllowedOnSingleTrip" name="totalKMAllowedOnSingleTrip" class="form-control" id="totalkmonsingletrip"
+              placeholder="0" autocomplete="off"  required/>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="numberofdays">Total KM Allowed on Double Trip</label>
+                <input type="number" [(ngModel)]="approvefield.doubleTrip" name="doubleTrip" class="form-control" id="doubletrip"
+                placeholder="0" autocomplete="off"  required/>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="numberofdays">Estimated Fuel Required (Littre)</label>
+                <input type="number" [(ngModel)]="approvefield.estimatedfuelRequired" name="estimatedfuelRequired" class="form-control" id="litre"
+                placeholder="0" autocomplete="off"  required/>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="numberofdays">Estimated Fuel Required (In Birr)</label>
+                <input type="number" [(ngModel)]="approvefield.fuelInBirr" name="fuelInBirr" class="form-control" id="fuelbirr"
+                placeholder="0" autocomplete="off"  required/>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="km">Number Of Days Required</label>
+              <input type="number" [(ngModel)]="approvefield.noOfDaysRequired" name="noOfDaysRequired" class="form-control" id="daysrequired"
+               placeholder="0" autocomplete="off" required/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="contingency">Perdiem/Day (In Birr)</label>
+              <input type="number" [(ngModel)]="approvefield.perdiemPerDay" name="perdiemPerDay" class="form-control" id="perdiemperday"
+               placeholder="perdiemperday" autocomplete="off" required/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="totalkm">Accomodation (In Birr)</label>
+              <input type="number" [(ngModel)]="approvefield.accomodation" name="accomodation" class="form-control" id="accomodation"
+              placeholder="accomodation" autocomplete="off"  required/>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="km">Total Perdiem & Accomodation(in Birr)</label>
+              <input type="number" [(ngModel)]="approvefield.totalPerdiemAndAccomodation" name="totalPerdiemAndAccomodation" class="form-control" id="accomodationandperdiem"
+               placeholder="0" autocomplete="off" required/>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="km">Grand Total(in Birr)</label>
+                <input type="number" [(ngModel)]="approvefield.grandTotal" name="grandTotal" class="form-control" id="grandtotal"
+                 placeholder="0" autocomplete="off" required/>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="km">Cash Advanced To</label>
+                <input type="number" [(ngModel)]="approvefield.cashAdvancedTo" name="cashAdvancedTo" class="form-control" id="grandtotal"
+                 placeholder="0" autocomplete="off" required/>
+            </div>  
+          </div>
+
+          <div class="form-row">
+            <!-- <div class="form-group col-md-4">
+                <label for="km">Date</label>
+              <input type="date" ngModel name="dispdate" class="form-control" id="date" required/>
+            </div> -->
+            <div class="form-group col-md-4">
+              <label for="km">KM Reading On Departure</label>
+              <input type="number" [(ngModel)]="approvefield.kmReadingOnDeparture" name="kmReadingOnDeparture" class="form-control" id="kmondeparture"
+               placeholder="0" autocomplete="off" required/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="km">KM Reading On Return</label>
+              <input type="number" [(ngModel)]="approvefield.kmReadingOnReturn" name="kmReadingOnReturn" class="form-control" id="kmonreturn"
+               placeholder="0" autocomplete="off" required/>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="km">Difference</label>
+              <input type="number" [(ngModel)]="approvefield.kmDifference" name="kmDifference" class="form-control" id="difference"
+               placeholder="0" autocomplete="off" required/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="km">Approved By</label>
+              <input type="text" [(ngModel)]="approvefield.approvedBy" name="approvedBy" class="form-control" id="approvedby"
+               placeholder="approved by.." autocomplete="off" required/>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="km">Approved Date</label>
+              <input type="date" [(ngModel)]="approvefield.approvedDate" name="approvedDate" class="form-control" id="difference" required/>
+            </div>
+          </div>
+    
+       
+          
+          <!-- ************************************************************************* -->
+<!-- 
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="directorate" hidden>Directorate/Branch</label>
+              <input type="text" [ngModel]="director" name="directorate" class="form-control"
+                 readonly hidden/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="date" hidden>Date</label>
+              <input type="date" ngModel name="date" [ngModel]="dateToday" class="form-control" readonly hidden/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="requestedby" hidden>Requested By:</label>
+              <input type="text" [ngModel]="username" name="requestedBy" class="form-control"
+              readonly hidden/>
+            </div>
+            
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-4">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+              <label for="name" hidden>Passengers Name</label>
+              <input type="text" [(ngModel)]="request.passengers" name="passengers" class="form-control" id="name"
+              autocomplete="off" placeholder="passenger name..." required hidden/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="directorate" hidden>Vehicle Requested For</label>
+              <select [(ngModel)]="request.requestedFor" name="requestedFor" id="vehiclerequest"class="form-control" hidden>
+                <option value="Transportaion">Transportaion</option>
+                <option value="Loading">Loading</option>
+                <option value="Both">Both</option>
+                 
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="purposeoftravel" hidden>Purpose of Travel</label>
+              <input type="text" [(ngModel)]="request.purpose" name="purpose" class="form-control" id="purposeoftravel"
+               placeholder="reason for travel" autocomplete="off" required hidden/>
+            </div>
+            
+            
+          </div>
+  
+  
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="departuredate" hidden>Departure Date</label>
+              <input type="date" [(ngModel)]="request.departureDate" name="departureDate" class="form-control" id="departuredate"
+                required hidden/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="returndate" hidden>Return Date</label>
+              <input type="date" [(ngModel)]="request.returnDate" name="returnDate" class="form-control" id="returndate"
+                required hidden/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="numberofdays" hidden>Number of Days Requested</label>
+              <input type="number" [(ngModel)]="request.noOfDaysRequested" name="noOfDaysRequested" class="form-control" id="numberofdays"
+              placeholder="0" autocomplete="off"  required hidden/>
+            </div>
+            
+            
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="materialloaded" hidden>Material To Be Loaded In (Kg)</label>
+              <input type="number" [(ngModel)]="request.materialloaded" name="materialloaded" class="form-control" id="materialloaded"
+               placeholder="0" autocomplete="off" required hidden/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="branch" hidden>Destination: Branch</label>
+              <input type="text" [(ngModel)]="request.destBranch" name="destBranch" class="form-control" id="branch"
+               placeholder="branch" autocomplete="off" required hidden/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="city" hidden>City</label>
+              <input type="text" [(ngModel)]="request.destCity" name="destCity" class="form-control" id="city"
+              placeholder="city here" autocomplete="off"  required hidden/>
+            </div>
+          </div>
+  
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="km" hidden>KM</label>
+              <input type="number" [(ngModel)]="request.destKM" name="destKM" class="form-control" id="km"
+               placeholder="0" autocomplete="off" required hidden/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="contingency" hidden>Contingency</label>
+              <input type="number" [(ngModel)]="request.contingency" name="contingency" class="form-control" id="contingency"
+               placeholder="contingency" autocomplete="off" required hidden/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="totalkm" hidden>Total KM</label>
+              <input type="number" [(ngModel)]="request.totalKM" name="totalKM" class="form-control" id="totalkm"
+              placeholder="total km requested" autocomplete="off"  required hidden/>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="km" hidden>Expence From</label>
+              <input type="number" [(ngModel)]="request.expence" name="expence" class="form-control" id="km"
+               placeholder="0" autocomplete="off" required hidden/>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="transportmode" hidden>Mode Of Transport</label>
+              <select [(ngModel)]="request.transportMode" name="transportMode" id="transportmode"class="form-control" hidden>
+                <option value="Vehicle" hidden>Vehicle</option>
+                <option value="Airplane">Airplane</option>
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="daterequested" hidden>Date</label>
+              <input type="date" [(ngModel)]="request.requestDate" name="requestDate" class="form-control" id="daterequested"
+              placeholder="date requested" autocomplete="off"  required hidden/>
+            </div>
+          </div> -->
+
+          <div class="form-row card-footer">
+            <button type="submit" class="btn btn-primary btn-raised col-md-5" style="margin-left: 600px;">Approve</button>
+            <!-- <button type="reset" class="btn btn-danger btn-sm col-md-5" style="margin-left: 10px;">Clear</button> -->
+        </div>
+  
+          
+        </form>
+  
+      </div>
+     
+    </div>
+  
+    
+  </div>
+  
+  
+
+
+
+
+
+
+
+
+
+<!-- <div class="container" style="background-color: whitesmoke;">
+    <table class="table table-bordered table-sm table-condensed shadow">
+       
+<div id="requestapproval" class="container">
+    <div class="card card-sm shadow">
+      <div class="card-header">
+        <h4 class="text-center">Field Vehicle/Airplane Approval Form</h4>
+        <hr>
+      </div>
+      <div class="card-body">
+        <form #addForm="ngForm" (ngSubmit)="fieldApprove(addForm)">
+          
+          
+  
+  
+          
+  
+          
+  
+          
+
+
+
+          
+
+    
+        <div class="form-row card-footer">
+            <button type="submit" class="btn btn-primary btn-sm col-md-5">Approve</button>
+            <button type="reset" class="btn btn-danger btn-sm col-md-5" style="margin-left: 10px;">Clear</button>
+        </div>
+  
+          
+        </form>
+  
+      </div>
+     
+    </div>
+  
+    
+  </div>
+  
+  
+
+    </table>
+
+</div>
+ -->

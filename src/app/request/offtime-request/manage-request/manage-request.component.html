@@ -1,0 +1,410 @@
+<div id="vehicle">
+  <div >
+    <h2>My Off-Time Requests</h2>
+  </div>
+
+  <div
+    class="col-lg-12 col-md-12 col-xl-12"
+    *ngIf="hasData"
+   
+  >
+    <hr />
+    <table
+      class="table table-hover table-bordered table-condenced table-sm table-shadow"
+      id="datatableexample"
+    >
+      <thead>
+        <tr>
+          <th>Request Id</th>
+          <th>Requested By</th>
+          <th>Requested Date</th>
+          <th>Passenger(s)</th>
+          <th>Residence</th>
+          <th>Reason</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of data">
+          <td>{{ request.id }}</td>
+          <td>{{ request.reqBy }}</td>
+          <td>{{ request.date }}</td>
+          <td>{{ request.nameOfPassengers }}</td>
+          <td>{{ request.residentialArea }}</td>
+          <td>{{ request.reason }}</td>
+
+          <td>
+            <div
+              class="status unauthorized"
+              *ngIf="request.status == 'Unauthorized'"
+            >
+              {{ request.status }}
+            </div>
+            <div
+              class="status authorized"
+              *ngIf="request.status == 'Authorized' || request.status == 'Checked'"
+            >
+              Authorized
+            </div>
+            <div class="status rejected" *ngIf="request.status == 'Rejected'">
+              {{ request.status }}
+            </div>
+            <div class="status approved" *ngIf="request.status == 'Approved'">
+              {{ request.status }}
+            </div>
+          </td>
+          <td>
+            <span>
+              <a
+                *ngIf="request.status == 'Unauthorized'"
+                class="btn btn-outline-primary btn-spacing"
+                (click)="EditRequest(request.id)"
+                >Update</a
+              >
+              <a
+                *ngIf="request.status == 'Rejected'"
+                class="btn btn-outline-info btn-spacing"
+                (click)="onOpenModal(request.reasonForRejection, 'reason')"
+                >Reason</a
+              >
+              <a
+                *ngIf="request.status == 'Approved'"
+                class="btn btn-outline-success btn-spacing"
+                (click)="print(request.id)"
+                >Print/Export</a
+              >
+              <a
+                class="btn btn-outline-primary btn-spacing"
+                (click)="onOpenModal(request, 'detail')"
+                >Detail</a
+              >
+              <a
+                *ngIf="request.status == 'Unauthorized'"
+                class="btn btn-outline-danger btn-spacing"
+                (click)="onOpenModal(request.id, 'cancel')"
+                >Cancel</a
+              >
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-info" style="margin-left: 190px" *ngIf="noData">
+    {{ noDatamessage }}
+  </div>
+  <div class="container" id="main-container">
+    <!-- Reason for Rejection Modal -->
+    <div
+      class="modal fade in"
+      id="reasonModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="reasonModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reasonModalLabel">
+              Reason for Request Rejection
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div></div>
+            <p>{{ reasonForRequest }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dispose Modal -->
+    <div
+      class="modal fade in"
+      id="cancelModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="cancelModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="cancelModalLabel">Cancel Request</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to cancel your request?</p>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                No
+              </button>
+              <button
+                class="btn btn-danger"
+                data-dismiss="modal"
+                (click)="cancelRequest(reqId)"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div
+      class="modal fade in"
+      id="detailModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="detailModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="detailModalLabel">
+              Full Vehicle Detail
+            </h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <p>
+                  Request Id:
+                  <strong
+                    ><span>{{ reqDetail?.id }}</span></strong
+                  >
+                </p>
+                <p>
+                  Requested By:
+                  <strong
+                    ><span>{{ reqDetail?.reqBy }}</span></strong
+                  >
+                </p>
+                <p>
+                  Requested Date:
+                  <strong
+                    ><span>{{ reqDetail?.date | date }}</span></strong
+                  >
+                </p>
+                <p>
+                  Requested Time:
+                  <strong
+                    ><span>{{ reqDetail?.requestedTime | convertFrom24To12Format }}</span></strong
+                  >
+                </p>
+                <p>
+                  Vehicle Needed From:
+                  <strong
+                    ><span>{{
+                      reqDetail?.vehicleNeededFrom | convertFrom24To12Format
+                    }}</span></strong
+                  >
+                </p>
+                <p>
+                  Vehicle Needed To:
+                  <strong
+                    ><span>{{
+                      reqDetail?.vehicleNeededTo | convertFrom24To12Format
+                    }}</span></strong
+                  >
+                </p>
+                <p>
+                  Name of Passengers:
+                  <strong
+                    ><span>{{ reqDetail?.nameOfPassengers }}</span></strong
+                  >
+                </p>
+                <p>
+                  Residential Area:
+                  <strong
+                    ><span>{{ reqDetail?.residentialArea }}</span></strong
+                  >
+                </p>
+                <p>
+                  Departure Date:
+                  <strong
+                    ><span>{{ reqDetail?.departureDate | date }}</span></strong
+                  >
+                </p>
+                <p>
+                  Morning Time:
+                  <strong
+                    ><span>{{
+                      reqDetail?.morningTime | convertFrom24To12Format
+                    }}</span></strong
+                  >
+                </p>
+                <p>
+                  Night Time:
+                  <strong
+                    ><span>{{
+                      reqDetail?.nightTime | convertFrom24To12Format
+                    }}</span></strong
+                  >
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p>
+                  Return Date:
+                  <strong
+                    ><span>{{ reqDetail?.returnDate | date }}</span></strong
+                  >
+                </p>
+                <p>
+                  Return Time:
+                  <strong
+                    ><span>{{
+                      reqDetail?.returnTime | convertFrom24To12Format
+                    }}</span></strong
+                  >
+                </p>
+                <p>
+                  Kilometer:
+                  <strong
+                    ><span>{{ reqDetail?.km }}</span></strong
+                  >
+                </p>
+                <p>
+                  Reason For Request:
+                  <strong
+                    ><span>{{ reqDetail?.reason }}</span></strong
+                  >
+                </p>
+                <p>
+                  Requested For:
+                  <strong
+                    ><span>{{ reqDetail?.requestedFor }}</span></strong
+                  >
+                </p>
+                <p>
+                  Telephone:
+                  <strong
+                    ><span>{{ reqDetail?.telephone }}</span></strong
+                  >
+                </p>
+                <!-- <p>
+                  Status:
+                  <strong
+                    ><span>{{ reqDetail?.status }}</span></strong
+                  >
+                </p> -->
+                <span
+                  *ngIf="
+                    reqDetail?.status == 'Rejected' &&
+                    reqDetail?.approvedBy == null
+                  "
+                >
+                  <p>
+                    Rejected By:
+                    <strong
+                      ><span>{{ reqDetail?.authorizedBy }}</span></strong
+                    >
+                  </p>
+                  <p>
+                    Rejected Date:
+                    <strong
+                      ><span>{{
+                        reqDetail?.authorizedDate | date
+                      }}</span></strong
+                    >
+                  </p>
+                </span>
+                <span
+                  *ngIf="
+                    reqDetail?.status == 'Approved' ||
+                    reqDetail?.status == 'Authorized' ||
+                    (reqDetail?.status == 'Rejected' &&
+                      reqDetail?.approvedBy != null)
+                  "
+                >
+                  <p>
+                    Authorized By:
+                    <strong
+                      ><span>{{ reqDetail?.authorizedBy }}</span></strong
+                    >
+                  </p>
+                  <p>
+                    Authorized Date:
+                    <strong
+                      ><span>{{
+                        reqDetail?.authorizedDate | date
+                      }}</span></strong
+                    >
+                  </p>
+                </span>
+
+                <span
+                  *ngIf="
+                    reqDetail?.status == 'Rejected' &&
+                    reqDetail?.approvedBy != null
+                  "
+                >
+                  <p>
+                    Rejected By:
+
+                    <strong
+                      ><span>{{ reqDetail?.approvedBy }}</span></strong
+                    >
+                  </p>
+                  <p>
+                    Rejected Date:
+                    <strong
+                      ><span>{{ reqDetail?.approvedDate | date }}</span></strong
+                    >
+                  </p></span
+                >
+
+                <span *ngIf="reqDetail?.status == 'Approved'">
+                  <p>
+                    Approved By:
+
+                    <strong
+                      ><span>{{ reqDetail?.approvedBy }}</span></strong
+                    >
+                  </p>
+                  <p>
+                    Approved Date:
+                    <strong
+                      ><span>{{ reqDetail?.approvedDate | date }}</span></strong
+                    >
+                  </p>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

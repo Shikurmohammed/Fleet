@@ -1,0 +1,34 @@
+<div class="backup">
+  <h4 class="text-center">Backup Database</h4>
+
+  <br />
+  <div class="col-md-5" style="margin-left: 30%; background-color: aliceblue">
+    <div class="card shadow-2-strong align-items-center">
+      <div class="form-group col-md-6" style="margin-top: 25px">
+        <label for="type">Select Type</label>
+
+        <select
+          name="type"
+          id="type"
+          class="form-select"
+          #type
+          (change)="onSelectedType(type.value)"
+        >
+          <option value="full">Full Backup</option>
+          <option value="differential">Differential Backup</option>
+        </select>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Insert folder path to store backup</label>
+        <input #path type="url" class="form-control" value="{{ fpath }}" />
+      </div>
+      <button
+        (click)="backup(path.value)"
+        class="btn btn-primary btn-raised"
+        style="margin-top: 5px; width: fit-content; margin-bottom: 25px"
+      >
+        Backup
+      </button>
+    </div>
+  </div>
+</div>

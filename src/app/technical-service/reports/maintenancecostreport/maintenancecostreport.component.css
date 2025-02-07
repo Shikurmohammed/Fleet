@@ -1,0 +1,168 @@
+#maintenancecostreport{
+  /* margin-top: 100px;
+  margin-left: 250px;
+  width: 80%; */
+
+}
+.hiddendata{
+  display: none;
+}
+.myPrintReport{
+  display: none;
+}
+.img{
+  width: 20%;
+  height: 100%;
+ }
+ .imgs{
+  margin-top: -300px;
+  margin-left: 200px;
+ }
+ .hrline{
+  width: 100%;
+  border: 2px solid black;
+  margin-top: -25px;
+ }
+ .hrawash{
+  width: 80%;
+  border: 2px solid black;
+  margin-top: -90px;
+  margin-left: 200px;
+ }
+ .hrtitle{
+  margin-top: 30px;
+  margin-left: 220px;
+  font-size: 30px;
+  font-weight: bolder;
+ }
+ .hrdate{
+  height: 75px;
+  width: 1px;
+  border: 2px solid black;
+  margin-top: -150px;
+  margin-left: 720px;
+ }
+ .datetimes{
+
+  width: 150px;
+  margin-top: -70px;
+  margin-left: 725px;
+ }
+ .allcost{
+  display: none;
+ }
+@media print{
+  #costreportbymonthrange{
+    margin-top: 100px;
+  }
+.allcost{
+  display: table;
+}
+#costreport{
+  width: 2000px;
+}
+  #maintenancecostreport{
+    margin-left: 30px;
+    width: 50%;
+  }
+  .trfoot{
+    background-color: rgb(243, 240, 240);
+  }
+  .hiddendata{
+    display: block;
+   }
+  #headerprint{
+    display: none;
+  }
+  #monthoption{
+    display: none;
+  }
+  #monthfilterform{
+    display: none;
+  }
+  #yearlyfilterform{
+    display: none;
+  }
+  #monthactionprint{
+    display: none;
+  }
+}
+/* #costreport{
+  display: none;
+} */
+/* #costreportbymonthrange{
+  display: none;
+
+} */
+#costreportbymonthrange{
+  width: 100%;
+}
+/* #costreportbyyearrange{
+  display: none;
+} */
+.monthfilter{
+  margin-left: 600px;
+  margin-top: -120px;
+}
+.plateNofilter{
+  margin-left: 600px;
+  margin-top: -120px;
+}
+.yearlyfilter{
+  margin-left: 600px;
+  margin-top: -120px;
+}
+.yearlyheader{
+  display: none;
+}
+#yearcard{
+  margin-top: -40px;
+}
+.ngselectpart{
+    /* width: 20%;
+    margin-left: 230px;
+  margin-top: -30px;
+  margin-bottom: 20px; */
+}
+#costreportbymonthrange{
+  margin-top: -20px;
+}
+.bd-callout {
+  padding: 1.25rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  border: 2px solid #eee;
+  border-left-width: .25rem;
+  border-radius: .25rem;
+  margin-left: 10px;
+  margin-right: 10px;
+  }
+
+  .bd-callout h4 {
+  margin-top: 0;
+  margin-bottom: .25rem
+  }
+
+  .bd-callout p:last-child {
+  margin-bottom: 0;
+
+  }
+
+  .bd-callout code {
+  border-radius: .40rem
+  }
+
+  .bd-callout+.bd-callout {
+  margin-top: -.10rem
+  }
+
+  .bd-callout-info {
+  border-left-color: #45bfe4;
+  border-left-width: 10px;
+
+  }
+
+  .bd-callout-info h4 {
+  color: #5bc0de
+  }
+

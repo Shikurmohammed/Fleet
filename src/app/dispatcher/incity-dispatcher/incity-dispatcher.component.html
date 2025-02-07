@@ -1,0 +1,65 @@
+<div id="approverequest">
+      <div>
+        <h2 class="text-center">Authorized In City Requests</h2>
+      </div>
+      <div *ngIf="Length !=0"
+      id="IncityDispatch"
+      class="col-lg-12 col-md-12 col-xl-12"
+      >
+      <hr/>
+        <table  
+       class="table table-hover table-bordered table-condenced table-sm table-shadow"
+        id="dispatchdatatable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Req By</th>
+              <th>Directorate</th>
+              <th>Passenger (s)</th>
+              <th>Destination</th>
+              <th>Date From</th>
+              <!-- <th>Vehicle Needed From</th>
+              <th>Vehicle Needed To Date</th>
+              <th>Vehicle Needed To</th> -->
+              <!-- <th>Purpose Of Travel</th> -->
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let req of approve">
+              <td>{{req.id}}</td>
+              <td>{{req.requestBy}}</td>
+              <td>{{req.directorate}}</td>
+              <td>{{req.passenger}}</td>
+              <td>{{req.destination}}</td>
+              <td>{{req.dateFrom | date}}</td>
+              <!-- <td>{{req.requestTimeFrom | convertFrom24To12Format}}</td>
+              <td>{{req.dateTo |date}}</td>
+              <td>{{req.requestTimeTo | convertFrom24To12Format}}</td> -->
+              <!-- <td>{{req.purpose}}</td> -->
+              <td>
+                <div *ngIf="req.status=='Authorized'">{{req.status}}</div>
+              </td>
+              <td>
+                <button (click)="detail(req.id)" class="btn btn-sm btn-info btn-raised">Detail</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-info"  *ngIf="Length==0">
+        <p class="text-center">No Authorized In City Request Found</p>
+      </div>
+      <!-- <div *ngIf="Length==0">
+        <div style="margin-left: 300px;">
+          <hr>
+             <h2 class="text-center">Authorized In City Requests</h2>
+           <hr>
+           <div class="callout callout-info">
+             <p class="text-center">No Authorized In City Request Found</p>
+          </div>
+        </div>
+      </div> -->
+</div>

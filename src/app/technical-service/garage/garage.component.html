@@ -1,0 +1,77 @@
+<div id="addGarage" class="container">
+    <div class="card shadow">
+        <div class="card-header">
+            <h5 class="text-center">Garage Registration Form</h5>
+        </div>
+        <div class="card-body">
+            <form #addForm="ngForm" (ngSubmit)="addGarage(addForm)">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="name">Garage Name</label>
+                        <input type="text"
+                        [(ngModel)]="garage.name"
+                        name="name"
+                        id="name"
+                        placeholder="Enter garage's name"
+                        class="form-control"
+                       autocomplete="off"
+                       required
+                        #name="ngModel"
+                        [ngClass]="{'is-invalid':addForm.submitted && name.invalid}"
+                        [class.is-invalid]="name.invalid && name.touched"/>
+                        <div *ngIf="name.errors && (name.invalid && name.touched)">
+                            <small class="text-danger" *ngIf="name.errors.required">garage name is required</small>
+                            <!-- <small class="text-danger" *ngIf="name.errors.pattern">incorrect name format</small> -->
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="location">Garage Location</label>
+                        <input type="text"
+                        [(ngModel)]="garage.location"
+                        name="location"
+                        id="location"
+                        placeholder="Enter garage's location"
+                        class="form-control"
+                        autocomplete="off"
+                        #location="ngModel"
+                        [ngClass]="{'is-invalid':addForm.submitted && location.invalid}"
+                        [class.is-invalid]="location.invalid && location.touched"
+                        required/>
+                        <div *ngIf="location.errors && (location.touched && location.invalid)">
+                            <small class="text-danger">garage location is required</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="phone">Garage Phone</label>
+                        <input type="text"
+                        [(ngModel)]="garage.phone"
+                        name="phone"
+                        id="phone"
+                        placeholder="Enter garage's tel no like: 09.. or 011.."
+                        class="form-control"
+                        autocomplete="off"
+                        pattern="^[0-9]{10}$"
+                        #phone="ngModel"
+                        [ngClass]="{ 'is-invalid': (addForm.submitted && phone.invalid) || exist}"
+                        [class.is-invalid]="phone.invalid && phone.touched"
+                        #cellphone (keyup)="checkPhone(cellphone.value)"
+                        required/>
+
+                        <small class="text-danger">{{phoneFound}}</small>
+                        <div *ngIf="phone.errors && (phone.invalid && phone.touched)">
+                            <small class="text-danger" *ngIf="phone.errors.required">phone is required</small>
+                            <small class="text-danger" *ngIf="phone.errors.pattern">incorrect phone format</small>
+                            <small class="invalid-feedback" *ngIf="cellphone.errors.exist">phone already registered</small>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" [disabled]="addForm.form.invalid || exist" class="btn btn-success">{{actionbtn}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

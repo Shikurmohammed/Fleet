@@ -1,0 +1,160 @@
+
+<div class="container" id="printrequest">
+  <!-- <div class="card card-shadow"> -->
+<div class="card">
+  <div class="card-header hiddenprint">
+    
+      <button  (click)="goBack()" class="btn btn-primary btn-sm col-md-2"
+        style="float: left; width: 50px;">Back</button>
+
+    
+    <!-- <button (click)="exportExcel()" class="btn btn-success" style="float: right;"><i
+        class="fa fa-file-excel"></i></button> -->
+    <button (click)="exportPDF()" class="btn btn-danger" style="float: right; margin-right: 10px;"><i
+        class="fa fa-file-pdf"></i></button>
+        <button (click)="print()" class="btn btn-primary" style="float: right; margin-right: 10px;"><i
+          class="fa fa-print" aria-hidden="true"></i></button>
+  </div>
+
+</div>
+    <!-- class="brand-image img-circle elevation-4" style="width: 500px; height: 70px;  -->
+
+    <!-- <div class="card-body" id="tabledatas"> -->
+    <div class="hiddendata">
+      <div class="brand-image img-circle">
+        <img src="./assets/img/AB1.png" class="img" alt="AB Logo"
+        />
+      </div>
+      <div>
+        <img src="./assets/img/bank.png" class="imgs" alt="AB Logo"/>
+        <div class="hrline"></div>
+        <div class="hrawash"></div>
+        <div class="hrtitle">Field Airplane/Vehicle Requisition</div>
+        <div class="hrdate"> <strong></strong> </div>
+        <div class="datetimes"><strong>Date: {{dateToday|date}}<br>Time:{{ time | date: 'hh:mm:ss a' }}</strong> </div>
+      </div>
+
+    </div>
+      <table class="table table-shadow table-bordered" id="printApproval">
+        <thead>
+          <tr>
+            <th id="headerdata" colspan="3" class="text-center"> Approved User Request</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div><span> Requested By  :</span> <span><strong>{{requestedBy}}</strong></span></div>
+             </td>
+             <td>
+              <div>Approved By  : <span><strong>{{approvedBy}}</strong></span></div>
+            </td>
+             <td>
+               <div>Directorate  : <span><strong>{{directorate}}</strong></span></div>
+             </td>
+          </tr>
+          <tr>
+            <td>
+              <div><span>Requested Date  :</span> <span><strong>{{reqdate|date}}</strong></span></div>
+             </td>
+             <td>
+              <div>Departure Date  : <span><strong>{{departureDate|date}}</strong></span></div>
+            </td>
+             <td>
+               <div>Return Date  : <span><strong>{{returnDate|date}}</strong></span></div>
+             </td>
+          </tr>
+          <tr>
+            <td>
+              <div><span>Destination Branch  :</span> <span><strong>{{destBranch}}</strong></span></div>
+             </td>
+             <td>
+              <div>Destination City  : <span><strong>{{destCity}}</strong></span></div>
+            </td>
+             <td>
+               <div>Reason  : <span><strong>{{purpose}}</strong></span></div>
+             </td>
+          </tr>
+          <tr>
+            <td>
+              <div><span>Destination KM  :</span> <span><strong>{{destKM}} km</strong></span></div>
+             </td>
+             <td>
+              <div>Number Of Day(s)  : <span><strong>{{noOfDaysRequested}} day(s)</strong></span></div>
+            </td>
+             <td>
+               <div>Material Loaded  : <span><strong>{{materialloaded}} Kg</strong></span></div>
+             </td>
+          </tr>
+          <tr>
+            <td>
+              <div><span>Estimated Fuel Req.  :</span> <span><strong>{{estimatedfuelRequired}}</strong></span></div>
+             </td>
+             <td>
+              <div>Claim Expense From  : <span><strong>{{expence}}</strong></span></div>
+            </td>
+             <td>
+               <div>Vehicle Requested For  : <span><strong>{{requestedFor}}</strong></span></div>
+             </td>
+          </tr>
+
+          <tr>
+            <td>Driver Phone: <span><strong>{{driverphone}}</strong></span></td>
+            <td>
+              <div>Driver Residence Place: <span><strong>{{residencePlace}}</strong></span>
+              </div>
+            </td>
+            <td>
+              <div>Driver Name: <span><strong>{{driverName}}</strong></span></div>
+            </td>
+          </tr>
+          <tr>
+            <td>Plate Number: <span><strong>{{plateNo}}</strong></span></td>
+            <td>
+              <div>Vehicle Type: <span><strong>{{vehicleTypes}}</strong></span>
+              </div>
+            </td>
+            <td>Requested Time: <span><strong>{{requestedTime| convertFrom24To12Format}}</strong></span></td>
+          </tr>
+          <tr>
+            <td>Passenger's Telephone: <span><strong>{{passTelephone}}</strong></span></td>
+          </tr>
+
+        </tbody>
+      </table>
+      <div class="approvalform">
+
+      <table class="table table-sm" style="width: 100%;">
+        <tr>
+          <td> Passenger(s): <Strong>{{passengers}}</Strong></td>
+          <td style="margin-left: 100px;">Passenger(s) Sign: <span><Strong><sub>...............</sub></Strong></span></td>
+        </tr>
+        <tr style="width: 100%;">
+          <td class="passremark" colspan="3" style="width: 50%;"> Passenger(s) Remark: <span><Strong><sub>...........................................
+            .............................................................................................................
+            .......................................................................................
+          </sub></Strong></span></td>
+        </tr>
+        <tr>
+          <td class="passremark" colspan="3" style="width: 50%;"> Passenger(s) Remark: <span><Strong><sub>...........................................
+            .............................................................................................................
+            .......................................................................................
+          </sub></Strong></span></td>
+        </tr>
+        <tr>
+          <td>Milege On Return: <span><Strong><sub>...............km</sub></Strong></span></td>
+          <td style="margin-left: -200px;">Return Date: <sub>...............</sub></td>
+          <td>Driver Sign: <span><Strong><sub>...............</sub></Strong></span></td>
+        </tr>
+
+      </table>
+      </div>
+
+
+    <!-- </div> -->
+
+
+
+  <!-- </div> -->
+
+</div>

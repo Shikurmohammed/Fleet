@@ -1,0 +1,100 @@
+<div id="fuel">
+  <div style="margin-left: 25%; margin-top: 150px; margin-bottom: 20px">
+    <h3>Fuel Price</h3>
+  </div>
+  <table
+    class="table table-hover table-bordered table-shadow"
+    style="width: 70%"
+  >
+    <thead>
+      <tr>
+        <th>Fuel Type</th>
+        <th>Price</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let fuel of data">
+        <td>{{ fuel.typeOfFuel }}</td>
+        <td>{{ fuel.price }}</td>
+        <td>
+          <a
+            class="btn btn-outline-primary"
+            data-original-title="Detail"
+            (click)="onOpenModal(fuel, 'modify')"
+            >Update
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="container" id="main-container">
+    <div
+      class="modal fade in"
+      id="updatePriceModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="updatePriceModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="updatePriceModalLabel">
+              Update Fuel Price
+            </h4>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="form" (ngSubmit)="updatePrice()">
+              <input type="hidden" name="id" class="form-control" id="id" />
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="typeOfFuel">Fuel Type</label>
+                  <input
+                    formControlName="typeOfFuel"
+                    id="typeOfFuel"
+                    class="form-control"
+                    readonly
+                  />
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="price">Price</label>
+                  <input
+                    type="text"
+                    formControlName="price"
+                    class="form-control"
+                    id="price"
+                    [ngClass]="{
+                      'is-invalid': submitted && f['price'].errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submitted && f['price'].errors"
+                    class="invalid-feedback"
+                  >
+                    <div *ngIf="f['price'].errors?.['pattern']">
+                      Please insert a valid number
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button id="btn-dispatch" type="submit" class="btn btn-primary">
+                  Update
+                </button>
+                <button
+                  type="button"
+                  id="edit-vehicle-form"
+                  data-dismiss="modal"
+                  class="btn btn-secondary"
+                >
+                  Close
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

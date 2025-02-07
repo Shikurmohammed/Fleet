@@ -1,0 +1,870 @@
+<div id="vehicle">
+  <div style="margin-left: 50%; margin-top: 100px">
+    <h3>Vehicle Details</h3>
+  </div>
+  <div
+    id="userTable"
+    style="margin-left: 190px"
+    class="col-lg-12 col-md-12 col-xl-12"
+  >
+    <hr />
+    <table
+      class="table table-hover table-bordered table-condenced table-sm table-shadow"
+      id="datatableexample"
+    >
+      <thead>
+        <tr>
+          <th>Plate Number</th>
+          <th>Model</th>
+          <th>Make</th>
+          <th>Last Mileage</th>
+          <th>Insurance Expiry Date</th>
+          <th>Insurance Renewal Date</th>
+          <th>Policy Number</th>
+
+          <th>Status</th>
+          <th *ngIf="!isDispatcher()">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vehicle of vehicles">
+          <td>{{ vehicle.plateNo }}</td>
+          <td>{{ vehicle.model }}</td>
+          <td>{{ vehicle.make }}</td>
+          <td>{{ vehicle.lastMilege }}</td>
+          <td>{{ vehicle.insExpDate }}</td>
+          <td>{{ vehicle.insRenewalDate }}</td>
+          <td>{{ vehicle.policyNo }}</td>
+
+          <td>
+            <div class="status pool" *ngIf="vehicle.status == 'Pool'">
+              {{ vehicle.status }}
+            </div>
+            <div class="status disposed" *ngIf="vehicle.status == 'Disposed'">
+              {{ vehicle.status }}
+            </div>
+            <div
+              class="status dispatched"
+              *ngIf="vehicle.status == 'Dispatched'"
+            >
+              {{ vehicle.status }}
+            </div>
+            <div
+              class="status assigned"
+              *ngIf="vehicle.status == 'Assigned to Respective'"
+            >
+              {{ vehicle.status }}
+            </div>
+            <div
+            class="status standby"
+            *ngIf="vehicle.status == 'StandBy'"
+          >
+            {{ vehicle.status }}
+          </div>
+            <div
+            class="status" style="background-color:rgb(90, 95, 82);"
+            *ngIf="vehicle.status == 'Maintenance'"
+          >
+            {{ vehicle.status }}
+          </div>
+          </td>
+          <td *ngIf="!isDispatcher()">
+            <span>
+              <a
+                style="display: inline-block"
+                (click)="onOpenModal(vehicle, 'edit')"
+                class="btn btn-outline-primary"
+                data-original-title="Edit"
+              >
+                Update
+              </a>
+              <a
+                style="display: inline-block"
+                (click)="onOpenModal(vehicle, 'view')"
+                class="btn btn-outline-info"
+                data-original-title="View"
+              >
+                Detail
+              </a>
+              <a
+                (click)="onOpenModal(vehicle, 'dispose')"
+                class="btn btn-outline-danger"
+                data-original-title="Dispose"
+                >Dispose</a
+              ></span
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="container" id="main-container">
+    <!-- Update Modal -->
+    <div
+      class="modal fade in"
+      id="updateVehicleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="updateVehicleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateVehicleModalLabel">
+              Update Details of Vehicle
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form #editForm="ngForm">
+              <input
+                type="hidden"
+                ngModel="{{ editVehicle?.id }}"
+                name="id"
+                class="form-control"
+                id="id"
+              />
+              <input type = "hidden" 
+                ngModel="{{editVehicle?.status}}"
+                name = "status"
+                class="form-control"
+                id = "status"
+               />
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label for="insExpDate">Insurance Expiry Date</label>
+                  <input
+                    type="date"
+                    ngModel="{{ editVehicle?.insExpDate }}"
+                    name="insExpDate"
+                    class="form-control"
+                    id="insExpDate"
+                    required
+                  />
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="insRenewalDate">Insurance Renewal Date</label>
+                  <input
+                    type="date"
+                    ngModel="{{ editVehicle?.insRenewalDate }}"
+                    name="insRenewalDate"
+                    class="form-control"
+                    id="insRenewalDate"
+                    required
+                  />
+                </div>
+                <div class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="model">Model</label>
+      
+                    <input
+                      type="text"
+                      ngModel = "{{editVehicle?.model}}"
+                      class="form-control"
+                      name="model"
+                      id="model"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="make">Make</label>
+                    <input
+                      type="text"
+                      ngModel="{{editVehicle?.make}}"
+                      class="form-control"
+                      name="make"
+                      id="make"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="yearOfMake">Year Of Make</label>
+                    
+                    <input
+                      type="number"
+                      ngModel = "{{editVehicle?.yearOfMake}}"
+                      min="1900"
+                      max="2080"
+                      step="1"
+                      class="form-control"
+                      name="yearOfMake"
+                      id="yearOfMake"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="engineNo">Engine Number</label>
+      
+                    <input
+                      type="text"
+                      ngModel = "{{editVehicle?.engineNo}}"
+                      class="form-control"
+                      name="engineNo"
+                      id="engineNo"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+
+                <div class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="chassisNo">Chassis Number</label>
+      
+                    <input
+                      type="text"
+                      ngModel = "{{editVehicle?.chassisNo}}"
+                      class="form-control"
+                      name="chassisNo"
+                      id="chassisNo"
+                    />
+
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="plateNo">Plate Number</label>
+      
+                    <input
+                      type="text"
+                      ngModel = "{{editVehicle?.plateNo}}"
+                      class="form-control"
+                      name="plateNo"
+                      id="plateNo"
+                      readonly
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="cc">CC</label>
+                    <input
+                      type="text"
+                      ngModel = "{{editVehicle?.cc}}"
+                      class="form-control"
+                      name="cc"
+                      id="cc"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+
+                <div class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="fuelType">Fuel Type</label>
+                    <ng-select
+                      ngModel="{{editVehicle?.fuelType}}"
+                      class="custom"  appearance="outline"
+                      name="fuelType"
+                      id="fuelType"
+                    >
+                      <ng-option value="" disabled selected>Select fuel type</ng-option>
+                      <ng-option
+                      *ngFor="let fuelType of fuelTypes"
+                      value="{{ fuelType!.id }}"
+                    >
+                      {{ fuelType!.typeOfFuel }}
+                    </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="disPerLit">Distance Per Litter</label>
+      
+                    <input
+                      type="text"
+                      ngModel = "{{editVehicle?.disPerLit}}"
+                      class="form-control"
+                      name="disPerLit"
+                      id="disPerLit"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="carryingCapacity">Carrying Capacity</label>
+      
+                    <input
+                      type="text"
+                      ngModel="{{editVehicle?.carryingCapacity}}"
+                      class="form-control"
+                      name="carryingCapacity"
+                      id="carryingCapacity"
+                      required
+                    />
+                  </div>
+                </div>
+                
+              </div>
+              <div *ngIf="role==='Senior Transport Officer'" class="row">
+                <div class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="lastMilege">Kilometer</label>
+      
+                    <input
+                      type="text"
+                      ngModel = "{{editVehicle?.lastMilege}}"
+                      class="form-control"
+                      name="lastMilege"
+                      id="lastMilege"
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="lmGenService">Last Service Mileage</label>
+      
+                    <input
+                      type="text"
+                      ngModel = "{{editVehicle?.lmGenService}}"
+                      class="form-control"
+                      name="lmGenService"
+                      id="lmGenService"
+                      required=""
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="lmTyresChange">Last Tyres Mileage</label>
+      
+                    <input
+                      type="text"
+                      ngModel = "{{editVehicle?.lmTyresChange}}"
+                      class="form-control"
+                      name="lmTyresChange"
+                      id="lmTyresChange"
+                      required=""
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div *ngIf="role!='Senior Transport Officer'" class="row">
+                  <div class="form-group col-md-4">
+                    <div class="form-group">
+                      <label for="lastMilege">Kilometer</label>
+        
+                      <input
+                        type="text"
+                        ngModel = "{{editVehicle?.lastMilege}}"
+                        class="form-control"
+                        name="lastMilege"
+                        id="lastMilege" readonly
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <div class="form-group">
+                      <label for="lmGenService">Last Service Mileage</label>
+        
+                      <input
+                        type="text"
+                        ngModel = "{{editVehicle?.lmGenService}}"
+                        class="form-control"
+                        name="lmGenService"
+                        id="lmGenService"
+                        required="" readonly
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <div class="form-group">
+                      <label for="lmTyresChange">Last Tyres Mileage</label>
+        
+                      <input
+                        type="text"
+                        ngModel = "{{editVehicle?.lmTyresChange}}"
+                        class="form-control"
+                        name="lmTyresChange"
+                        id="lmTyresChange"
+                        required="" readonly
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="role==='Senior Transport Officer'" class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="lmVehicleBody">Last Body Mileage</label>
+      
+                    <input
+                      type="text"
+                      ngModel = "{{editVehicle?.lmVehicleBody}}"
+                      class="form-control"
+                      name="lmVehicleBody"
+                      id="lmVehicleBody"
+                      required=""
+                    />
+                  </div>
+                </div>
+                <div *ngIf="role!='Senior Transport Officer'" class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="lmVehicleBody">Last Body Mileage</label>
+      
+                    <input
+                      type="text"
+                      ngModel = "{{editVehicle?.lmVehicleBody}}"
+                      class="form-control"
+                      name="lmVehicleBody"
+                      id="lmVehicleBody"
+                      required="" readonly 
+                    />
+                  </div>
+                </div>
+                <div class="form-group col-md-8">
+                  <label for="custodian">Custodian</label> 
+                  <ng-select
+                    ngModel="{{editVehicle?.custodian}}"
+                    name="custodian"
+                    id="custodian"
+                    class="custom"
+                    appearance="outline"
+                  >
+                  <ng-option value="" disabled selected>Select custodian..</ng-option>
+                  <ng-option
+                      *ngFor="let custod of directorates"
+                      value="{{ custod!.directorate }}"
+                    >
+                      {{ custod!.directorate }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <label for="owner">Owner</label>
+                  <input
+                    type="text"
+                    ngModel = "{{editVehicle?.owner}}"
+                    name="owner"
+                    class="form-control"
+                    id="owner"
+                  />
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="purposeOfUsage">Purpose of Usage</label>
+                  <input
+                    type="text"
+                    ngModel="{{editVehicle?.purposeOfUsage}}"
+                    name="purposeOfUsage"
+                    class="form-control"
+                    id="purposeOfUsage"
+                    required
+                  />
+                </div>
+                <div class="form-group col-md-4">
+                  <div class="form-group">
+                    <label for="policyNo">Policy Number</label>
+      
+                    <input
+                      type="text"
+                      ngModel="{{editVehicle?.policyNo}}"
+                      class="form-control"
+                      name="policyNo"
+                      id="policyNo"
+                      required=""
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class = "row">
+                <div class="form-group col-md-4">
+                  <label for="vehicleTypeString">Vehicle Type</label>
+                  <ng-select 
+                    name="vehicleTypeString"
+                    id="vehicleTypeString"
+                    ngModel="{{vehicleTypeValue}}"
+                    class="custom"
+                    appearance="outline"
+                  >
+                    <ng-option value="" disabled selected>select vehicle type ..</ng-option>
+                    <ng-option
+                      *ngFor="let vehiclesType of vehicleTypes"
+                      value="{{ vehiclesType!.vehicleType }}"
+                    >
+                      {{ vehiclesType!.vehicleType }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+                <ng-container *ngIf="isGeneral">
+                  <div class="form-group col-md-4">
+                    <label for="isStandBy">Is Stand By</label>
+                    <ng-select 
+                      name="isStandBy"
+                      id="isStandBy"
+                      ngModel="{{editVehicle?.isStandBy}}"
+                      class="custom"
+                      appearance="outline"
+                    >
+                      <ng-option value="" disabled selected>is vehicle stand by ..</ng-option>
+                      <ng-option
+                        value="yes"
+                      >
+                          Stand By
+                      </ng-option>
+                      <ng-option
+                       value="no"
+                    >
+                        Not Stand By
+                    </ng-option>
+                    </ng-select>
+                  </div>
+                </ng-container>
+               
+              </div>
+
+
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  id="edit-vehicle-form"
+                  data-dismiss="modal"
+                  class="btn btn-secondary"
+                >
+                  Close
+                </button>
+                <button
+                  (click)="onUpdateVehicle(editForm.value)"
+                  data-dismiss="modal"
+                  class="btn btn-primary"
+                >
+                  Update Vehicle
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dispose Modal -->
+    <div
+      class="modal fade in"
+      id="disposeVehicleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="disposeModelLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="disposeModelLabel">Dispose Vehicle</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Are you sure you want to dispose vehicle with plate number
+              {{ disposeVehicle?.plateNo }}?
+            </p>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                No
+              </button>
+              <!-- (click) = "onDeleteEmloyee(deleteEmployee!)" -->
+              <button
+                class="btn btn-danger"
+                data-dismiss="modal"
+                (click)="onDisposeVehicle(disposeVehicle?.id)"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div
+      class="modal fade in"
+      id="detailVehicleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="detailVehicleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="detailVehicleModalLabel">
+              Full Vehicle Detail
+            </h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <p>
+                  Plate Number:
+                  <strong
+                    ><span>{{ viewDetail?.plateNo }}</span></strong
+                  >
+                </p>
+                <p>
+                  Vehicle Type:
+                  <strong><span>{{vehicleTypeValue!}}</span></strong>
+                </p>
+                <p>
+                  Engine Number:
+                  <strong
+                    ><span>{{ viewDetail?.engineNo }}</span></strong
+                  >
+                </p>
+                <p>
+                  Chassis Number:
+                  <strong
+                    ><span>{{ viewDetail?.chassisNo }}</span></strong
+                  >
+                </p>
+                <p>
+                  CC:
+                  <strong
+                    ><span>{{ viewDetail?.cc }}</span></strong
+                  >
+                </p>
+                <p>
+                  Make:
+                  <strong
+                    ><span>{{ viewDetail?.make }}</span></strong
+                  >
+                </p>
+                <p>
+                  Model:
+                  <strong
+                    ><span>{{ viewDetail?.model }}</span></strong
+                  >
+                </p>
+                <p>
+                  Year Of Make:
+                  <strong
+                    ><span>{{ viewDetail?.yearOfMake }}</span></strong
+                  >
+                </p>
+                <p>
+                  Purpose Of Usage:
+                  <strong
+                    ><span>{{ viewDetail?.purposeOfUsage }}</span></strong
+                  >
+                </p>
+                <p>
+                  Distance Per Litter:
+                  <strong
+                    ><span>{{ viewDetail?.disPerLit }}</span></strong
+                  >
+                </p>
+                <p>
+                  Carrying Capacity:
+                  <strong
+                    ><span>{{ viewDetail?.carryingCapacity }}</span></strong
+                  >
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p>
+                  Last Mileage:
+                  <strong
+                    ><span>{{ viewDetail?.lastMilege }}</span></strong
+                  >
+                </p>
+                <p>
+                  Insurance Expiry Date:
+                  <strong
+                    ><span>{{ viewDetail?.insExpDate }}</span></strong
+                  >
+                </p>
+                <p>
+                  Insurance Renewal Date:
+                  <strong
+                    ><span>{{ viewDetail?.insRenewalDate }}</span></strong
+                  >
+                </p>
+                <p>
+                  Policy Number:
+                  <strong
+                    ><span>{{ viewDetail?.policyNo }}</span></strong
+                  >
+                </p>
+                <p>
+                  Last Mileage General Service:
+                  <strong
+                    ><span>{{ viewDetail?.lmGenService }}</span></strong
+                  >
+                </p>
+                <p>
+                  Last Mileage Tyres:
+                  <strong
+                    ><span>{{ viewDetail?.lmTyresChange }}</span></strong
+                  >
+                </p>
+                <p>
+                  Last Mileage Vehicle Body:
+                  <strong
+                    ><span>{{ viewDetail?.lmVehicleBody }}</span></strong
+                  >
+                </p>
+                <p>
+                  Custodian:
+                  <strong
+                    ><span>{{ viewDetail?.custodian }}</span></strong
+                  >
+                </p>
+                <p>
+                  Fuel Type:
+
+                  <strong 
+                    ><span>{{fuelValue!}}</span></strong
+                  >
+                </p>
+                <p>
+                  Status:
+                  <strong
+                    ><span>{{ viewDetail?.status }}</span></strong
+                  >
+                </p>
+              </div>
+            </div>
+            <!-- <div class="form-row">
+              <div class="col-md-4">
+                <label>Plate Number</label>
+                <h5 class="detail">{{ viewDetail?.plateNo }}</h5>
+              </div>
+              <div class="col-md-4">
+                <label>Engine Number</label>
+                <h5 class="detail">{{ viewDetail?.engineNo }}</h5>
+              </div>
+              <div class="col-md-4">
+                <label>Chassis Number</label>
+                <h5 class="detail">{{ viewDetail?.chassisNo }}</h5>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-4">
+                <label>CC</label>
+                <h5 class="detail">{{ viewDetail?.cc }}</h5>
+              </div>
+              <div class="col-md-4">
+                <label>Make</label>
+                <h5 class="detail">{{ viewDetail?.make }}</h5>
+              </div>
+              <div class="col-md-4">
+                <label>Model</label>
+                <h5 class="detail">{{ viewDetail?.model }}</h5>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-4">
+                <label>Year Of Make</label>
+                <h5 class="detail">{{ viewDetail?.yearOfMake }}</h5>
+              </div>
+              <div class="col-md-4">
+                <label>Purpose Of Usage</label>
+                <h5 class="detail">{{ viewDetail?.purposeOfUsage }}</h5>
+              </div>
+              <div class="col-md-4">
+                <label>Distance Per Litter</label>
+                <h5 class="detail">{{ viewDetail?.disPerLit }}</h5>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-4">
+                <label>Carrying Capacity</label>
+                <h5 class="detail">{{ viewDetail?.carryingCapacity }}</h5>
+              </div>
+              <div class="col-md-4">
+                <label>Kilometer</label>
+                <h5 class="detail">{{ viewDetail?.km }}</h5>
+              </div>
+              <div class="col-md-4">
+                <label>Last Mileage</label>
+                <h5 class="detail">{{ viewDetail?.lastMilege }}</h5>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-4">
+                <label>Insurance Expiry Date</label>
+                <h5 class="detail">{{ viewDetail?.insExpDate }}</h5>
+              </div>
+              <div class="col-md-4">
+                <label>Insurance Renewal Date</label>
+                <h5 class="detail">{{ viewDetail?.insRenewalDate }}</h5>
+              </div>
+              <div class="col-md-4">
+                <label>Policy Number</label>
+                <h5 class="detail">{{ viewDetail?.policyNo }}</h5>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-4">
+                <label>Last Mileage General Service</label>
+                <h5 class="detail">{{ viewDetail?.lmGenService }}</h5>
+              </div>
+              <div class="col-md-4">
+                <label>Last Mileage Tyres</label>
+                <h5 class="detail">{{ viewDetail?.lmTyresChange }}</h5>
+              </div>
+              <div class="col-md-4">
+                <label>Last Mileage Vehicle Body</label>
+                <h5 class="detail">{{ viewDetail?.lmVehicleBody }}</h5>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-4">
+                <label>Fuel Type</label>
+                <div *ngIf="viewDetail?.fuelType == 1">
+                  <h5 class="detail">Benzine</h5>
+                </div>
+                <div *ngIf="viewDetail?.fuelType == 2">
+                  <h5 class="detail">Diesel</h5>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label>Status</label>
+                <h5 class="detail">{{ viewDetail?.status }}</h5>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

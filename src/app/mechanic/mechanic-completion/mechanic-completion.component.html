@@ -1,0 +1,378 @@
+
+<div id = "mainRequests">
+    <!-- This is table on which vehicle service due displayed -->
+    <ng-container *ngIf = "completedRequest.length>0">
+    <div
+      id="RequestTable"
+      style="margin-left: 190px"
+      class="col-lg-12 col-md-12 col-xl-12"
+    >
+      <hr/>
+      <h2 style="text-align: center">Vehicles Maintenance Submission</h2>
+      <hr/>
+      <table
+        class="table table-hover table-bordered table-condenced table-sm table-shadow"
+        id="CompletedRequestTable"
+      >
+        <thead>
+          <tr>
+            <th>Plate Number</th>
+            <th>Date Sent To Garage</th>
+            <th>Maintenance Cost</th>
+            <th>Date From Garage</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let request of completedRequest">
+                <td>{{ request.plateNo }}</td>
+                <td>{{ request.dateTaken | date }}</td>
+                <td>{{ request.maintenanceCost }}</td>
+                <td>{{ request.dateFromGarage|date}}</td>
+                <td>
+                  <div class="status pool"  *ngIf="request.status == 'Completed'">
+                    {{ request.status }}
+                  </div>
+                  <div class="status" style="background-color: green;" *ngIf="request.status == 'Authorized'">
+                    {{ request.status }}
+                  </div>
+                  <div class="status maintenance" *ngIf="request.status == 'Submitted'">
+                    {{ request.status }}
+                  </div>
+                </td>
+                <td>
+                  <span>
+                    <a
+                      style="display: inline-block"
+                      (click)="onOpenModal(request, 'view')"
+                      class="btn btn-outline-info"
+                      data-original-title="View"
+                    >
+                      Detail
+                    </a>
+      
+                    <a *ngIf="request.status=='Completed'"
+                      (click)="onOpenModal(request, 'submit')"
+                      class="btn btn-outline-danger"
+                      data-original-title="Maintenance"
+                      >Submit</a
+                    >
+                    <a *ngIf="request.status=='Submitted'"
+                    (click)="onOpenModal(request, 'submit')"
+                    class="btn btn-outline-danger"
+                    data-original-title="Maintenance"
+                    >Update</a
+                  >
+                  
+                  </span>
+                  
+                </td>
+              </tr>
+        </tbody>
+      </table>
+    </div>
+    </ng-container>
+    <ng-container *ngIf = "completedRequest.length==0">
+      <div style="margin-left: 300px;">
+        <hr/>
+        <h2 style="text-align: center">Vehicles Maintenance Submission</h2>
+         <hr />
+         <div class="callout callout-info">
+          <p>You Don't Have Completed Request</p>
+        </div>
+      </div>
+    </ng-container>
+    <!-- End of vehicle displayer -->
+   
+
+    <div class="container" id="main-container">
+     <!-- This is maintenance submission form -->
+        <div
+        class="modal fade"
+        id="maintenanceSubmissionModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="maintenanceSubmissionModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="maintenanceSubmissionModalLabel">
+                Maintenance Submission Form
+              </h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span style="color:red;" aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form 
+              [compareMilege] = "['previousMil', 'currentMilege']"
+              #maintenanceSubmissionForm="ngForm"
+              >
+                <div class="form-row">
+                  <input type="hidden" ngModel="{{modifyForm.id}}" 
+                       name="id" class="form-control" autocomplete="off"
+                       #id="ngModel" 
+                       readonly/>
+                       <input type="hidden" ngModel="{{modifyForm.modifiedBy}}" 
+                       name="modifiedBy" class="form-control" autocomplete="off"
+                       #modifiedBy="ngModel" 
+                       readonly/>
+                       <input type="hidden" ngModel="{{modifyForm.requestId}}" 
+                       name="requestId" class="form-control" autocomplete="off"
+                       #requestId="ngModel" 
+                       readonly/>
+                  <div class="form-group col-md-8">
+                    <label for="name">Directorate</label>
+                    <input type="text" ngModel="{{requestDirectorate}}" name="requestDirectorate"
+                      class="form-control" autocomplete="off"
+                       readonly/>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="name">Plate No</label>
+                    <input type="text" ngModel="{{modifyForm.plateNo}}" 
+                       name="plateNo" class="form-control" autocomplete="off"
+                       #plateNo="ngModel" 
+                       readonly/>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-8">
+                    <label for="name">Model/Type</label>
+                    <input type="text" ngModel="{{model}}" name="model"
+                      class="form-control" autocomplete="off"
+                       readonly/>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="name">Date Sent To Garage</label>
+                    <input type="text" ngModel="{{modifyForm.dateTaken | date}}" 
+                       name="dateTaken" class="form-control" autocomplete="off"
+                       #dateTaken="ngModel" 
+                       required="" readonly
+                       />
+                  </div>
+                  
+                </div>
+                <input type="text" ngModel [ngModel]="previousMilege" 
+                name="previousMil" class="form-control" autocomplete="off"
+                #previousMil="ngModel" 
+                  required="" hidden
+                />
+                <div class ="row">
+                  <div class="form-group col-md-6">
+                    <label for="name">Date Out Of Garage</label>
+                    <input type="text" ngModel="{{modifyForm.dateFromGarage | date}}" 
+                       name="dateFromGarage" class="form-control" autocomplete="off"
+                       #dateFromGarage="ngModel" 
+                         required="" readonly
+                       />
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="name">Current Millage(KM)</label>
+                    <input type="text" ngModel="{{modifyForm.currentMilege}}" 
+                       name="currentMilege" class="form-control" autocomplete="off"
+                       #currentMilege="ngModel" 
+                       pattern = "^\d+\.?\d*$"
+                       [class.is-invalid]="(currentMilege.invalid && currentMilege.touched) || currentMilege.errors" 
+                       required=""
+                       />
+                       <div *ngIf="currentMilege.errors && (currentMilege.invalid)">
+                        <small class="text-danger" *ngIf="currentMilege.errors.required">Current millage is required</small>
+                        <small class="text-danger" *ngIf="currentMilege.errors.pattern">incorrect current Millage format</small>
+                        <small class="text-danger" *ngIf="currentMilege.errors['milege']">Current Milege can not be less than {{previousMilege}}</small>
+                      </div>
+
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="name">Petrol Amount(%)</label>
+                    <input type="text" ngModel="{{modifyForm.petrolAmount}}"
+                      name="petrolAmount" class="form-control" autocomplete="off"
+                      placeholder="petrol amount..."  #petrolAmount="ngModel"
+                      pattern = "^\d+\.?\d*$"
+                      [class.is-invalid]="petrolAmount.invalid && petrolAmount.touched" 
+                      required=""/>
+            
+                    <div *ngIf="petrolAmount.errors && (petrolAmount.invalid && petrolAmount.touched)">
+                      <small class="text-danger" *ngIf="petrolAmount.errors.required">petrol amount is required</small>
+                      <small class="text-danger" *ngIf="petrolAmount.errors.pattern">incorrect petrol amount format</small>
+                    </div>
+      
+                 </div>
+                  <div class="form-group col-md-6">
+                    <label for="name">Vehicle Received By</label>
+                    <input type="text" ngModel="{{modifyForm.vehicleReceivedBy}}"
+                      name="vehicleReceivedBy" class="form-control" autocomplete="off"
+                      placeholder="vehicle received by..."  #vehicleReceivedBy="ngModel"
+                    
+                      [class.is-invalid]="vehicleReceivedBy.invalid && vehicleReceivedBy.touched" required=""/>
+          
+                    <div *ngIf="vehicleReceivedBy.errors && (vehicleReceivedBy.invalid && vehicleReceivedBy.touched)">
+                      <small class="text-danger" *ngIf="vehicleReceivedBy.errors.required">vehicle received by is required</small>
+                    </div>
+                </div>
+                </div>
+                <div class = "row">
+                    <div class="form-group col-md-6">
+                      <label for="name">Vehicle Given By</label>
+                      <input type="text" ngModel="{{modifyForm.vehicleGivenBy}}"
+                        name="vehicleGivenBy" class="form-control" autocomplete="off"
+                        placeholder="vehicle given by..."  #vehicleGivenBy="ngModel"
+                      
+                        [class.is-invalid]="vehicleGivenBy.invalid && vehicleGivenBy.touched" required=""/>
+            
+                      <div *ngIf="vehicleGivenBy.errors && (vehicleGivenBy.invalid && vehicleGivenBy.touched)">
+                        <small class="text-danger" *ngIf="vehicleGivenBy.errors.required">vehicle given by is required</small>
+                      </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="name">Vehicle Received Date</label>
+                    <input type="date" ngModel="{{modifyForm?.vehicleReceivedDate}}"
+                        [ngModel]="modifyForm.vehicleReceivedDate | date: 'yyyy-MM-dd'"
+                      name="vehicleReceivedDate" class="form-control" autocomplete="off"
+                      #vehicleReceivedDate="ngModel"
+                    
+                      [class.is-invalid]="vehicleReceivedDate.invalid && vehicleReceivedDate.touched" required=""/>
+          
+                    <div *ngIf="vehicleReceivedDate.errors && (vehicleReceivedDate.invalid && vehicleReceivedDate.touched)">
+                      <small class="text-danger" *ngIf="vehicleReceivedDate.errors.required">vehicle given date is required</small>
+                    </div>
+                </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    id="reject-request-form"
+                    data-dismiss="modal"
+                    class="btn btn-secondary"
+                  >
+                    Close
+                  </button>
+                  <button data-dismiss="modal" (click)="submitMaintenanceRequest(maintenanceSubmissionForm)" [disabled]="maintenanceSubmissionForm.invalid || isLessthan" type="submit" class="btn btn-primary" >Submit Vehicle</button>                
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- End of maintenance submission form -->
+         <!-- This is to view details of maintenance request -->
+         <div
+            class="modal fade"
+            id="detailsMaintenanceModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="detailsMaintenanceModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" 
+                  id="detailsMaintenanceModalLabel">
+                  Vehicle Maintenance Submission Details
+                </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span style="color:red;" aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class = "col-md-6">
+                        <p>
+                            Plate No: <strong><span>{{ details?.plateNo }}</span></strong>
+                        </p>
+                        <p>
+                          Model/Type: <strong><span>{{ model }}</span></strong>
+                       </p>
+                        <p>
+                            Requestor Director/Branch: <strong><span>{{ requestDirectorate }}</span></strong>
+                         </p>
+                        <p>
+                             Maintenance Cost: <strong><span>{{ details?.maintenanceCost}}</span></strong>
+                        </p>
+                        <p>
+                            Date Sent To Garage: <strong><span>{{ details?.dateTaken | date}}</span></strong>
+                        </p>
+                        <p>
+                            Date From Garage: <strong><span>{{ details?.dateFromGarage|date}}</span></strong>
+                        </p>
+                          <p>
+                            Technical By: <strong><span>{{ details?.technicalBy}}</span></strong>
+                         </p>
+                         <p>
+                            Technical Date: <strong><span>{{ details?.technicalRespondDate|date}}</span></strong>
+                        </p>
+                        <p>
+                          Km On Technical: <strong><span>{{ previousMilege}} km</span></strong>
+                       </p>
+                        <p>
+                          Fuel On Technical: <strong><span>{{ fuelTechnical}}</span></strong>
+                        </p>
+                        
+                        <p *ngIf="details?.status=='Completed'">
+                            Status: <strong><span style="color: rgb(98, 45, 45)
+                            ;">{{ details?.status }}</span></strong>
+                        </p>
+                        <p *ngIf="details?.status=='Submitted'">
+                            Status: <strong><span style="color: yellowgreen
+                            ;">{{ details?.status }}</span></strong>
+                        </p>
+                        <p *ngIf="details?.status=='Authorized'">
+                            Status: <strong><span style="color: green
+                            ;">{{ details?.status }}</span></strong>
+                        </p>
+
+                      
+                    </div>
+                    <div class="col-md-6">
+
+                          <ng-container *ngIf="details?.status=='Submitted' || details?.status=='Authorized'">
+                            <p>
+                                Petrol Amount: <strong><span>{{ details?.petrolAmount }}</span></strong>
+                            </p>
+                            <p>
+                              Vehicle Given By: <strong><span>{{ details?.vehicleGivenBy}}</span></strong>
+                            </p>
+                            <p>
+                              Vehicle Received By: <strong><span>{{ details?.vehicleReceivedBy}}</span></strong>
+                          </p>
+                            <p>
+                                Vehicle Given Date: <strong><span>{{ details?.vehicleReceivedDate|date}}</span></strong>
+                            </p>
+                        </ng-container>
+                        <ng-container *ngIf="details?.status=='Authorized'">
+                            <p>
+                                Authorized By: <strong><span>{{ details?.authorizedBy }}</span></strong>
+                            </p>
+                            <p>
+                              Authorized Date: <strong><span>{{ details?.authorizedDate | date}}</span></strong>
+                            </p>
+                        </ng-container>
+                        
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">OK</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> 
+      <!-- End of maintenance request details-->
+
+    </div>
+    </div>

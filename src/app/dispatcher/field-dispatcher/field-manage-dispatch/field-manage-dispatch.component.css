@@ -1,0 +1,10 @@
+#detailrequest{
+    margin-top: 100px;
+    margin-left: 18%;
+    width: 80%;
+
+}
+  ng-dropdown {
+     width: auto !important; max-width: 550px; min-width: 100%;
+     }
+

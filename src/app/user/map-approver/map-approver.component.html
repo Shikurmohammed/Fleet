@@ -1,0 +1,57 @@
+
+<div id="mapping">
+     <h5>Map Requester Approver for Advance Payment</h5>
+     <hr>
+    <form  [formGroup]="form" (ngSubmit)="addMapping()">
+         <div class="row">
+             <div class="col-md-4">
+                 <label for="requester">Requesters</label>
+                 <ng-select
+                 formControlName="requester"
+                 [ngClass]="{
+                   'is-invalid': submitted && f['requester'].errors
+                 }"
+                  id = "requester" class="custom"  appearance="outline">
+                    <ng-option value="" disabled selected>Please Select requester...</ng-option>
+                    <ng-option *ngFor="let requester of requesters" value="{{requester!.username}}">
+                        {{requester!.username}}
+                    </ng-option>
+                 </ng-select>
+                 <div
+                 *ngIf="submitted && f['requester'].errors"
+                 class="invalid-feedback"
+               >
+                 <div *ngIf="f['requester'].errors?.['required']">
+                   requester is required.
+                 </div>
+               </div>
+             </div>
+             <div class="col-md-4">
+                <label for="authorizer">Approvers</label>
+                <ng-select 
+                formControlName="authorizer"
+                [ngClass]="{
+                  'is-invalid': submitted && f['authorizer'].errors
+                }"
+                id = "authorizer" class="custom"  appearance="outline">
+                    <ng-option value="" disabled selected>Please Select approver...</ng-option>
+                    <ng-option *ngFor="let authorizer of authorizers" value="{{authorizer!.username}}">
+                        {{authorizer!.username}}
+                    </ng-option>
+                 </ng-select>
+                 <div
+                 *ngIf="submitted && f['authorizer'].errors"
+                 class="invalid-feedback"
+               >
+                 <div *ngIf="f['authorizer'].errors?.['required']">
+                   approver is required.
+                 </div>
+               </div>
+             </div>
+         </div>
+         <div style="margin-top: 10px;">
+            <button type="submit" style="text-align: right;" class="btn btn-primary">Map</button>
+         </div>
+    </form>
+
+</div>

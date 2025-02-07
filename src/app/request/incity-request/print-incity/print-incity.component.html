@@ -1,0 +1,138 @@
+<div class="container" id="printapproved">
+    <div class="card">
+        <div class="card-header hiddenprint">
+            <button (click)="back()" class="btn btn-info btn-sm col-md-2"
+                style="float: left; width: 50px;">Back</button>
+            <button (click)="pPDF()" class="btn btn-danger" style="float: right; margin-right: 10px;"><i
+                    class="fa fa-file-pdf"></i></button>
+            <button (click)="printForm()" class="btn btn-primary" style="float: right; margin-right: 10px;"><i
+                    class="fa fa-print" aria-hidden="true"></i></button>
+        </div>
+    </div>
+
+    <div class="hiddendata">
+        <div class="brand-image img-circle">
+            <img src="./assets/img/AB1.png" class="img" alt="AB Logo" />
+        </div>
+
+        <div>
+            <img src="./assets/img/bank.png" class="imgs" alt="AB Logo" />
+            <div class="hrline"></div>
+            <div class="hrawash"></div>
+            <div class="hrtitle">City Vehicle Requisition</div>
+            <div class="hrdate"> <strong></strong> </div>
+            <div class="datetimes"><strong>Date: {{currentDate|date}}<br>Time:{{ currentTime | date:
+                    'hh:mm:ss a' }}</strong> </div>
+        </div>
+    </div>
+
+
+    <table class="table table-shadow table-bordered" id="print">
+
+        <thead class="headerTable">
+            <tr>
+                <th colspan="3" class="text-center">City Vehicle Requisition</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>
+                    <div>Requester: <span><strong>{{printRequest.requestBy}}</strong></span>
+                    </div>
+                </td>
+                <td>
+                    <div>Directorate: <span><strong>{{printRequest.directorate}}</strong></span></div>
+                </td>
+                <td>
+                    <div>Destination: <span><strong>{{printRequest.destination}}</strong></span></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>Vehicle Needed From: <span><strong>{{plateNo.departureDate |date}}</strong></span></div>
+                </td>
+                <td>
+                    <div>Vehicle Needed To: <span><strong>{{plateNo.returnDate | date}}</strong></span></div>
+                </td>
+
+                <td>
+                    <div>Reason: <span><strong>{{printRequest.remark}}</strong></span></div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>Approver: <span><strong>{{printRequest.approvedBy}}</strong></span>
+                    </div>
+                </td>
+                <td>
+                    <div>Approved Date: <span><strong>{{printRequest.approvedDate | date}}</strong></span></div>
+                </td>
+                <td>
+                    <div>Driver Name: <span><strong>{{plateNo?.driverName}}</strong></span>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>Plate Number: <span><strong>{{plateNo?.plateNumber}}</strong></span>
+                    </div>
+                </td>
+                <td>
+                    <div>Driver Phone No: <span><strong>{{phone?.tellNo}}</strong></span></div>
+                </td>
+                <td>
+                    <div>Requested Date: <span><strong>{{printRequest.requestedDate | date}}</strong></span></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>Requested Time: <span><strong>{{printRequest?.requestedTime|convertFrom24To12Format}}</strong></span>
+                    </div>
+                </td>
+                <td>
+                    <div>Passenger's Telephone: <span><strong>{{printRequest?.passTelephone}}</strong></span></div>
+                </td>
+                <td>
+                    <div>Requested For: <span><strong>{{printRequest.requestedFor}}</strong></span></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="approvalform">
+        <table class="table table-sm" style="width: 100%;">
+            <tr>
+                <td>Passenger (s): <strong>{{printRequest.passenger}}</strong></td>
+                <td style="margin-left: 100px;">Dispatch Time: <Strong>{{printRequest.approvedDate | date:'hh:mm:ss a'
+                        }}</Strong></td>
+            </tr>
+
+            <tr style="width: 100%;">
+                <td class="passremark" colspan="3" style="width: 50%;"> Passenger(s) Remark:
+                    <span><Strong><sub>...........................................
+                                .............................................................................................................
+                                .......................................................................................
+                            </sub></Strong></span></td>
+            </tr>
+            <tr>
+                <td class="passremark" colspan="3" style="width: 50%;"> Driver Remark:
+                    <span><Strong><sub>...........................................
+                                .............................................................................................................
+                                .......................................................................................
+                            </sub></Strong></span></td>
+            </tr>
+            <tr>
+                <td>Milege On Return: <span><Strong><sub>...............km</sub></Strong></span></td>
+                <td style="margin-left: -200px;">Return Date: <sub>...............</sub></td>
+                <td>Driver Sign: <span><Strong><sub>...............</sub></Strong></span></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="card-footer">
+    </div>
+</div>

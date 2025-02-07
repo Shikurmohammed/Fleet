@@ -1,0 +1,326 @@
+<div id="vehicle">
+  <div style="margin-left: 50%; margin-top: 100px">
+    <h2>Advance Payments</h2>
+  </div>
+
+  <div
+    class="col-lg-12 col-md-12 col-xl-12"
+    *ngIf="hasData"
+    style="margin-left: 210px"
+  >
+    <hr />
+    <table
+      class="table table-hover table-bordered table-condenced table-sm table-shadow"
+      id="datatableexample"
+    >
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Staff Name</th>
+          <th>Staff Account</th>
+          <th>Purpose</th>
+          <!-- <th>Grade</th> -->
+          <th>No of Days</th>
+          <th>Total Amount</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let adv of data">
+          <td>{{ adv.id }}</td>
+          <td>{{ adv.staffName }}</td>
+          <td>{{ adv.staffAcc }}</td>
+          <td>{{ adv.purpose }}</td>
+          <!-- <td>{{ adv.grade }}</td> -->
+          <td>{{ adv.noOfDays }}</td>
+          <td>{{ adv.totalAmount }}</td>
+
+          <td>
+            <div
+              class="status unauthorized"
+              *ngIf="adv.status == 'Unauthorized'"
+            >
+              {{ adv.status }}
+            </div>
+            <div class="status authorized" *ngIf="adv.status == 'Authorized'">
+              {{ adv.status }}
+            </div>
+            <div class="status rejected" *ngIf="adv.status == 'Rejected'">
+              {{ adv.status }}
+            </div>
+            <div class="status approved" *ngIf="adv.status == 'Granted'">
+              {{ adv.status }}
+            </div>
+          </td>
+          <td>
+            <span>
+              <a
+                *ngIf="adv.status == 'Unauthorized'"
+                class="btn btn-outline-primary btn-spacing"
+                (click)="EditRequest(adv.id)"
+                >Update</a
+              >
+              <a
+                *ngIf="adv.status == 'Rejected'"
+                class="btn btn-outline-info btn-spacing"
+                (click)="onOpenModal(adv.reasonForRejection, 'reason')"
+                >Reason</a
+              >
+              <a
+                *ngIf="adv.status != 'Unauthorized'"
+                class="btn btn-outline-success btn-spacing"
+                (click)="printDetail(adv.id)"
+                >Print/Export</a
+              >
+              <a
+                class="btn btn-outline-primary btn-spacing"
+                (click)="onOpenModal(adv.id, 'detail')"
+                >Detail</a
+              >
+              <a
+                *ngIf="adv.status == 'Unauthorized'"
+                class="btn btn-outline-danger btn-spacing"
+                (click)="onOpenModal(adv.id, 'cancel')"
+                >Cancel</a
+              >
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-info" style="margin-left: 190px" *ngIf="noData">
+    {{ noDatamessage }}
+  </div>
+  <div class="container" id="main-container">
+    <!-- Reason for Rejection Modal -->
+    <div
+      class="modal fade in"
+      id="reasonModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="reasonModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reasonModalLabel">
+              Reason for Advanced Payment Rejection
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div></div>
+            <p>{{ reasonForRejection }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dispose Modal -->
+    <div
+      class="modal fade in"
+      id="cancelModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="cancelModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="cancelModalLabel">
+              Cancel Advanced Payment Request
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to cancel your request?</p>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                No
+              </button>
+              <!-- (click) = "onDeleteEmloyee(deleteEmployee!)" -->
+              <button
+                class="btn btn-danger"
+                data-dismiss="modal"
+                (click)="cancelRequest(advId)"
+              >
+                Yes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div
+      class="modal fade in"
+      id="detailModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="detailModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="detailModalLabel">
+              Advance Payment Detail
+            </h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <p>
+                  Requested By:
+                  <strong
+                    ><span>{{ advDetail?.reqBy }}</span></strong
+                  >
+                </p>
+                <p>
+                  Requested Date:
+                  <strong
+                    ><span>{{ advDetail?.crtDate | date }}</span></strong
+                  >
+                </p>
+                <p>
+                  Directorate:
+                  <strong
+                    ><span>{{ advDetail?.reqDir }}</span></strong
+                  >
+                </p>
+                <p>
+                  Staff Name:
+                  <strong
+                    ><span>{{ advDetail?.staffName }}</span></strong
+                  >
+                </p>
+                <p>
+                  Staff Account:
+                  <strong
+                    ><span>{{ advDetail?.staffAcc }}</span></strong
+                  >
+                </p>
+                <p>
+                  Claim Branch:
+                  <strong
+                    ><span>{{ advDetail?.claimBranch }}</span></strong
+                  >
+                </p>
+                <p>
+                  Total Amount:
+                  <strong
+                    ><span>{{ advDetail?.totalAmount }}</span></strong
+                  >
+                </p>
+                <p>
+                  Purpose:
+                  <strong
+                    ><span>{{ advDetail?.purpose }}</span></strong
+                  >
+                </p>
+                <p>
+                  Type Of Settlement:
+                  <strong
+                    ><span>{{ advDetail?.typeOfSettlment }}</span></strong
+                  >
+                </p>
+              </div>
+              <div class="col-md-6">
+                <p>
+                  Departure Date:
+                  <strong
+                    ><span>{{ advDetail?.departureDate | date }}</span></strong
+                  >
+                </p>
+                <p>
+                  Grade:
+                  <strong
+                    ><span>{{ advDetail?.grade }}</span></strong
+                  >
+                </p>
+                <p>
+                  No of Days:
+                  <strong
+                    ><span>{{ advDetail?.noOfDays }}</span></strong
+                  >
+                </p>
+                <p>
+                  Status:
+                  <strong
+                    ><span>{{ advDetail?.status }}</span></strong
+                  >
+                </p>
+                <span *ngIf="advDetail?.status == 'Authorized'">
+                  <p>
+                    Authorized By:
+
+                    <strong
+                      ><span>{{ advDetail?.approvedBy }}</span></strong
+                    >
+                  </p>
+                  <p>
+                    Authorized Date:
+                    <strong
+                      ><span>{{ advDetail?.appDate | date }}</span></strong
+                    >
+                  </p>
+                </span>
+                <span *ngIf="advDetail?.status == 'Rejected'">
+                  <p>
+                    Rejected By:
+                    <strong
+                      ><span>{{ advDetail?.approvedBy }}</span></strong
+                    >
+                  </p>
+                  <p>
+                    Rejected Date:
+                    <strong
+                      ><span>{{ advDetail?.appDate | date }}</span></strong
+                    >
+                  </p>
+                  <p>
+                    Reason for rejection:
+                    <strong
+                      ><span>{{ advDetail?.reasonForRejection }}</span></strong
+                    >
+                  </p>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

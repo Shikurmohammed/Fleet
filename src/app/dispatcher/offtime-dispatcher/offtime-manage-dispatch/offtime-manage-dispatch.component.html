@@ -1,0 +1,331 @@
+<div class="container" id="detailrequest">
+  <div class="card shadow">
+    <div class="card-header">
+      <h3 class="text-center">OffTime Request Detail</h3>
+      <button
+        (click)="backView()"
+        class="btn btn-sm btn-info"
+        style="float: left"
+      >
+        Back
+      </button>
+    </div>
+    <div class="card-body">
+      <table class="table table-condenced table-sm table-shadow">
+        <tbody>
+          <tr>
+            <ng-container>
+              <td>Directorate/Branch:</td>
+              <th>{{ request?.reqDir }}</th>
+              <td>Requested By:</td>
+              <th>{{ request?.reqBy }}</th>
+              <td>Requested Date:</td>
+              <th>{{ request?.date | date }}</th>
+            </ng-container>
+          </tr>
+
+          <tr>
+            <ng-container>
+              <td>Reason for Request:</td>
+              <th>{{ request?.reason }}</th>
+              <td>Vehicle Needed From:</td>
+              <th>
+                {{ request?.vehicleNeededFrom | convertFrom24To12Format }}
+              </th>
+              <td>Vehicle Needed To:</td>
+              <th>{{ request?.vehicleNeededTo | convertFrom24To12Format }}</th>
+            </ng-container>
+          </tr>
+          <tr>
+            <ng-container>
+              <td>Name of Passengers:</td>
+              <th>{{ request?.nameOfPassengers }}</th>
+              <td>Residential Area:</td>
+              <th>{{ request?.residentialArea }}</th>
+              <td>Telephone:</td>
+              <th>{{ request?.telephone }}</th>
+            </ng-container>
+          </tr>
+          <tr>
+            <ng-container>
+              <td>Departure Date:</td>
+              <th>{{ request?.departureDate | date }}</th>
+              <td>Morning Time:</td>
+              <th>{{ request?.morningTime | convertFrom24To12Format }}</th>
+              <td>Night Time:</td>
+              <th>{{ request?.nightTime | convertFrom24To12Format }}</th>
+            </ng-container>
+          </tr>
+
+          <tr>
+            <ng-container>
+              <td>Return Date:</td>
+              <th>{{ request?.returnDate | date }}</th>
+              <td>Return Time:</td>
+              <th>{{ request?.returnTime | convertFrom24To12Format }}</th>
+              <td>Kilometer:</td>
+              <th>{{ request?.km }}</th>
+            </ng-container>
+          </tr>
+
+          <tr>
+            <ng-container>
+              <td>Status:</td>
+              <th>{{ request?.status }}</th>
+              <td>Authorized By:</td>
+              <th>{{ request?.authorizedBy }}</th>
+              <td>Authorized Date:</td>
+              <th>{{ request?.authorizedDate | date }}</th>
+            </ng-container>
+          </tr>
+          <tr>
+            <ng-container>
+              <td>Requested Time:</td>
+              <th>{{ request?.requestedTime|convertFrom24To12Format }}</th>
+              <td>Requested For:</td>
+              <th>{{ request?.requestedFor }}</th>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+      <div style="float: right">
+        <td>
+          <button
+            class="btn btn-sm btn-primary btn-raised"
+            style="margin-left: 10px"
+            type="submit"
+            (click)="onOpenModal('approve')"
+          >
+            Dispatch
+          </button>
+<!-- 
+          <button
+            class="btn btn-sm btn-danger btn-raised"
+            style="margin-left: 10px"
+            type="submit"
+            (click)="onOpenModal('reject')"
+          >
+            Reject
+          </button> -->
+        </td>
+      </div>
+    </div>
+
+    <div class="container" id="main-container">
+      <!-- Dispatch Modal -->
+      <div
+        class="modal fade in"
+        id="approveRequestModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="approveRequestModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="approveRequestModalLabel">
+                Dispatch Off-time Request
+              </h4>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="form" (ngSubmit)="approveRequest()">
+                <input type="hidden" name="id" class="form-control" id="id" />
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="directorate">Vehicle Type</label>
+                    <ng-select
+                      formControlName="vtype"
+                      id="vtype"
+                      class="custom"
+                      appearance="outline"
+                      [clearable]="false"
+                    >
+                      <ng-option
+                        *ngFor="let vType of vehicleType"
+                        value="{{ vType?.id }}"
+                      >
+                        {{ vType?.vehicleType }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="plateNo">Vehicles On Pool</label>
+                    <ng-select
+                      formControlName="plateNo"
+                      id="plateNo"
+                      class="custom"
+                      appearance="outline"
+                      [clearable]="false"
+                      [ngClass]="{
+                        'is-invalid': submitted && f['plateNo'].errors
+                      }"
+                    >
+                      <ng-option
+                        *ngFor="let vehicle of vehicles"
+                        value="{{ vehicle.plateNo }}"
+                      >
+                        {{ vehicle.plateNo }}
+                      </ng-option>
+                    </ng-select>
+                    <div
+                      *ngIf="submitted && f['plateNo'].errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f['plateNo'].errors?.['required']">
+                        Choose a vehicle to dispatch.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="driverName">Assigned Driver name</label>
+                    <ng-select
+                      [ngModel]="driverName"
+                      formControlName="driverName"
+                      id="driverName"
+                      class="custom"
+                      appearance="outline"
+                      [clearable]="false"
+                      [ngClass]="{
+                        'is-invalid': submitted && f['driverName'].errors
+                      }"
+                    >
+                      <ng-option
+                        *ngFor="let driver of drivers"
+                        value="{{ driver?.fullName }}"
+                      >
+                        {{ driver?.fullName }}
+                      </ng-option>
+                    </ng-select>
+                    <div
+                      *ngIf="submitted && f['driverName'].errors"
+                      class="invalid-feedback"
+                    >
+                      <div *ngIf="f['driverName'].errors?.['required']">
+                        Driver is required.
+                      </div>
+                    </div>
+                    <div *ngIf="isAvailable == 0" class="text-warning">
+                      {{ alertAvailability }}
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="kmOnDep"> Km Reading on Departure</label>
+                    <input
+                      type="text"
+                      formControlName="kmOnDep"
+                      [ngModel]="departureKm"
+                      class="form-control"
+                      id="kmOnDep"
+                      readonly
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="appBy">Approved By</label>
+                    <input
+                      type="text"
+                      formControlName="appBy"
+                      class="form-control"
+                      id="appBy"
+                      readonly
+                    />
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="appDate">Approval Date</label>
+                    <input
+                      type="date"
+                      formControlName="appDate"
+                      class="form-control"
+                      id="appDate"
+                      readonly
+                    />
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button
+                    id="btn-dispatch"
+                    type="submit"
+                    class="btn btn-primary"
+                  >
+                    Dispatch
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Reject Modal -->
+      <div
+        class="modal fade in"
+        id="rejectRequestModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="rejectRequestModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="approveRequestModalLabel">
+                Off-time Vehicle Rejection Form
+              </h4>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group col-md">
+                <div>
+                  <label for="reasonForRejection">Reason For Rejection</label>
+                  <textarea
+                    type="text"
+                    class="form-control"
+                    id="reasonForRejection"
+                    onkeyup="success()"
+                    #reasonForRejection
+                    required
+                  ></textarea>
+                </div>
+                <div *ngIf="showMessage == true" style="color: red">
+                  <p>reason for rejection is required</p>
+                </div>
+
+                <div class="modal-footer">
+                  <button
+                    id="btn-reject"
+                    type="submit"
+                    class="btn btn-danger"
+                    disabled
+                    (click)="rejectRequest(reasonForRejection.value)"
+                  >
+                    Reject
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

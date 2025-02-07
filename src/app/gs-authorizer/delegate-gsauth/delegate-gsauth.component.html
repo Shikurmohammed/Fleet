@@ -1,0 +1,144 @@
+<div id="user">
+    <div
+      id="userTable"
+      style="margin-left: 190px"
+      class="col-lg-12 col-md-12 col-xl-12"
+    >
+    <h2 style="text-align: center">Delegate Authorizer</h2>
+    <hr />
+      <table
+       class="table table-hover table-bordered table-condenced table-sm table-shadow"
+        id="datatableexample"
+      >
+        <thead>
+          <tr>
+            <th>User Name</th>
+            <th>Role</th>
+            <th>Delegation</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of data">
+            <td>{{ user.username }}</td>
+            <td>{{user.roleId}}</td>
+            <td>
+              <ng-container *ngIf = "user.isDelegated == '1'">
+                  <div class = "status" style="background-color: green;">Delegated</div>
+              </ng-container>
+              <ng-container *ngIf = "user.isDelegated == '0'">
+                <div class = "status pool">Not Delegated</div>
+              </ng-container>
+            </td>
+            <td>
+                <ng-container *ngIf = "user.isDelegated == '0'">
+                      
+                    <a
+                    style="display: inline-block"
+                    (click)="onOpenModal(user, 'delegate')"
+                    class="btn btn-outline-primary"
+                    data-original-title="delegate"
+                    >
+                        Delegate
+                    </a>
+                    
+                </ng-container>
+              <ng-container *ngIf = "user.isDelegated == '1'">
+                    <a
+                    (click)="onOpenModal(user, 'deactivate')"
+                    class="btn btn-outline-danger"
+                    data-original-title="Dispose"
+                    >Deactivate</a>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <div class="container" id="main-container">
+  
+      <!-- Delegate user Modal -->
+      <div
+        class="modal fade"
+        id="delegateUserModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="delegateUserModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="delegateUserModalLabel">Delegate User to Authorizer</h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>
+                Are you sure you want to delegate {{ delegateUser?.username }} user as authorizer?
+              </p>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  No
+                </button>
+                <button (click)="DelegateUser(delegateUser!)" class="btn btn-danger" data-dismiss="modal">Yes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Deactivate the delegation -->
+        <div
+        class="modal fade"
+        id="deactivateDelegationModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="deactivateDelegationModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deactivateDelegationModalLabel">Deactivate Delegation</h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>
+                Are you sure you want to deactivate {{ deactivateDelegation?.username }}?
+              </p>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  No
+                </button>
+                <button (click)="DeactivateDelegation(deactivateDelegation!)" class="btn btn-danger" data-dismiss="modal">Yes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End of deactivation -->
+    </div>
+  </div>
+  

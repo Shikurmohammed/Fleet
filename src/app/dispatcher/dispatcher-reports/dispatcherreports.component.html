@@ -1,0 +1,541 @@
+<div class="container" id="dispatcherreports">
+  <div class="card card-shadow" style="padding-bottom: 50px;">
+    <div class="card-header" id="headerprint">
+      <h4 class="text-center"> Dispatched Vehicle Report</h4>
+    </div>
+    <div class="card-body" style="height: auto;">
+      <div style="margin-bottom: 50px; margin-top: 20px;">
+        <div style="height: auto;">
+          <h5 style="margin-left: 20px;">Report Type</h5>
+        </div>
+        <div class="ngselectpart">
+          <ng-select appearance="outline" #sels [(ngModel)]="vals" (change)="onSelect()">
+            <ng-option value="Field">Field</ng-option>
+            <ng-option value="Incity">Incity</ng-option>
+            <ng-option value="Offtime">Offtime</ng-option>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+    <!-- field -->
+    <div class="card-body" style="height: auto;"  *ngIf="vals=='Field' || vals=='Incity' || vals=='Offtime'">
+      <div style="margin-bottom: 50px; margin-top: -115px;">
+        <div style="height: auto;">
+          <h5 style="margin-left: 380px;">Report Range</h5>
+        </div>
+        <div class="ngselectranges">
+          <ng-select appearance="outline" #rangs [(ngModel)]="reportranges" (change)="onSelectRanges()">
+            <ng-option value="All">All</ng-option>
+            <ng-option value="Date Range">Date Range</ng-option>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="fieldFilter" *ngIf="vals=='Field' && reportranges =='Date Range'">
+      <form #fieldDateRange="ngForm" (ngSubmit)="fieldDateRangeReport(fieldDateRange)">
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="directorate">From Date</label>
+              <input type="date" class="form-control" [(ngModel)]="dispatched.fieldfromDate" name="fieldfromDate"
+                required #fieldfromDate="ngModel"
+                [ngClass]="{ 'is-invalid': fieldDateRange.submitted && fieldfromDate.invalid }"
+                [class.is-invalid]="fieldfromDate.invalid && fieldfromDate.touched" />
+              <div *ngIf="fieldfromDate.errors && (fieldfromDate.invalid && fieldfromDate.touched)">
+                <small class="text-danger" *ngIf="fieldfromDate.errors.required">from Date is required</small>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="date">To Date</label>
+              <input type="date" class="form-control" [(ngModel)]="dispatched.fieldtoDate" name="fieldtoDate" required
+                #fieldtoDate="ngModel" [ngClass]="{ 'is-invalid': fieldDateRange.submitted && fieldtoDate.invalid }"
+                [class.is-invalid]="fieldtoDate.invalid && fieldtoDate.touched" />
+              <div *ngIf="fieldtoDate.errors && (fieldtoDate.invalid && fieldtoDate.touched)">
+                <small class="text-danger" *ngIf="fieldtoDate.errors.required">to Date is required</small>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <button [disabled]="fieldDateRange.form.invalid" class="btn btn-success btn-sm" id="" type="submit"
+                style="margin-top: 33px; margin-left: 10px;">Show</button>
+            </div>
+
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+    <div class="incityFilter" *ngIf="vals=='Incity' && reportranges =='Date Range'">
+      <form #incityDateRange="ngForm" (ngSubmit)="incityDateRangeReport(incityDateRange)">
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="directorate">From Date</label>
+              <input type="date" class="form-control" [(ngModel)]="dispatched.incityFromDate" name="incityFromDate"
+                required #incityFromDate="ngModel"
+                [ngClass]="{ 'is-invalid': incityDateRange.submitted && incityFromDate.invalid }"
+                [class.is-invalid]="incityFromDate.invalid && incityFromDate.touched" />
+              <div *ngIf="incityFromDate.errors && (incityFromDate.invalid && incityFromDate.touched)">
+                <small class="text-danger" *ngIf="incityFromDate.errors.required">from Date is required</small>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="date">To Date</label>
+              <input type="date" class="form-control" [(ngModel)]="dispatched.incityToDate" name="incityToDate" required
+                #incityToDate="ngModel" [ngClass]="{ 'is-invalid': incityDateRange.submitted && incityToDate.invalid }"
+                [class.is-invalid]="incityToDate.invalid && incityToDate.touched" />
+              <div *ngIf="incityToDate.errors && (incityToDate.invalid && incityToDate.touched)">
+                <small class="text-danger" *ngIf="incityToDate.errors.required">to Date is required</small>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <button [disabled]="incityDateRange.form.invalid" class="btn btn-success btn-sm" id="" type="submit"
+                style="margin-top: 33px; margin-left: 10px;">Show</button>
+            </div>
+
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+
+    <div class="offtimeFilter" *ngIf="vals=='Offtime' && reportranges=='Date Range'">
+      <form #offtimeRange="ngForm" (ngSubmit)="offtimeDateRangeReport(offtimeRange)">
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="directorate">From Date</label>
+              <input type="date" class="form-control" [(ngModel)]="dispatched.offtimeFromDate" name="offtimeFromDate"
+                required #offtimeFromDate="ngModel"
+                [ngClass]="{ 'is-invalid': offtimeRange.submitted && offtimeFromDate.invalid }"
+                [class.is-invalid]="offtimeFromDate.invalid && offtimeFromDate.touched" />
+              <div *ngIf="offtimeFromDate.errors && (offtimeFromDate.invalid && offtimeFromDate.touched)">
+                <small class="text-danger" *ngIf="offtimeFromDate.errors.required">from Date is required</small>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="date">To Date</label>
+              <input type="date" class="form-control" [(ngModel)]="dispatched.offtimeToDate" name="offtimeToDate"
+                required #offtimeToDate="ngModel"
+                [ngClass]="{ 'is-invalid': offtimeRange.submitted && offtimeToDate.invalid }"
+                [class.is-invalid]="offtimeToDate.invalid && offtimeToDate.touched" />
+              <div *ngIf="offtimeToDate.errors && (offtimeToDate.invalid && offtimeToDate.touched)">
+                <small class="text-danger" *ngIf="offtimeToDate.errors.required">to Date is required</small>
+              </div>
+            </div>
+            <div class="form-group col-md-4">
+              <button [disabled]="offtimeRange.form.invalid" class="btn btn-success btn-sm" id="" type="submit"
+                style="margin-top: 33px; margin-left: 10px;">Show</button>
+            </div>
+
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+
+
+    <div class="card-body" id="fieldcard" style="margin-top: -30px;" *ngIf="fieldlength !=0 && isFieldShown && vals =='Field' && reportranges=='Date Range'">
+      <div class="card-header">
+        <button id="" class="btn btn-primary btn-sm" (click)="fieldPrint()" style="float: right;"><i
+            class="fa fa-print"></i></button>
+            <button id="" class="btn btn-danger btn-sm" (click)="fieldPDF()" style="float: right; margin-right: 5px;"><i
+              class="fa fa-file-pdf"></i></button>
+              <button id="" class="btn btn-success btn-sm" (click)="fieldEXCEL()" style="float: right; margin-right: 5px;"><i
+                class="fa fa-file-excel"></i></button>
+
+      </div>
+      <!-- *ngIf="isFieldShown && vals =='Field' && reportranges=='Date Range'" -->
+      <div
+       style="padding-top: 10px; padding-bottom: 50px;">
+
+        <table class="table table-bordered table-condenced table striped table-sm table-hover table-shadow"
+          id="fieldreportbydaterange">
+          <thead style="margin-top: 100px;">
+            <tr class="fieldheader" style="border: none; margin-bottom: 30px;">
+              <th colspan="2" style="border: none;">
+                <img src="./assets/img/awashlogo.png" class="img" alt="AB Logo" style="width: 200px; height: 50px; ">
+              </th>
+              <th style="border: none;" colspan="4">Field Dispatched Report</th>
+              <th style="border: none;" colspan="2">Report Date: {{dateToday | date}} <br>
+                Time:{{ time | date: 'hh:mm:ss a' }}
+              </th>
+            </tr>
+
+            <tr>
+
+              <th>Plate No</th>
+              <th>Driver</th>
+              <th>Fuel</th>
+              <th>Days</th>
+              <th>Requested By</th>
+              <th>Depart Date</th>
+              <th>Km On Depart</th>
+              <th>Km On Return</th>
+              <th>Km Diff</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let req of dispatcher">
+              <td>{{req.plateNo}}</td>
+              <td>{{req.driverName}}</td>
+              <td>{{req.estimatedfuelRequired}} L</td>
+              <td>{{req.noOfDaysRequired}} Day(s)</td>
+              <td>{{req.requestedBy}}</td>
+              <td>{{req.dispdate|date}}</td>
+              <td>{{req.kmReadingOnDeparture}} km</td>
+              <td>{{req.kmReadingOnReturn}} km</td>
+              <td>{{req.kmDifference}} km</td>
+            </tr>
+
+          </tbody>
+
+
+        </table>
+      </div>
+
+    </div>
+    <div *ngIf="fieldlength==0" id="nofield">
+      <div class="bd-callout bd-callout-info">
+        <p class="text-center"><strong>No Field Dispatch Found Matching The Date Range <span style="color: rgb(8, 233, 240);">{{fieldFrom|date}} - {{fieldTo|date}}</span></strong></p>
+      </div>
+    </div>
+
+    <div class="card-body" id="incitycard" style="margin-top: 15px;" *ngIf="incitylength !=0">
+      <div class="card-header" *ngIf="isIncityShown && vals =='Incity' && reportranges=='Date Range'" style="margin-top: -50px;">
+        <button id="" class="btn btn-primary btn-sm" (click)="incityPrint()" style="float: right;"><i
+            class="fa fa-print"></i></button>
+            <button id="" class="btn btn-danger btn-sm" (click)="incityPDF()" style="float: right; margin-right: 5px;"><i
+              class="fa fa-file-pdf"></i></button>
+              <button id="" class="btn btn-success btn-sm" (click)="incityEXCEL()" style="float: right; margin-right: 5px;"><i
+                class="fa fa-file-excel"></i></button>
+
+      </div>
+      <div *ngIf="isIncityShown && vals =='Incity' && reportranges=='Date Range'"
+       style="padding-bottom: 100px; padding-top: 15px;">
+
+        <table class="table table-bordered table-condenced table striped table-sm table-hover table-shadow"
+        id="incityreportbydaterange">
+
+        <thead style="margin-top: 100px;">
+          <tr class="fieldheader" style="border: none; margin-bottom: 30px;">
+            <th colspan="2" style="border: none;">
+              <img src="./assets/img/awashlogo.png" class="img" alt="AB Logo" style="width: 200px; height: 50px; ">
+            </th>
+            <th colspan="3" style="border: none;">Incity Dispatched Report</th>
+            <th style="border: none;" colspan="3">Report Date: {{dateToday | date}} <br>
+              Time:{{ time | date: 'hh:mm:ss a' }}
+            </th>
+          </tr>
+
+          <tr>
+
+            <th>Plate No</th>
+            <th>Driver</th>
+            <th>Departure Date</th>
+
+            <th>Departure Time</th>
+            <th>Requested By</th>
+            <th>Departure Km</th>
+
+            <th>Return Km</th>
+            <th>Return Time</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr *ngFor="let req of incity">
+            <td>{{req.plateNumber}}</td>
+            <td>{{req.driverName}}</td>
+            <td>{{req.departureDate|date}}</td>
+
+            <td>{{req.departureTime | convertFrom24To12Format}}</td>
+            <td>{{req.requestBy}}</td>
+            <td>{{req.departureKm}}</td>
+
+            <td>{{req.returnKm}} km</td>
+            <td>{{req.returnTime | convertFrom24To12Format}}</td>
+          </tr>
+
+        </tbody>
+
+
+      </table>
+      </div>
+
+    </div>
+    <div *ngIf="incitylength==0" id="noincity">
+      <div class="bd-callout bd-callout-info">
+        <p class="text-center"><strong>No Incity Dispatch Found Matching The Date Range <span style="color: rgb(8, 233, 240);">{{incityFrom|date}} - {{incityTo|date}}</span></strong></p>
+      </div>
+    </div>
+
+
+    <div class="card-body" id="offtimecard" style="margin-top: -100px;" *ngIf="offtimelength !=0">
+      <div class="card-header" *ngIf="isOfftimeShown && vals =='Offtime' && reportranges=='Date Range'">
+        <button id="" class="btn btn-primary btn-sm" (click)="offtimePrint()" style="float: right;"><i
+            class="fa fa-print"></i></button>
+            <button id="" class="btn btn-danger btn-sm" (click)="offtimePDF()" style="float: right; margin-right: 5px;"><i
+              class="fa fa-file-pdf"></i></button>
+              <button id="" class="btn btn-success btn-sm" (click)="offtimeEXCELL()" style="float: right; margin-right: 5px;"><i
+                class="fa fa-file-excel"></i></button>
+
+      </div>
+      <div *ngIf="isOfftimeShown && vals =='Offtime' && reportranges=='Date Range'" style=" padding-top: 10px;">
+
+        <table class="table table-bordered table-condenced table striped table-sm table-hover table-shadow"
+          id="offtimereportbydaterange">
+          <thead style="margin-top: 100px;">
+            <tr class="fieldheader" style="border: none; margin-bottom: 30px;">
+              <th style="border: none;">
+                <img src="./assets/img/awashlogo.png" class="img" alt="AB Logo" style="width: 200px; height: 50px; ">
+              </th>
+              <th colspan = "2" style="border: none;">Offtime Dispatched Report</th>
+              <th colspan="2" style="border: none;">Report Date: {{dateToday | date}} <br>
+                Time:{{ time | date: 'hh:mm:ss a' }}
+              </th>
+            </tr>
+
+            <tr>
+
+              <th>Plate No</th>
+              <th>Km On Departure</th>
+              <th>Km On Return</th>
+              <th>Difference(km)</th>
+              <th>Departed Date</th>
+
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let req of offtime">
+              <td>{{req.plateNo}}</td>
+              <td>{{req.kmOnDep}} km</td>
+              <td>{{req.kmOnRet}} km</td>
+              <td>{{req.kmDifference}} km</td>
+              <td>{{req.date|date}}</td>
+
+            </tr>
+
+          </tbody>
+
+
+        </table>
+      </div>
+
+    </div>
+    <div *ngIf="offtimelength==0" id="noofftime">
+      <div class="bd-callout bd-callout-info">
+        <p class="text-center"><strong>No Offtime Dispatch Found Matching The Date Range <span style="color: rgb(8, 233, 240);">{{offtimeFrom|date}} - {{offtimeTo|date}}</span></strong></p>
+      </div>
+    </div>
+    <!-- =============================================== ALL ==================================================== -->
+    <div class="card-body" id="allfieldcard" style="margin-top: -60px;" *ngIf="allfieldlength !=0">
+      <ng-container>
+        <div class="card-header" id="allfieldaction" *ngIf="isAllFieldShown && vals =='Field' && reportranges=='All'">
+          <button class="btn btn-primary btn-sm" (click)="allFieldPrint()" style="float: right;"><i
+            class="fa fa-print"></i></button>
+            <button id="" class="btn btn-danger btn-sm" (click)="allFieldPDF()" style="float: right; margin-right: 5px;"><i
+              class="fa fa-file-pdf"></i></button>
+              <button id="" class="btn btn-success btn-sm" (click)="allFieldEXCEL()" style="float: right; margin-right: 5px;"><i
+                class="fa fa-file-excel"></i></button>
+        </div>
+      </ng-container>
+
+      <ng-container >
+        <div style="padding-top: 10px;" id="allfield" *ngIf="vals =='Field' && reportranges=='All'">
+
+          <table class="table table-bordered table-condenced table striped table-sm table-hover table-shadow"
+          id="allfieldReport">
+          <thead style="margin-top: 100px;">
+            <tr class="fieldheader" style="border: none; margin-bottom: 30px;">
+              <th colspan="2" style="border: none;">
+                <img src="./assets/img/awashlogo.png" class="img" alt="AB Logo" style="width: 200px; height: 50px; ">
+              </th>
+              <th style="border: none;" colspan="4">All Field Dispatched Report</th>
+              <th style="border: none;" colspan="2">Report Date: {{dateToday | date}} <br>
+                Time:{{ time | date: 'hh:mm:ss a' }}
+              </th>
+            </tr>
+
+            <tr>
+
+              <th>Plate No</th>
+              <th>Driver</th>
+              <th>Fuel</th>
+              <th>Days</th>
+              <th>Requested By</th>
+              <th>Depart Date</th>
+              <th>Km On Depart</th>
+              <th>Km On Return</th>
+              <th>Km Diff</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let req of fieldDispatch">
+              <td>{{req.plateNo}}</td>
+              <td>{{req.driverName}}</td>
+              <td>{{req.estimatedfuelRequired}} L</td>
+              <td>{{req.noOfDaysRequired}} Day(s)</td>
+              <td>{{req.requestedBy}}</td>
+              <td>{{req.dispdate|date}}</td>
+              <td>{{req.kmReadingOnDeparture}} km</td>
+              <td>{{req.kmReadingOnReturn}} km</td>
+              <td>{{req.kmDifference}} km</td>
+            </tr>
+
+          </tbody>
+
+
+        </table>
+        </div>
+      </ng-container>
+    </div>
+    <div *ngIf="allfieldlength==0" id="noallfield">
+      <div class="bd-callout bd-callout-info">
+        <p class="text-center"><strong>No Field Dispatch Found</strong></p>
+      </div>
+    </div>
+
+    <div class="card-body" id="allincitycard" style="margin-top: -60px;" *ngIf="allincitylength !=0">
+      <ng-container>
+        <div class="card-header" id="allincityaction" *ngIf="isAllIncityShown && vals =='Incity' && reportranges=='All'">
+          <button class="btn btn-primary btn-sm" (click)="allIncityPrint()" style="float: right;"><i
+            class="fa fa-print"></i></button>
+            <button id="" class="btn btn-danger btn-sm" (click)="allIncityPDF()" style="float: right; margin-right: 5px;"><i
+              class="fa fa-file-pdf"></i></button>
+              <button id="" class="btn btn-success btn-sm" (click)="allIncityEXCEL()" style="float: right; margin-right: 5px;"><i
+                class="fa fa-file-excel"></i></button>
+        </div>
+      </ng-container>
+
+      <ng-container >
+        <div style="padding-top: 10px;" id="allincity" *ngIf="vals =='Incity' && reportranges=='All'">
+
+          <table class="table table-bordered table-condenced table striped table-sm table-hover table-shadow"
+          id="allincityReport">
+
+          <thead style="margin-top: 100px;">
+            <tr class="fieldheader" style="border: none; margin-bottom: 30px;">
+              <th colspan="2" style="border: none;">
+                <img src="./assets/img/awashlogo.png" class="img" alt="AB Logo" style="width: 200px; height: 50px; ">
+              </th>
+              <th colspan="3" style="border: none;">Incity Dispatched Report</th>
+              <th style="border: none;" colspan="3">Report Date: {{dateToday | date}} <br>
+                Time:{{ time | date: 'hh:mm:ss a' }}
+              </th>
+            </tr>
+
+            <tr>
+
+              <th>Plate No</th>
+              <th>Driver</th>
+              <th>Departure Date</th>
+
+              <th>Departure Time</th>
+              <th>Requested By</th>
+              <th>Departure Km</th>
+
+              <th>Return Km</th>
+              <th>Return Time</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let req of incityDispatch">
+              <td>{{req.plateNumber}}</td>
+              <td>{{req.driverName}}</td>
+              <td>{{req.departureDate|date}}</td>
+
+              <td>{{req.departureTime | convertFrom24To12Format}}</td>
+              <td>{{req.requestBy}}</td>
+              <td>{{req.departureKm}}</td>
+
+              <td>{{req.returnKm}} km</td>
+              <td>{{req.returnTime | convertFrom24To12Format}}</td>
+            </tr>
+
+          </tbody>
+
+
+        </table>
+        </div>
+      </ng-container>
+    </div>
+    <div *ngIf="allincitylength==0" id="noallincity">
+      <div class="bd-callout bd-callout-info">
+        <p class="text-center"><strong>No Incity Dispatch Found</strong></p>
+      </div>
+    </div>
+
+    <div class="card-body" id="allofftimecard" style="margin-top: -20px;" *ngIf="allofftimelength !=0">
+      <ng-container>
+        <div class="card-header" id="allofftimeaction" *ngIf="isAllOfftimeShown && vals =='Offtime' && reportranges=='All'">
+          <button class="btn btn-primary btn-sm" (click)="allOfftimePrint()" style="float: right;"><i
+            class="fa fa-print"></i></button>
+            <button id="" class="btn btn-danger btn-sm" (click)="allOfftimePDF()" style="float: right; margin-right: 5px;"><i
+              class="fa fa-file-pdf"></i></button>
+              <button id="" class="btn btn-success btn-sm" (click)="allOfftimeEXCEL()" style="float: right; margin-right: 5px;"><i
+                class="fa fa-file-excel"></i></button>
+        </div>
+      </ng-container>
+
+      <ng-container >
+        <div style="padding-top: 10px;" id="allofftime" *ngIf="vals =='Offtime' && reportranges=='All'">
+
+
+        <table class="table table-bordered table-condenced table striped table-sm table-hover table-shadow"
+        id="allofftimeReport">
+        <thead style="margin-top: 100px;">
+          <tr class="fieldheader" style="border: none; margin-bottom: 30px;">
+            <th style="border: none;">
+              <img src="./assets/img/awashlogo.png" class="img" alt="AB Logo" style="width: 200px; height: 50px; ">
+            </th>
+            <th colspan = "2" style="border: none;">All Offtime Dispatched Report</th>
+            <th colspan="2" style="border: none;">Report Date: {{dateToday | date}} <br>
+              Time:{{ time | date: 'hh:mm:ss a' }}
+            </th>
+          </tr>
+
+          <tr>
+
+            <th>Plate No</th>
+            <th>Km On Departure</th>
+            <th>Km On Return</th>
+            <th>Difference(km)</th>
+            <th>Departed Date</th>
+
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr *ngFor="let req of offtimeDispatch">
+            <td>{{req.plateNo}}</td>
+            <td>{{req.kmOnDep}} km</td>
+            <td>{{req.kmOnRet}} km</td>
+            <td>{{req.kmDifference}} km</td>
+            <td>{{req.date|date}}</td>
+
+          </tr>
+
+        </tbody>
+
+
+      </table>
+        </div>
+      </ng-container>
+    </div>
+    <div *ngIf="allofftimelength==0" id="noallfield">
+      <div class="bd-callout bd-callout-info">
+        <p class="text-center"><strong>No Offtime Dispatch Found</strong></p>
+      </div>
+    </div>
+
+  </div>
+</div>

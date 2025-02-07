@@ -1,0 +1,727 @@
+<div class="container" id="view">
+  <!-- style="margin-left: 190px"  -->
+  <div
+    *ngIf="Length != 0"
+    id="InCityTable"
+    class="col-lg-12 col-md-12 col-xl-12"
+  >
+    <h5 style="text-align: center">My In-city Vehicle Requests</h5>
+    <hr />
+
+    <table
+      class="table table-bordered table-condenced table striped table-sm table-hover table-shadow"
+      id="viewdatatable"
+    >
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Requested By</th>
+          <th>Passenger (s)</th>
+          <th>Destination</th>
+          <th>Vehicle Needed From Date</th>
+          <!-- <th>Vehicle Needed From</th> -->
+          <!-- <th>Vehicle Needed To Date</th> -->
+          <!-- <th>Vehicle Needed To</th> -->
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let req of incity">
+          <td>{{req.id}}</td>
+          <td>{{ req.requestBy }}</td>
+          <td>{{ req.passenger }}</td>
+          <td>{{ req.destination }}</td>
+          <td>{{ req.dateFrom | date }}</td>
+          <!-- <td>{{ req.requestTimeFrom | convertFrom24To12Format }}</td> -->
+          <!-- <td>{{ req.dateTo | date }}</td> -->
+          <!-- <td>{{ req.requestTimeTo | convertFrom24To12Format }}</td> -->
+          <td>
+            <div
+              *ngIf="req.status == 'Unauthorized'"
+              class="status unauthorized"
+            >
+              {{ req.status }}
+            </div>
+            <div *ngIf="req.status == 'Authorized'" class="status authorized">
+              {{ req.status }}
+            </div>
+            <div *ngIf="req.status == 'Rejected'" class="status rejected">
+              {{ req.status }}
+            </div>
+            <div *ngIf="req.status == 'Approved'" class="status approved">
+              {{ req.status }}
+            </div>
+          </td>
+          <td>
+            <span>
+              <a
+                class="btn btn-outline-primary btn-spacing"
+                (click)="onOpenModal(req, 'Detail')"
+                >Detail</a
+              >
+              <a
+                *ngIf="req.status == 'Unauthorized'"
+                class="btn btn-outline-danger btn-spacing"
+                (click)="onOpenModal(req, 'Cancel')"
+                >Cancel</a
+              >
+              <a
+                *ngIf="req.status == 'Unauthorized'"
+                class="btn btn-outline-primary btn-spacing"
+                (click)="onOpenModal(req, 'Update')"
+                >Update</a
+              >
+              <a
+                *ngIf="req.status == 'Rejected'"
+                class="btn btn-outline-info btn-spacing"
+                (click)="onOpenModal(req, 'Reason')"
+                >Reason</a
+              >
+
+              <a
+                *ngIf="req.status == 'Approved'"
+                class="btn btn-outline-success btn-spacing"
+                (click)="printDetail(req.id)"
+                >Print/Export</a
+              >
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="Length == 0">
+    <div>
+      <hr />
+      <h2 style="text-align: center">My In-city Vehicle Requests</h2>
+      <hr />
+      <div class="callout callout-info">
+        <p class="text-center">No Incity Request Found</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ********************************All Status Detail Modal******************************** -->
+<div class="container" id="main-container">
+  <div
+    class="modal fade in"
+    id="viewRequestStatusModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="detailModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <strong>
+            <h5 class="modal-title" style="margin-left: 250px">
+              Request Detail
+            </h5>
+          </strong>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true" style="color: red">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p>
+                Requested By:
+                <strong
+                  ><span>{{ req.requestBy }}</span></strong
+                >
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p>
+                Requested Date:
+                <strong
+                  ><span>{{ req.requestedDate | date}}</span></strong
+                >
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <p>
+                Requested Time:
+                <strong
+                  ><span>{{ req.requestedTime | convertFrom24To12Format }}</span></strong
+                >
+              </p>
+            </div>
+            
+            <div class="col-md-6">
+              <p>
+                Directorate/Branch:
+                <strong
+                  ><span>{{ req.directorate }}</span></strong
+                >
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <p>
+                Passenger(s):
+                <strong
+                  ><span>{{ req.passenger }}</span></strong
+                >
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p>
+                Destination:
+                <span
+                  ><strong>{{ req.destination }}</strong></span
+                >
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <p>
+                Passenger Telephone:
+                <strong
+                  ><span>{{ req.passTelephone }}</span></strong
+                >
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p>
+                Requested For:
+                <span
+                  ><strong>{{ req.requestedFor }}</strong></span
+                >
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <p>
+                Request From Date:
+                <span
+                  ><strong>{{ req.dateFrom | date }}</strong></span
+                >
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p>
+                Vehicle Needed From:
+                <span
+                  ><strong>{{
+                    req.requestTimeFrom | convertFrom24To12Format
+                  }}</strong></span
+                >
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <p>
+                Vehicle Needed To Date:
+                <span
+                  ><strong>{{ req.dateTo | date }}</strong></span
+                >
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p>
+                Vehicle Needed To:
+                <span
+                  ><strong>{{
+                    req.requestTimeTo | convertFrom24To12Format
+                  }}</strong></span
+                >
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <p>
+                Number Of Days:
+                <strong
+                  ><span>{{ req.numberOfDays }}</span></strong
+                >
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p>
+                Status:
+                <span
+                  ><strong>{{ req.status }}</strong></span
+                >
+              </p>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="req.status == 'Authorized'">
+            <div class="col-md-6">
+              <p>
+                Authorized Date:
+                <span
+                  ><strong>{{ req.authorizedDate | date }}</strong></span
+                >
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p>
+                Authorized By:
+                <span
+                  ><strong>{{ req.authorizedBy }}</strong></span
+                >
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="row"
+            *ngIf="req.status == 'Rejected' && req?.rejectedBy != null"
+          >
+            <div class="col-md-6">
+              <p>
+                Rejected Date:
+                <span
+                  ><strong>{{ req.approvedDate | date }}</strong></span
+                >
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p>
+                Rejected By:
+                <span
+                  ><strong>{{ req.rejectedBy }}</strong></span
+                >
+              </p>
+            </div>
+          </div>
+          <div
+            class="row"
+            *ngIf="req?.status == 'Rejected' && req?.rejectedBy == null"
+          >
+            <div class="col-md-6">
+              <p>
+                Rejected By :
+                <strong
+                  ><span>{{ req?.authorizedBy }} </span></strong
+                >
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p>
+                Rejected Date :
+                <strong
+                  ><span>{{ req?.authorizedDate | date }}</span></strong
+                >
+              </p>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="req.status == 'Rejected'">
+            <div class="col-md-12">
+              <p>
+                Reason For Rejection:
+                <span
+                  ><strong>{{ req.reasonForRejection }}</strong></span
+                >
+              </p>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="req.status == 'Approved'">
+            <div class="col-md-6">
+              <p>
+                Approved Date:
+                <span
+                  ><strong>{{ req.approvedDate | date }}</strong></span
+                >
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p>
+                Approved By:
+                <span
+                  ><strong>{{ req.approvedBy }}</strong></span
+                >
+              </p>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="req.status == 'Approved'">
+            <div class="col-md-12">
+              <p>
+                Reason:
+                <span
+                  ><strong>{{ req.remark }}</strong></span
+                >
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <p>
+                Purpose:
+                <span
+                  ><strong>{{ req.purpose }}</strong></span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ***************************************Cancel Modal*************************************** -->
+<div class="container" id="main-container">
+  <div
+    class="modal fade"
+    id="cancelModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="cancelModal"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5
+            class="modal-title"
+            id="deleteModelLabel"
+            style="margin-left: 150px"
+          >
+            Delete Request
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true" style="color: red">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Are you sure you want to cancel the request requested by:<strong>
+              {{ req.requestBy }}</strong
+            >?
+          </p>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              No
+            </button>
+            <button
+              (click)="cancelIncityRequest(req.id)"
+              class="btn btn-danger"
+              data-dismiss="modal"
+            >
+              Yes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ***************************************Reason For Rejection Modal*************************************** -->
+<div class="container" id="main-container">
+  <div
+    class="modal fade"
+    id="reasonModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="cancelModal"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5
+            class="modal-title"
+            id="deleteModelLabel"
+            style="margin-left: 150px"
+          >
+            Reason For Rejection
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true" style="color: red">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            {{ req.reasonForRejection }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ***************************************Update Modal*************************************** -->
+<div class="container" id="main-container">
+  <div
+    class="modal fade"
+    id="updateModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="updateModal"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5
+            class="modal-title"
+            id="deleteModelLabel"
+            style="margin-left: 150px"
+          >
+            Update Request Information
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true" style="color: red">&times;</span>
+          </button>
+        </div>
+        <form #updateRequest="ngForm">
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="id">Requester Id</label>
+                <input
+                  type="number"
+                  [ngModel]="req.id"
+                  name="id"
+                  class="form-control"
+                  id="id"
+                  required
+                  readonly
+                />
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="fullName">Requested By</label>
+                <input
+                  type="text"
+                  [ngModel]="req.requestBy"
+                  name="requestBy"
+                  class="form-control"
+                  id="fullName"
+                  required
+                  readonly
+                />
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="directorate">Directorate/Branch</label>
+                <input
+                  type="text"
+                  [ngModel]="req.directorate"
+                  name="directorate"
+                  id="directorate"
+                  readonly
+                  class="form-control"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="loginDate">Requested Date</label>
+                <input
+                  type="date"
+                  [ngModel]="currentDate"
+                  name="requestedDate"
+                  class="form-control"
+                  id="loginDate"
+                  required
+                  readonly
+                />
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="passengers">Passenger (s)</label>
+                <input
+                  type="text"
+                  [(ngModel)]="req.passenger"
+                  name="passenger"
+                  id="passenger"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group col-md-4">
+                <label for="passTelephone">Passenger's Telephone</label>
+                <input
+                  type="text"  pattern="^[0-9]{10}$"
+                  [(ngModel)]="req.passTelephone"
+                  name="passTelephone"
+                  id="passTelephone"
+                  class="form-control"
+                  #passTelephone="ngModel"
+                  [ngClass]="{'is-invalid':updateRequest.submitted && passTelephone.invalid}"
+                  [class.is-invalid]="passTelephone.invalid && passTelephone.touched"  
+                  required
+                />
+                <div *ngIf="passTelephone.errors && (passTelephone.invalid && passTelephone.touched)">
+                  <small class="text-danger" *ngIf="passTelephone.errors.required">Passenger's tel. No is required</small>
+                  <small class="text-danger" *ngIf="passTelephone.errors.pattern">Enter valid telephone No.!</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label for="destination">Destination</label>
+                <input
+                  type="text"
+                  [(ngModel)]="req.destination"
+                  name="destination"
+                  class="form-control"
+                  id="destination"
+                  required
+                />
+              </div>
+              <div class="form-group col-md-4">
+                <label for="fromTime">Vehicle Needed From Time</label>
+                <input
+                  type="time"
+                  [(ngModel)]="req.requestTimeFrom"
+                  class="form-control"
+                  id="fromTime"
+                  name="requestTimeFrom"
+                  required
+                />
+              </div>
+              <div class="form-group col-md-4">
+                <label for="toTime">Vehicle Needed To Time</label>
+                <input
+                  type="time"
+                  [(ngModel)]="req.requestTimeTo"
+                  class="form-control"
+                  id="toTime"
+                  name="requestTimeTo"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="dateFrom">Vehicle Needed From Date</label>
+                <input
+                  type="date"
+                  [(ngModel)]="req.dateFrom"
+                  class="form-control"
+                  id="dateFrom"
+                  name="dateFrom"
+                  [ngModel]="req.dateFrom | date : 'yyyy-MM-dd'"
+                  #dFrom
+                  (change)="getDateFrom($event)"
+                  required
+                />
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="fromTime">Vehicle Needed To Date</label>
+                <input
+                  type="date"
+                  [(ngModel)]="req.dateTo"
+                  class="form-control"
+                  id="dateTo"
+                  name="dateTo"
+                  [ngModel]="req.dateTo | date : 'yyyy-MM-dd'"
+                  #dTo
+                  (change)="getDateTo($event)"
+                  required
+                />
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="numberOfDays">Number of Days Vehicle Needed </label>
+                <input
+                  type="number"
+                  [(ngModel)]="req.numberOfDays"
+                  [ngModel]="noOfDays"
+                  class="form-control"
+                  id="numberOfDays"
+                  name="numberOfDays"
+                  required
+                  readonly
+                />
+              </div>
+
+            </div>
+
+            <div class="form-row">
+
+              <div class="form-group col-md-4">
+                <label for="purpose">Purpose Of Travel</label>
+                <input
+                  type="text"
+                  [(ngModel)]="req.purpose"
+                  name="purpose"
+                  class="form-control"
+                  id="purpose"
+                  required
+                />
+              </div>
+                              
+              <div class="form-group col-md-4">
+                <label for="fullname">Requested For</label>
+                <ng-select appearance="outline" class="custom"  [(ngModel)]="req.requestedFor" name="requestedFor">
+                  <ng-option value="Transportaion">Transportaion</ng-option>
+                  <ng-option value="Loading">Loading</ng-option>
+                  <ng-option value="Crane">Crane</ng-option>
+                  <ng-option value="Both">Both</ng-option>
+               </ng-select>
+             </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="submit"
+              data-dismiss="modal"
+              (click)="updateIncityRequest(updateRequest.value)"
+              class="btn btn-primary btn-sm"
+            >
+              Update
+            </button>
+            <button
+              type="button"
+              data-dismiss="modal"
+              class="btn btn-danger btn-sm"
+            >
+              Close
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

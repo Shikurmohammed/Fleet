@@ -1,0 +1,225 @@
+<div class="container" id="modifyIncity">
+    <div class="card shadow">
+        <div class="card-header">
+            <h5 style="text-align: center;">Dispatched Incity Requests </h5>
+        </div>
+
+        <div class="card-body">
+            <div *ngIf="length!=0">
+                <table class="table table-hover table-bordered table-condenced table-sm table-shadow" id="modify">
+                    <thead>
+                        <tr>
+                            <th>Requester Id</th>
+                            <th>Requested By</th>
+                            <th>Plate Number</th>
+                            <th>Assigned Driver Name</th>
+                            <th>Approved Date</th>
+                            <th>Approved By</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let req of dispatch">
+                            <td>{{req.requesterId}}</td>
+                            <td>{{req.requestBy}}</td>
+                            <td>{{req.plateNumber}}</td>
+                            <td>{{req.driverName}}</td>
+                            <td>{{req.approvedDate | date:'yyyy-MM-dd'}}</td>
+                            <td>{{req.approvedBy}}</td>
+                            <td>
+                                <div class="btn btn-outline-primary" (click)="onOpenModal(req,'detail')">Detail</div>
+                                <div class="btn btn-outline-info" (click)="onOpenModal(req,'modify')">Modify</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="length==0">
+                <div class="callout callout-info">
+                    <p class="text-center"><strong>No Approved Incity Request Found</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- ****************************Detail Request Modal****************************-->
+<div class="container" id="main-container">
+    <div class="modal fade in" id="detailApprovedRequestModal" tabindex="-1" role="dialog"
+        aria-labelledby="detailApprovedRequestModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Approved Request Detail</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hovertable-bordered table-condenced table-sm table-shadow">
+                        <tr>
+                            <td>
+                                <div class="margin-left:90px">Plate Number:
+                                    <span><strong>{{detail.plateNumber}}</strong></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="margin-left: 90px;">Assigned Driver Name:
+                                    <span><strong>{{detail.driverName}}</strong></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="margin-left: 90px;">Requested By:
+                                    <span><strong>{{detail.requestBy}}</strong></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="margin-left: 90px;">Departure Date:
+                                    <span><strong>{{detail.departureDate | date:'yyyy-MM-dd'}}</strong></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="margin-left: 90px;">Departure Time:
+                                    <span><strong>{{detail.departureTime}}</strong></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="margin-left: 90px;">Departure KM:
+                                    <span><strong>{{detail.departureKm}}</strong></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="margin-left:90px">Return Date: <span><strong>{{detail.returnDate |
+                                            date:'yyyy-MM-dd'}}</strong></span></div>
+                            </td>
+                            <td>
+                                <div style="margin-left: 90px;">Return Time:
+                                    <span><strong>{{detail.returnTime}}</strong></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="margin-left:90px">Approved Date: <span><strong>{{detail.approvedDate |
+                                            date:'yyyy-MM-dd'}}</strong></span></div>
+                            </td>
+                            <td>
+                                <div style="margin-left:90px">Approved By:
+                                    <span><strong>{{detail.approvedBy}}</strong></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="margin-left:90px">Requester Id:
+                                    <span><strong>{{detail.requesterId}}</strong></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="margin-left: 90px;">Reason:
+                                    <span><strong>{{detail.remark}}</strong></span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- ****************************Modify Request Modal****************************-->
+<div class="container" id="main-container">
+    <div class="modal fade in" id="modifyApprovedModal" tabindex="-1" role="dialog"
+        aria-labelledby="modifyApprovedModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Modify Dispatched Request</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+
+                <div class="modal-body">
+                    <form #addForm="ngForm">
+                        <div class="form-row" hidden>
+                            <div class="form-group col-md-12">
+                                <label for="returnKm">Requester ID</label>
+                                <input type="number" name="requesterId" [ngModel]="modify?.requesterId" class="form-control" required />
+                            </div>
+
+                            <div class="form-group col-md-12"> <label for="returnKm">Plate Number</label>
+                                <input type="text" name="plateNumber" [ngModel]="modify?.plateNumber"
+                                    class="form-control" required />
+                            </div>
+
+                            <div class="form-group col-md-12"> <label for="driverName">Plate Number</label>
+                                <input type="text" name="driverName" [ngModel]="modify?.driverName"
+                                    class="form-control" required />
+                            </div>
+                        </div>
+
+                            <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Departure KM</label>
+                                <input type="number"
+                                name="departureKm"
+                                [ngModel]="modify?.departureKm"
+                                class="form-control"
+                                required 
+                                readonly/>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label for="returnKm">Return KM</label>
+                                <input type="number" [(ngModel)]="detail.returnKm" name="returnKm" id="returnKm"
+                                class="form-control" 
+                                   #ret (keyup)="getReturnKm(ret.value)"
+                                   #returnkm="ngModel"
+                                   [ngClass]="{'is-invalid':addForm.submitted && returnkm.invalid} || isValid"
+                                   [class.is-invalid]="returnkm.invalid && returnkm.touched || isValid"
+                                   required />
+
+                                   <small class="text-danger">{{warning}}</small>
+                                   <div *ngIf="returnkm.errors && (returnkm.invalid && returnkm.touched)">
+                                    <small class="text-danger">Return km is required</small>
+                                    <small class="invalid-feedback">return km must be greater than departure km</small>
+                                   </div>
+                            </div>
+                            <div class="form-group col-md-6" hidden>
+                                <label for="kmDifference">KM Difference</label>
+                                <input type="number"
+                                [ngModel]="((1*this.kmReturn)-(1*this.kmDeparture))"
+                                name="kmDifference"
+                                id="kmDifference"
+                                class="form-control"
+                                readonly
+                                />
+                            </div>
+                        </div>
+
+                        <div class="modal-footer" style="float: right;">
+                            <button type="submit" [disabled]="addForm.form.invalid || isValid" class="btn btn-outline-info" data-dismiss="modal"
+                                (click)="onModifyForm(addForm.value)">Modify</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

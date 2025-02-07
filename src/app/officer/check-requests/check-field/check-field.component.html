@@ -1,0 +1,250 @@
+<div id = "authorize">
+    <!-- Beginning of field request displayer -->
+    <ng-container *ngIf = "fieldRequests.length>0">
+    <div
+      id="FieldTable"
+      style="margin-left: 190px"
+      class="col-lg-12 col-md-12 col-xl-12"
+    >
+      <hr/>
+      <h2 style="text-align: center">Manage Field Requests</h2>
+      <hr />
+      <table
+        class="table table-hover table-bordered table-condenced table-sm table-shadow"
+        id="FieldDataTable"
+      >
+        <thead>
+          <tr>
+            <th>Requested By</th>
+            <th>Requested Date</th>
+            <th>Name Of Passengers</th>
+            <th>Purpose</th>
+            <th>Expense</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let field of fieldRequests">
+            <td>{{ field.requestedBy }}</td>
+            <td>{{ field.date | date }}</td>
+            <td>{{ field.passengers }}</td>
+            <td>{{ field.purpose }}</td>
+            <td>{{ field.expence }}</td>
+            <td>
+              <a
+                style="display: inline-block"
+                (click)="onOpenFieldModal(field, 'view')"
+                class="btn btn-outline-info"
+                data-original-title="view"
+              >
+                Detail
+              </a>
+              <a
+                (click)="onOpenFieldModal(field, 'authorizeField')"
+                class="btn btn-outline-primary"
+                data-original-title="Authorize"
+                >
+                  Authorize
+              </a>
+              <a
+                (click)="onOpenFieldModal(field, 'rejectField')"
+                class="btn btn-outline-danger"
+                data-placement="top"
+                data-original-title="Reject"
+                >Reject</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </ng-container>
+    <ng-container *ngIf = "fieldRequests.length==0">
+      <div style="margin-left: 300px;">
+          <hr/>
+            <h2 style="text-align: center">Manage Field Requests</h2>
+           <hr />
+           <div class="callout callout-info">
+            <p>No field requests are available</p>
+          </div>
+      </div>
+    </ng-container>
+    <!-- End of field request diplayer -->
+    <div class="container" id="main-container">
+              <!-- Start of field request authorization -->
+              <div
+              class="modal fade"
+              id="authorizeFieldRequestModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="authorizeFieldRequestModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="authorizeFieldRequestModalLabel">Authorize Field Fleet Request</h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p>
+                      Are you sure you want to authorize request by {{ fieldAuthorize?.requestedBy }}?
+                    </p>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                      >
+                        Cancel
+                      </button>
+                      <button (click)="authorizeFieldRequest(fieldAuthorize!)" class="btn btn-primary" data-dismiss="modal">Authorize</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <!-- End of field request authorization -->
+              <!-- Start of field request rejection modal -->
+                <div
+                class="modal fade"
+                id="rejectFieldRequestModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="rejectFieldRequestModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="rejectFieldRequestModalLabel">
+                        Reject Field Request
+                      </h5>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form #rejectFieldForm="ngForm">
+                        <div class="form-row">
+                          <div class="form-group col-md-12">
+                            <label for="reasonForRejection">Reason For Rejection</label>
+                            <textarea 
+                            ngModel="{{ fieldReject?.reasonOfRejection }}"
+                            name="reasonOfRejection"
+                            class="form-control"
+                            id="reasonOfRejection"
+                            required>
+                            </textarea>
+                            <input
+                            type="hidden"
+                            ngModel="{{ fieldReject?.id }}"
+                            name="id"
+                            class="form-control"
+                            id="id"
+                            required
+                          />
+                          <input
+                            type="hidden"
+                            ngModel="{{ fieldReject?.requestedBy }}"
+                            name="requestedBy"
+                            class="form-control"
+                            id="reqBy"
+                            required
+                          />
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            id="reject-field-request-form"
+                            data-dismiss="modal"
+                            class="btn btn-secondary"
+                          >
+                            Close
+                          </button>
+                          <button
+                           [disabled]="rejectFieldForm.invalid"
+                            (click)="onRejectFieldRequest(rejectFieldForm.value)"
+                            data-dismiss="modal"
+                            class="btn btn-danger"
+                          >
+                            Reject Request
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+           <!-- End of field request rejection modal -->
+           <!-- This is to show details of the field request -->
+            <div
+            class="modal fade"
+            id="detailsFieldRequestModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="detailsFieldRequestModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="detailsFieldRequestModalLabel">Field Request Details</h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class = "col-md-6">
+                        <p>Requested By: <strong><span>{{ fieldDetails?.requestedBy }}</span></strong></p>
+                        <p>Directorate: <strong><span>{{ fieldDetails?.directorate }}</span></strong></p>
+                        <p>Requested Date: <strong><span>{{ fieldDetails?.date|date }}</span></strong></p>
+                        <p>Requested Time: <strong><span>{{ fieldDetails?.requestedTime|convertFrom24To12Format }}</span></strong></p>
+                        <p>Passengers: <strong><span>{{ fieldDetails?.passengers }}</span></strong></p>
+                        <p>Passenger's Telephone: <strong><span>{{ fieldDetails?.passTelephone }}</span></strong></p>
+                        <p>Transport Mode: <strong><span>{{ fieldDetails?.transportMode }}</span></strong></p>
+                        <p>Requested For: <strong><span>{{ fieldDetails?.requestedFor }}</span></strong></p>
+                        <p>Departure Date: <strong><span>{{ fieldDetails?.departureDate }}</span></strong></p>
+                        <p>Return Date: <strong><span>{{ fieldDetails?.returnDate }}</span></strong></p>
+                        <p>Number Of Days Requested: <strong><span>{{ fieldDetails?.noOfDaysRequested }}</span></strong></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>Material Loaded(KG): <strong><span>{{ fieldDetails?.materialloaded }}</span></strong></p>
+                        <p>Destination City: <strong><span>{{ fieldDetails?.destCity }}</span></strong></p>
+                        <p>Destination Branch: <strong><span>{{ fieldDetails?.destBranch }}</span></strong></p>
+                        <p>Destination KM: <strong><span>{{ fieldDetails?.destKM }}</span></strong></p>
+                        <p>Contingency: <strong><span>{{ fieldDetails?.contingency }}</span></strong></p>
+                        <p>Total KM: <strong><span>{{ fieldDetails?.totalKM }}</span></strong></p>
+                        <p>Authorized By: <strong><span>{{ fieldDetails?.authorizedBy }}</span></strong></p>
+                        <p>Authorized Date: <strong><span>{{ fieldDetails?.authorizedDate|date }}</span></strong></p>
+
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal">OK</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      <!-- End of field request details -->
+    </div>
+    </div>

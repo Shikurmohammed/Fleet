@@ -1,0 +1,1076 @@
+<div class="wrapper">
+    <ng-container *ngIf="isAuthenticated()">
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand" style="background-color: #21205f">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button">
+                        <i class="fas fa-bars"></i>
+                    </a>
+                </li>
+                <li *ngIf="isAuthenticated()" class="nav-item d-none d-sm-inline-block">
+                    <a href="" class="nav-link">Home</a>
+                </li>
+            </ul>
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="far fa-user nav-icon"></i>
+                        <strong>
+							{{ userName }}</strong>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="height: 170px; background-color: #f6f9ff">
+                        <button type="button" class="dropdown-item">
+							<a href="#" routerlink="/changePassword" class="nav-link" style="color: black; text-align: center">
+								<i class="fa fa-lock mr-2 bg-success"></i>
+								Change Password
+							</a>
+						</button>
+                        <div class="dropdown-divider"></div>
+                        <button type="button" class="dropdown-item">
+							<a href="{{userguide!}}" class="nav-link" style="color: black; text-align: center" target="_blank">
+								Help
+							</a>
+						</button>
+                        <div class="dropdown-divider"></div>
+                        <button style="text-align: center; color: red" (click)="Logout()" type="button" class="dropdown-item">
+							Logout
+						</button>
+                    </div>
+                </li>
+
+                <li *ngIf="!isAuthenticated()" class="nav-item d-none d-sm-inline-block">
+                    <a routerlink="/login" style="cursor: pointer" class="nav-link">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </ng-container>
+    <!-- /.navbar -->
+    <ng-container *ngIf="isAuthenticated()">
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar elevation-4" style="background-color: #21205f">
+            <!-- Brand Logo -->
+            <a href="#" style="text-decoration: none" class="brand-link">
+                <img src="./assets/img/AB1.png" alt="AB Logo" class="brand-image img-circle elevation-4" style="opacity: 0.8" />
+                <span class="brand-text font-weight-light">Awash Bank</span>
+            </a>
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <div *ngIf="isAuthenticated()" class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="assets/img/user.png" class="img-circle elevation-2" alt="User Image" />
+                    </div>
+                    <div class="info">
+                        <a href="#" style="text-decoration: none" class="d-block">{{
+              role
+              }}</a>
+                    </div>
+                </div>
+
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class
+												                 with font-awesome or any other icon font library -->
+                        <ng-container *ngIf="isAdmin()">
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                User Management
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        User
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/user" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Add User</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/manageuser" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Manage User</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Advance Approver
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/mappapprover" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Map Approver</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Report Management
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Report
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/userProfileListing" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>User Profile Listing</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ng-container>
+                        <ng-container *ngIf="isRequestor()">
+                            <!-- End of Manage User-->
+                            <!-- The beginning of request menu -->
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239"> Request Fleet
+                            </li>
+
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Request
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/incityRequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Incity Request</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/offtimeRequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Offtime Request</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/vehicleFieldRequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Field Request</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- The end of request menu -->
+
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        My Request
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/viewincityrequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Incity Request</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/manageofftimerequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Offtime Request</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a style="cursor: pointer" (click)="myFieldRequest()" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Field Request</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- Delegated Requester menu-->
+                            <li class="nav-item" *ngIf="isAuthenticated() && isAuthorizerDelegated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Authorize
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/authorizeIncityRequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Authorize Incity</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/authorizeOfftimeRequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Authorize Offtime</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/authorizeFieldRequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Authorize Field</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- End delegated requester menu -->
+                            <!-- Custodian Vehicle Request Menu -->
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Vehicle Maintenance
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Vehicle Maintenance
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/maintenanceRequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Request Maintenance</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/custodianRequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Manage Maint Request</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!---->
+                            <!-- Start of Advanced Payment Menu -->
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Advance Payment
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" routerlink="/advCreate" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>Create</p>
+                                </a>
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" routerlink="/advManage" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>Manage</p>
+                                </a>
+                            </li>
+                            <!-- End of Advanced Payment Menu -->
+                            <!-- This is  maintenance request report-->
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Report Management
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Report
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/MaintenanceRequestReport" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Maintenance Report</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!---->
+                            <!-- End of custodian vehicle request menu-->
+                            <!-- End of my request -->
+                        </ng-container>
+                        <ng-container *ngIf="isAuthorizer()">
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Request Management
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Request
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/authorizeRequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Authorize Request</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/delegateAuthorizer" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>delegate authorizer</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Advance Payment
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/authorizeAdv" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Authorize</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- report section -->
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Report Management
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Report
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/incityReport" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Incity Report</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/offtimeReport" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Offtime Report</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/fieldReport" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Field Report</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!---->
+                        </ng-container>
+                        <ng-container *ngIf="isDispatcher()">
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Dispatcher
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Dispatch
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/incityDispatcher" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Incity Dispatch</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/offtimeDispatcher" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Offtime Dispatch</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a style="cursor: pointer" routerlink="/fieldDispatcher" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Field Dispatch</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Modify
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/modifyIncityDispatch" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Incity Dispatched</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/modifyOfftimeDispatch" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Offtime Dispatched</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a style="cursor: pointer" routerlink="/modifyFieldDispatch" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Field Dispatched</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- This printout menu -->
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Print
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/dispactherIncityPrint" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Incity</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/dispactherOfftimePrint" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Offtime</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a style="cursor: pointer" routerlink="/dispactherFieldPrint" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Field</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- Delegated Officer -->
+                            <!-- request checking section -->
+                            <li *ngIf="isAuthenticated() && isOfficerDelegated()" class="nav-header" style="background-color: #f79239">
+                                Fleet Request
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated() && isOfficerDelegated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Request
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/offtimeCheck" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Offtime</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/fieldCheck" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Field</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!---->
+                            <!-- End of delegated Officer -->
+                            <!-- This is  report menu-->
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239"> Report Management
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Reports
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/dispatcherReport" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Dispatcher Report</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ng-container>
+                        <ng-container *ngIf="isOfficer()">
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Vehicle Management
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Vehicle
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/manageVehicle" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Manage Vehicle</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- Fuel Price Menu -->
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Fuel
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/updateFuelPrice" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Update Price</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- request checking section -->
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Request Management
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Request
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/offtimeCheck" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Offtime</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/fieldCheck" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Field</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!---->
+                            <!---->
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Driver Management
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Driver
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/driverAdd" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Add Driver</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/manageDriver" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Manage Driver</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!---->
+                            <!-- This is service maintenance request-->
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Vehicle Maintenance
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Request Maintenance
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/serviceMillageDue" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Service Maintenance</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/tyreMillageDue" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Tyres Maintenance</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/maintenanceRequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Body Maintenance</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Manage Main Request
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/officerRequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Service Maintenance</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/officerRequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Tyres Maintenance</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/custodianRequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Body Maintenance</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!---->
+                            <!-- Officer Delegation Menu -->
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Delegate Approver
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Delegation
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/delegateOfficer" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Delegate</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- End of Delegation Menu -->
+                            <!-- This is  report menu-->
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Report Management
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Report
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/MaintenanceRequestReport" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Maintenance Report</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/insuranceDue" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Insurance Due Report</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/dispatcherReport" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Dispatch Listing</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!--  -->
+                        </ng-container>
+                        <ng-container *ngIf="isMechanic()">
+                            <!-- Mechanic Menu-->
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Vehicle Management
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Vehicle
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/vehicleAdd" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Add Vehicle</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/manageVehicle" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Manage Vehicle</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- End of vehicle management -->
+                            <li class="nav-header" style="background-color: #f79239">
+                                Vehicle Maintenance
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Vehicle Maintenance
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item">
+                                        <a href="#" routerlink="/mechanicCustodianRequests" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Verify Requests</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" routerlink="/mechanicRequests" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Manage Requests</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" routerlink="/mechanicSubmission" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Maint Submission</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!---->
+                            <!-- Delegated -->
+                            <li *ngIf="isAuthenticated() && isGsApproverDelegated()" class="nav-header" style="background-color: #f79239">
+                                Authorization
+                            </li>
+
+                            <li class="nav-item" *ngIf="isAuthenticated() && isGsApproverDelegated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Vehicle Maintenance
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/verifiedRequests" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Verified Requests</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/maintCompletionAuth" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Maint. Completion</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- Delegation menu end -->
+                            <!-- mechanic report -->
+                            <li class="nav-header" style="background-color: #f79239">
+                                Mechanic's Reports
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Reports
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item">
+                                        <a href="#" routerlink="/unverifiedMaintenanceRequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Unverified Requests</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" routerlink="/mechanicRequestReport" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Mechanic Requests</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" routerlink="/maintenanceSubmissionReport" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Maint. Submission</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!-- End of mechanic report -->
+                            <!-- End of Mechanic menu-->
+                        </ng-container>
+                        <!-- Technical Service User menu -->
+                        <ng-container *ngIf="isTechnicalService()">
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Technical Service
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Garage
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/addGarage" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Add Garage</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/manageGarage" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Manage Garage</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Vehicle Maintenance
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/maintRequest" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Requests</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/maintCompletion" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Maint. Completion</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/manageCompletion" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Manage Completion</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Reports
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/maintenancecostReport" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Maintenance Cost</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ng-container>
+                        <!-- End Of Technical Service User Menu-->
+                        <!-- GS Authorizer User menu -->
+                        <ng-container *ngIf="isGsApprover()">
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                General Service Authorizer
+                            </li>
+
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Vehicle Maintenance
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/verifiedRequests" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Verified Requests</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/maintCompletionAuth" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Maint. Completion</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Delegation
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/delegateGsauth" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Delegate</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>
+                                        Reports
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/maintenancecostReport" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Maintenance Cost</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="nav nav-treeview" style="margin-left: 20px">
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/maintRequestReport" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Maint. Requests</p>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item" *ngIf="isAuthenticated()">
+                                        <a href="#" routerlink="/maintCompletionReport" class="nav-link">
+                                            <i class="far fa-dot-circle nav-icon"></i>
+                                            <p>Maint. Completed</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ng-container>
+                        <!-- End Of GS Authorizer User Menu-->
+                        <!-- Start of Settlement Officers Menu -->
+                        <ng-container *ngIf="isSettlementOfficer()">
+                            <!-- Start of Advanced Payment Menu -->
+                            <li *ngIf="isAuthenticated()" class="nav-header" style="background-color: #f79239">
+                                Advance Payment
+                            </li>
+                            <li class="nav-item" *ngIf="isAuthenticated()">
+                                <a href="#" routerlink="/settleAdvancePayment" class="nav-link">
+                                    <i class="nav-icon fas fa-circle"></i>
+                                    <p>Manage</p>
+                                </a>
+                            </li>
+                            <!-- End of Advanced Payment Menu -->
+                        </ng-container>
+                        <!-- End of settlement officers menu -->
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+    </ng-container>
+    <!-- /.control-sidebar -->
+    <section class="content">
+        <div class="container-fluid">
+            <router-outlet>
+                <!-- <ngx-alerts></ngx-alerts> -->
+                <ngx-ui-loader></ngx-ui-loader>
+            </router-outlet>
+        </div>
+    </section>
+</div>
+<!-- ./wrapper -->

@@ -1,0 +1,19 @@
+export interface UserType{
+    id:number;
+    email:String;
+    firstName:String;
+    middleName:String;
+    lastName:String;
+    city:String;
+    phoneNumber:String;
+    address:String;
+    enabled:String;
+    username:String;
+    password:String;
+    roleId:String;
+    directorate:String;
+    createdBy:String;
+    createdDate:Date;
+    isLoggedin:string;
+    isDelegated:string;
+}

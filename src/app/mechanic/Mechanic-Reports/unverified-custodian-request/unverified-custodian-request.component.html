@@ -1,0 +1,129 @@
+
+<div id = "mainRequests">
+       <!-- This is unverified -->
+       <ng-container *ngIf = "isOnView && report.length>0">
+        <div
+          id="RequestTable"
+          style="margin-left: 190px"
+          class="col-lg-12 col-md-12 col-xl-12"
+        >
+          <hr/>
+           <span><button class="btn btn-primary" (click)="changeView()">Back</button></span> <h2 style="text-align: center">Unverified Custodian Requests Report</h2>
+          <hr/>
+          <div style="margin-left: 500px;">
+            <button (click)="printExcel()" class="btn btn-success btn-sm"
+              style="float: left;margin-right: 10px; height: 40px;width: 40px;">
+              <i class="fa fa-file-excel"></i>
+            </button>
+            <button (click)="printPDF()" class="btn btn-danger btn-sm"
+              style="float: left; margin-right: 10px; height: 40px;width: 40px;">
+              <i class="fa fa-file-pdf"></i>
+            </button>
+            <button (click)="print()" class="btn btn-primary"
+              style="float: left; margin-right: 10px; height: 40px;width: 40px;"><i class="fa fa-print"
+                aria-hidden="true"></i>
+            </button>
+          </div>
+          <table
+          class="table table-hover table-bordered table-condenced table-sm table-shadow"
+          id="unverifiedRequestTable"
+        >
+          <thead>
+            <tr class="myPrint" style="border: none; margin-bottom: 30px;">
+                <th colspan="2" style="border: none;">  
+                 <img src="./assets/img/awashlogo.png" class="img" alt="AB Logo" style="width: 200px; height: 50px; ">
+                </th> 
+                <th style="border: none;" colspan="2">Unverified Custodians' Maintenance Requests</th>
+                <th style="border: none;">Report Date: {{myDate | date}}</th>
+             </tr>
+            <tr>
+              <th>Plate Number</th>
+              <th>Requested Date</th>
+              <th>Requested By</th>
+              <th>Directorate</th>
+              <th>Work/Repair Requested</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let response of report">
+                  <td>{{ response.plateNo }}</td>
+                  <td>{{ response.requestedDate | date }}</td>
+                  <td>{{ response.requestedBy }}</td>
+                  <td>{{response.reqDirectorate}}</td>
+                  <td>{{ response.workRepairRequested}}</td>
+                </tr>
+          </tbody>
+        </table>
+        </div>
+   </ng-container>    
+   <ng-container *ngIf = "report.length==0 && isOnView">
+    <div style="margin-left: 300px;">
+        <hr/>
+        <span><button class="btn btn-primary" (click)="changeView()">Back</button></span> <h2 style="text-align: center">Unverified Custodian Requests Report</h2>
+        <hr />
+         <div class="callout callout-info">
+          <p>No Unverified Custodian Requests</p>
+        </div>
+    </div>
+  </ng-container>    
+    <ng-container *ngIf = "!isOnView">
+        <div style="margin-left: 300px;">
+          <hr/>
+          <h2 style="text-align: center">Unverified Custodian Requests Report</h2>
+           <hr />
+           <div>
+
+            <form #reportForm="ngForm">
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label for="name">Report Type</label>
+                    <ng-select type="text" [(ngModel)]="request.reportType" 
+                       name="reportType"
+                       class="custom"  appearance="outline"
+                       autocomplete="off"
+                       #reportType="ngModel" 
+                       >
+                       <ng-option value="" disabled selected>Select report type </ng-option>
+                       <ng-option value="all">All</ng-option>
+                       <ng-option value="range">Date Range</ng-option>
+                    </ng-select>
+                  </div>
+                    <ng-container *ngIf="request.reportType == 'range'" >
+
+                        <div class="form-group col-md-4">
+                            <label for="name">Date From</label>
+                            <input type="date" [(ngModel)]="request.from" 
+                               name="from" class="form-control" autocomplete="off"
+                               #from="ngModel" 
+                               />
+                          </div>
+                          <div class="form-group col-md-4">
+                            <label for="name">Date To</label>
+                            <input type="date" [(ngModel)]="request.to" 
+                               name="to" class="form-control" autocomplete="off"
+                               #to="ngModel" 
+                               />
+                         </div>
+
+                    </ng-container>
+                </div>
+                  <button 
+                    (click)="viewUnverified(reportForm)"
+                     type="submit"
+                     class="btn btn-primary btn-right" >
+                     View Report
+                 </button>                
+            
+              </form>
+                
+          </div>
+        </div>
+      </ng-container>
+ 
+    <!-- End  -->
+   
+
+    <div class="container" id="main-container">
+
+    </div>
+    </div>

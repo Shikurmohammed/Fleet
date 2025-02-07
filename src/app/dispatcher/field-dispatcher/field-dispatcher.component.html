@@ -1,0 +1,66 @@
+<div class="container" id="approverequest">
+  <div class="card shadow">
+    <div class="card-header">
+      <h4 class="text-center">Authorized Field Request</h4>
+    </div>
+    <div class="card-body">
+      <div *ngIf="dispatcherLength !=0">
+        <table class="table table-bordered table-condenced table striped table-hover table-sm table-shadow" id="fieldDispatcherdatatable">
+          <thead>
+            <tr>
+
+              <th>Date</th>
+              <th>Passengers</th>
+              <th>Requested By</th>
+              <th>DepartureDate</th>
+              <th>ReturnDate</th>
+              <th>RequestedFor</th>
+              <th>TransportMode</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let req of approve">
+              <!-- <ng-container> -->
+
+              <td>{{req.date|date}}</td>
+              <td>{{req.passengers}}</td>
+              <td>{{req.requestedBy}}</td>
+              <td>{{req.departureDate}}</td>
+              <td>{{req.returnDate}}</td>
+              <td>{{req.requestedFor}}</td>
+              <td>{{req.transportMode}}</td>
+              <td>
+
+                  {{req.status}}
+
+              </td>
+              <td>
+                <button (click)="detailRequest(req.id)" class="btn btn-sm btn-outline-success btn-raised"
+                  style="margin-left: 10px;">
+                  Detail</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <div *ngIf="dispatcherLength==0">
+        <div class="bd-callout bd-callout-info">
+          <p class="text-center">No Authorized Field Request Found</p>
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+
+

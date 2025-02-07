@@ -1,0 +1,19 @@
+<a mat-list-item class="menu-item " [routerLink]="item.url" [routerLinkActive]="'active'" 
+(click)="toggleNestedMenu()">
+    <mat-icon matListItemIcon>{{item.icon}}</mat-icon>
+    <span class="menu-label" *ngIf="isOpen" matListItemTitle>{{item.name}}</span>
+
+    <ng-container *ngIf="item.subMenu">
+        <span matListItemMeta>
+			<mat-icon class="nested-menu-toggle">{{nestedMenuOpen.getValue() ? 'expand_less' : 'expand_more'}}</mat-icon>
+		</span>
+    </ng-container>
+</a>
+<ng-container *ngIf="item.subMenu && nestedMenuOpen.getValue()">
+    <ng-container *ngFor="let subItem of item.subMenu">
+        <a class="menu-item indented menu-item1" mat-list-item [routerLink]="subItem?.url" [routerLinkActive]="'active'" >
+            <mat-icon matListIcon>{{subItem.icon}}</mat-icon>
+            <span class="menu-label"  matListItemTitle *ngIf="isOpen">{{subItem.name}}</span>
+        </a>
+    </ng-container>
+</ng-container>

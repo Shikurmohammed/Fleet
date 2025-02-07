@@ -1,0 +1,394 @@
+<div class="container" id="detailrequest">
+  <div class="card card-shadow">
+    <div class="card-header">
+      <button (click)="backView()" class="btn btn-primary btn-sm btn-raised" style="float: left;">Back</button>
+    </div>
+    <div class="card-body">
+      <table class="table table-condenced table-sm table-shadow">
+
+        <tbody>
+          <ng-container *ngFor="let req of approve">
+            <tr *ngIf="req.id ==id ">
+              <td>Directorate:</td>
+              <td><strong>{{req.directorate}}</strong></td>
+              <td>Passenger(s):</td>
+              <td> <strong>{{req.passengers}}</strong></td>
+              <td>Requested By:</td>
+              <td><strong>{{req.requestedBy}}</strong></td>
+              <td>
+            </tr>
+            <tr *ngIf="req.id ==id ">
+              <td>Departure Date: </td>
+              <td><strong>{{req.departureDate|date}}</strong></td>
+              <td>Return Date:</td>
+              <td> <strong>{{req.returnDate|date}}</strong></td>
+              <td>No Of Days: </td>
+              <td><strong>{{req.noOfDaysRequested}} day(s)</strong></td>
+            </tr>
+            <tr *ngIf="req.id ==id ">
+              <td>Transport Mode: </td>
+              <td><strong>{{req.transportMode}}</strong></td>
+              <td>Purpose:</td>
+              <td><strong>{{req.purpose}}</strong></td>
+              <td>Requested For: </td>
+              <td><strong>{{req.requestedFor}}</strong></td>
+            </tr>
+            <tr *ngIf="req.id ==id ">
+              <td>KM: </td>
+              <td><strong>{{req.destKM}} km</strong></td>
+              <td>Contingency: </td>
+              <td><strong>{{req.contingency}} km</strong></td>
+              <td>Total KM: </td>
+              <td><strong>{{req.totalKM}} km</strong></td>
+            </tr>
+            <tr *ngIf="req.id ==id ">
+              <td>Destination Branch:</td>
+              <td><strong>{{req.destBranch}}</strong></td>
+              <td>Destination City: </td>
+              <td><strong>{{req.destCity}}</strong></td>
+              <td>Claim Expense From: </td>
+              <td><strong>{{req.expence}}</strong></td>
+            </tr>
+            <tr *ngIf="req.id ==id ">
+              <td>Material Loaded: </td>
+              <td><strong>{{req.materialloaded}} kg</strong></td>
+              <td> Requested Date: </td>
+              <td><strong>{{req.date|date}}</strong></td>
+              <td>Requested Time: </td>
+              <td><strong>{{req.requestedTime|convertFrom24To12Format}}</strong></td>
+            </tr>
+            <tr *ngIf="req.id ==id ">
+              <td>Passenger Telephone: </td>
+              <td><strong>{{req.passTelephone}}</strong></td>
+            </tr>
+
+          </ng-container>
+
+        </tbody>
+
+      </table>
+
+      <div style="margin-top: 8px; float: right;">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#approveModals">
+          Dispatch
+        </button>
+        <!-- <button class="btn btn-danger" style="margin-left: 5px;" data-toggle="modal"
+          data-target="#rejectModals">Reject</button> -->
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ************************Dispatch USER REQUEST************************************** -->
+<div class="container" id="mainapprove">
+  <div class="modal fade" id="approveModals" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 style="margin-left: 200px;">Dispatch Field Request</h3>
+          <!-- <span class="badge badge-success text-center">Approve User Request</span> -->
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: red;">&times;</span>
+          </button>
+        </div>
+        <form #approveForm="ngForm">
+          <div class="modal-body">
+            <div class="form-row" *ngIf="noOfDays > isExpired && isExpired >=0">
+              <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-left: 160px;">
+                <strong> Vehicle Insurance Will Expire After: {{noOfDays - isExpired}} Day(s)</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true" style="color: red;">&times;</span>
+                </button>
+              </div>
+
+            </div>
+            <div class="form-row" *ngIf="isExpired <0">
+              <div class="alert alert-warning alert-dismissible fade show" role="alert"
+                style="background-color: brown; color: white; margin-left: 160px;">
+                <strong> Vehicle Insurance Already Expired Before: {{(-1*isExpired)}} Days</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true" style="color: white;">&times;</span>
+                </button>
+              </div>
+
+            </div>
+            <div class="form-row" hidden>
+              <div class="form-group col-md-6">
+                <label for="name">Requested By</label>
+                <input type="text" [(ngModel)]="requestor" name="requestedBy" class="form-control" autocomplete="off"
+                  required readonly />
+              </div>
+              <div class="form-group col-md-6">
+                <label for="name">Requester ID</label>
+                <input type="text" [(ngModel)]="requestorID" name="requesterID" class="form-control" autocomplete="off"
+                  required readonly />
+              </div>
+            </div>
+
+
+              <div style="background-color: aliceblue; height: 50px; margin-top: -15px;">
+                <div class="form-group row" style="margin-left: 180px; padding-top: 5px;">
+                  <label for="vehicletype" class="col-sm-3 col-form-label">Vehicle Type</label>
+                  <div class="col-sm-6">
+                  <ng-select appearance="outline"  [(ngModel)]="vehictypes" name="vehicleType" #vehicle="ngModel"
+                  (change)="getVehiclePlate()"
+                  [ngClass]="{ 'is-invalid': approveForm.submitted && vehicle.invalid }"
+                  [class.is-invalid]="vehicle.invalid && vehicle.touched" required >
+                    <ng-option *ngFor="let vehicles of vtypes" value="{{vehicles.id}}">
+
+                      {{vehicles.vehicleType}}
+                    </ng-option>
+
+                  </ng-select>
+                  <div *ngIf="vehicle.errors && (vehicle.invalid && vehicle.touched)">
+                    <small class="text-danger" *ngIf="vehicle.errors.required"> vehicle type is required</small>
+                  </div>
+                  </div>
+                </div>
+              </div>
+
+            <div class="form-row" style="padding-top: 10px;">
+              <div class="form-group col-md-3">
+                <label for="name">Plate No</label>
+                <ng-select appearance="outline" [(ngModel)]="plateNumber" name="plateNo" #plateNo="ngModel"
+                (change)="getDriverName()"
+                [ngClass]="{ 'is-invalid': approveForm.submitted && plateNo.invalid }"
+                [class.is-invalid]="plateNo.invalid && plateNo.touched" required >
+                  <ng-option *ngFor="let plate of vekByTypes" value="{{plate.plateNo}}">
+                    {{plate.plateNo}}
+                  </ng-option>
+
+                </ng-select>
+                <div *ngIf="plateNo.errors && (plateNo.invalid && plateNo.touched)">
+                  <small class="text-danger" *ngIf="plateNo.errors.required"> plateNo is required</small>
+                </div>
+
+              </div>
+              <div class="form-group col-md-3">
+                <label for="name">Driver</label>
+                <ng-select appearance="outline" [virtualScroll]="false" id="driverNames"
+                 [(ngModel)]="driverNames" name="driverName" #driverName="ngModel"
+                [ngClass]="{ 'is-invalid': approveForm.submitted && driverName.invalid }"
+                [class.is-invalid]="driverName.invalid && driverName.touched" required>
+                  <ng-option *ngFor="let drivername of driversName" value="{{drivername.fullName}}">
+                    {{drivername.fullName}}
+                  </ng-option>
+
+                </ng-select>
+                <div *ngIf="driverName.errors && (driverName.invalid && driverName.touched)">
+                  <small class="text-danger" *ngIf="driverName.errors.required"> driverName is required</small>
+                </div>
+                <!-- <input type="text" [(ngModel)]="fieldapprove.driverName" name="driverName" [ngModel]="driversCarPlate"
+                  name="driverName" class="form-control" #driverName="ngModel" class="form-control" required readonly /> -->
+              </div>
+
+              <div class="form-group col-md-3">
+                <label for="directorate">Distance Traveled/Litre</label>
+                <input type="number" [(ngModel)]="fieldapprove.distancePerLitter" name="distancePerLitter"
+                  class="form-control" id="distanceperlitre" placeholder="0" autocomplete="off" required
+                  [ngModel]="distancePerLitre" readonly required />
+              </div>
+              <div class="form-group col-md-3" hidden>
+                <label for="purposeoftravel">KM</label>
+                <input type="number" [ngModel]="kmOnSingleTrip" [(ngModel)]="fieldapprove.givenKM" name="givenKM" class="form-control" id="km"/>
+
+              </div>
+              <div class="form-group col-md-3">
+                <label for="name">Salary/Perdiem</label>
+                <input type="number" [(ngModel)]="fieldapprove.salary" name="salary" class="form-control"
+                  id="salaryperdiem" autocomplete="off" placeholder="salary..." required #salary="ngModel"
+                  [ngClass]="{ 'is-invalid': approveForm.submitted && salary.invalid }"
+                  [class.is-invalid]="salary.invalid && salary.touched" #salar (keyup)="getSalary(salar.value)" />
+                <div *ngIf="salary.errors && (salary.invalid && salary.touched)">
+                  <small class="text-danger" *ngIf="salary.errors.required"> salary/perdiem is required</small>
+                  <!-- <small class="text-danger" *ngIf="passengers.errors.pattern">incorrect passengers name</small> -->
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="numberofdays">KM on Single Trip</label>
+                <input type="number" [ngModel]="kmOnSingleTrip"
+                  name="totalKMAllowedOnSingleTrip" class="form-control" id="totalkmonsingletrip" readonly/>
+                <!-- <input type="number" [(ngModel)]="fieldapprove.totalKMAllowedOnSingleTrip"
+                  name="totalKMAllowedOnSingleTrip" class="form-control" id="totalkmonsingletrip" placeholder="0"
+                  #double (keyup)="getTotalDoubleTrip(double.value)" autocomplete="off" required
+                  #totalKMAllowedOnSingleTrip="ngModel"
+                  [ngClass]="{ 'is-invalid': approveForm.submitted && totalKMAllowedOnSingleTrip.invalid }"
+                  [class.is-invalid]="totalKMAllowedOnSingleTrip.invalid && totalKMAllowedOnSingleTrip.touched" />
+                <div
+                  *ngIf="totalKMAllowedOnSingleTrip.errors && (totalKMAllowedOnSingleTrip.invalid && totalKMAllowedOnSingleTrip.touched)">
+                  <small class="text-danger" *ngIf="totalKMAllowedOnSingleTrip.errors.required"> total KM Allowed On
+                    Single Trip required</small>
+                </div> -->
+              </div>
+              <div class="form-group col-md-4">
+                <label for="numberofdays">KM on Double Trip</label>
+                <input type="number" [(ngModel)]="fieldapprove.doubleTrip" name="doubleTrip" class="form-control"
+                  id="doubletrip" placeholder="0" readonly [ngModel]="kmOnDoubleTrip" required />
+              </div>
+              <div class="form-group col-md-4">
+                <label for="numberofdays">Estimated Fuel(Littre)</label>
+                <input type="number" [(ngModel)]="estimatedFuelInLitre" name="estimatedfuelRequired"
+                  class="form-control"  readonly required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label for="numberofdays">Littres in Birr</label>
+                <input type="number" [(ngModel)]="littresInBirr" name="littresInBirr" class="form-control" readonly/>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="numberofdays">Estimated Fuel (InBirr)</label>
+                <input type="number" [(ngModel)]="fuelPrice" name="fuelInBirr" class="form-control" readonly/>
+              </div>
+              <div class="form-group col-md-2">
+                <label for="km">No of Days</label>
+                <input type="number" [(ngModel)]="fieldapprove.noOfDaysRequired" name="noOfDaysRequired"
+                  class="form-control" id="daysrequired" [ngModel]="noOfDays" readonly required />
+              </div>
+              <div class="form-group col-md-3">
+                <label for="contingency">Perdiem/Day(InBirr)</label>
+                <input type="number" [(ngModel)]="fieldapprove.perdiemPerDay" name="perdiemPerDay" class="form-control"
+                  id="perdiemperday" placeholder="perdiemperday" autocomplete="off" required #perdiemPerDay="ngModel"
+                  #perdiem (keyup)="getPerdiem(perdiem.value)"
+                  [ngClass]="{ 'is-invalid': approveForm.submitted && perdiemPerDay.invalid }"
+                  [class.is-invalid]="perdiemPerDay.invalid && perdiemPerDay.touched" #perdem
+                  (keyup)="getPerdiem(perdem.value)" />
+                <div *ngIf="perdiemPerDay.errors && (perdiemPerDay.invalid && perdiemPerDay.touched)">
+                  <small class="text-danger" *ngIf="perdiemPerDay.errors.required">Perdiem Per Day required</small>
+               </div>
+              </div>
+              <div class="form-group col-md-3" hidden>
+                <label for="totalkm">Accomodation(In Birr)</label>
+                <input [(ngModel)]="accm" type="number" name="accomodation" class="form-control"
+               />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-">
+                <label for="totalper">Total Perdiem & Accomodation(in Birr)</label>
+                <input type="number" [(ngModel)]="fieldapprove.totalPerdiemAndAccomodation"
+                  name="totalPerdiemAndAccomodation" class="form-control" id="accomodationandperdiem" placeholder="0"
+                  autocomplete="off" readonly [ngModel]="totalAccPer" required />
+              </div>
+              <div class="form-group col-md-5">
+                <label for="km">Grand Total(in Birr)</label>
+                <input type="number" [(ngModel)]="fieldapprove.grandTotal" name="grandTotal" class="form-control"
+                  id="grandtotal" placeholder="0" readonly [ngModel]="grandTotal" required />
+
+              </div>
+              <div class="form-group col-md-2">
+                <label for="km">Cash Advanced</label>
+                <input type="number" [(ngModel)]="fieldapprove.cashAdvancedTo" name="cashAdvancedTo"
+                  class="form-control" id="grandtotal" placeholder="0" autocomplete="off" required
+                  #cashAdvancedTo="ngModel"
+                  [ngClass]="{ 'is-invalid': approveForm.submitted && cashAdvancedTo.invalid }"
+                  [class.is-invalid]="cashAdvancedTo.invalid && cashAdvancedTo.touched" />
+                <div *ngIf="cashAdvancedTo.errors && (cashAdvancedTo.invalid && cashAdvancedTo.touched)">
+                  <small class="text-danger" *ngIf="cashAdvancedTo.errors.required">Cash Advanced To required</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label for="km">Date Dispatched</label>
+                <input type="date"  [ngModel]="dateToday" name="dispdate" class="form-control" required
+                  readonly />
+            </div>
+
+              <div class="form-group col-md-5">
+                <label for="km">KM Reading On Departure</label>
+                <input type="number" [(ngModel)]="fieldapprove.kmReadingOnDeparture" name="kmReadingOnDeparture"
+                  class="form-control" id="kmondeparture" placeholder="0" autocomplete="off" required readonly
+                  [ngModel]="kmOnDeparture" />
+              </div>
+              <div class="form-group col-md-2">
+                <label for="km">Approved By</label>
+                <input type="text" [ngModel]="username" name="approvedBy" class="form-control"
+                  placeholder="approved by.." autocomplete="off" required readonly />
+              </div>
+              <div class="form-group col-md-2">
+                <label for="km">Approved Date</label>
+                <input type="date" [ngModel]="dateToday" name="approvedDate" class="form-control" required readonly />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button [disabled]="approveForm.form.invalid" type="submit" class="btn btn-primary" data-dismiss="modal"
+             (click)="addApproval(approveForm.value)">Dispatch</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ************************Reject USER REQUEST************************************** -->
+<div class="modal fade" id="rejectModals" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="margin-left: 150px;">Reject User Request</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="color: red;">&times;</span>
+        </button>
+      </div>
+      <form #rejectForm="ngForm">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="name">Reason For Rejection</label>
+              <textarea [(ngModel)]="requestapprove.reasonOfRejection" name="reasonOfRejection" class="form-control"
+                autocomplete="off" placeholder="why you want to reject..." required #reasonOfRejection="ngModel"
+                [ngClass]="{ 'is-invalid': rejectForm.submitted && reasonOfRejection.invalid }"
+                [class.is-invalid]="reasonOfRejection.invalid && reasonOfRejection.touched">
+              </textarea>
+              <div *ngIf="reasonOfRejection.errors && (reasonOfRejection.invalid && reasonOfRejection.touched)">
+                <small class="text-danger" *ngIf="reasonOfRejection.errors.required">Reason Of Rejection
+                  required</small>
+              </div>
+            </div>
+            <div class="col-md-6" hidden>
+              <label for="name">Rejected By:</label>
+              <input type="text" [ngModel]="rejecter" class="form-control" name="rejectedBy">
+            </div>
+            <div class="col-md-6" hidden>
+              <label for="name">ID:</label>
+              <input type="text" [ngModel]="id" class="form-control" name="id">
+            </div>
+            <div class="col-md-6" hidden>
+              <label for="name">Date Rejected:</label>
+              <input type="date" [ngModel]="dateToday" class="form-control" name="rejectedDate">
+            </div>
+
+          </div>
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button [disabled]="rejectForm.form.invalid" data-dismiss="modal" (click)="addReject(rejectForm.value)" type="submit" class="btn btn-primary">Reject</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

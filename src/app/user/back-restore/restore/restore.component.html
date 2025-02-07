@@ -1,0 +1,34 @@
+<div class="restore">
+  <h4 class="text-center">Restore Database</h4>
+
+  <br />
+  <div class="col-md-5" style="margin-left: 30%; background-color: aliceblue">
+    <div class="card shadow-2-strong align-items-center">
+      <div class="form-group col-md-6" style="margin-top: 25px">
+        <label for="type">Select Type</label>
+
+        <select
+          name="type"
+          id="type"
+          class="form-select"
+          #type
+          (change)="onSelectedType(type.value)"
+        >
+          <option value="full">Full Database Restore</option>
+          <option value="differential">Differential Database Restore</option>
+        </select>
+      </div>
+      <div class="form-group col-md-6">
+        <label>Insert file path to restore</label>
+        <input #path type="url" class="form-control" value="{{ fpath }}" />
+      </div>
+      <button
+        (click)="restore(path.value)"
+        class="btn btn-primary btn-raised"
+        style="margin-top: 5px; width: fit-content; margin-bottom: 25px"
+      >
+        Restore
+      </button>
+    </div>
+  </div>
+</div>

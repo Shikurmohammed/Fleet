@@ -1,0 +1,287 @@
+<div class="container" id="maintenancecompletion">
+    <div>
+      <h5 class="text-center">Vehicle Maintenence Completion Form</h5>
+      <!-- <button class="btn btn-primary btn-sm" style="float: right;"><i class="fa fa-plus"></i> Add Request</button> -->
+    </div>
+    <hr>
+    <div>
+      <div *ngIf="requestlength !=0">
+        <table class="table table-bordered table-condenced table striped table-sm table-hover table-shadow" id="completiondatatable">
+          <thead>
+            <tr>
+
+              <th>Plate No</th>
+              <th>Directorate</th>
+              <th>Requested By</th>
+              <th>Autorized By</th>
+              <th>Repair Requested</th>
+              <th>Prev Mileage</th>
+              <th>Km on tech</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let req of maintenance">
+                <td>{{req.plateNo}}</td>
+                <td>{{req.reqDirectorate}}</td>
+                <td>{{req.requestedBy}}</td>
+                <td>{{req.authorizedBy}}</td>
+                <td>{{req.workRepairRequested}}</td>
+                <td>{{req.previousServiceMilage}}</td>
+                <td>{{req.kmTechnical}}</td>
+                <td>
+                  <div class="text-center" style="background-color: deepskyblue;">
+                    {{req.status}}
+                  </div>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary" (click)="openReturnModal(req,'completions')">Return</button>
+                  <button (click)="printDetail(req?.id)" class="btn  btn-outline-info btn-raised">
+                    Print</button>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="requestlength==0">
+        <div class="bd-callout bd-callout-info">
+          <p class="text-center">No Authorized Vehicle Maintenance Request Found</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+<!-- *********************MAINTENANCE cOMPLETION MODAL***************************************** -->
+
+<div class="container" id="mainmaintenancecompletion">
+  <div class="modal fade" id="maintenancecompletionModal" tabindex="-1" role="dialog" aria-labelledby="maintenancerequestModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="" style="margin-left: 150px;">Maintenance Completion Form</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: red;">&times;</span>
+          </button>
+        </div>
+       <form #addCompletion="ngForm">
+        <div class="modal-body">
+
+          <div class="form-row">
+            <div class="form-group col-md-6" hidden>
+              <label for="name">Requester ID</label>
+              <input type="text" [ngModel]="requesterID" name="requestId" class="form-control" autocomplete="off"
+                required #requestId="ngModel"
+                [ngClass]="{'is-invalid': addCompletion.submitted && requestId.invalid }"
+                [class.is-invalid]="requestId.invalid && requestId.touched" />
+              <div *ngIf="requestId.errors && (requestId.invalid && requestId.touched)">
+                <small class="text-danger" *ngIf="requestId.errors.required">requestId is required</small>
+                <small class="text-danger" *ngIf="fullName.errors.pattern">incorrect fullName format</small>
+              </div>
+            </div>
+            <div class="form-group col-md-6" hidden>
+              <label for="name">Garage</label>
+              <input type="text" [ngModel]="maintenancecompletion?.garage" name="garage" class="form-control"/>
+
+
+            </div>
+            <div class="form-group col-md-6">
+              <label for="name">Directorate</label>
+              <input type="text" [ngModel]="maintenancecompletion?.reqDirectorate" name="reqDirectorate" class="form-control"
+               autocomplete="off" readonly/>
+
+            </div>
+            <div class="form-group col-md-6" hidden>
+              <label for="name">Modified By</label>
+              <input type="text" [ngModel]="maintenancecompletion?.modifiedBy" name="modifiedBy" class="form-control"
+               autocomplete="off" readonly/>
+            </div>
+            <div class="form-group col-md-6" hidden>
+              <label for="name">Modified Date</label>
+              <input type="text" [ngModel]="maintenancecompletion?.modifiedDate" name="modifiedDate" class="form-control"
+               autocomplete="off" readonly/>
+            </div>
+            <!-- <div class="form-group col-md-6" hidden>
+              <label for="name">Authorized By</label>
+              <input type="text" [ngModel]="maintenancecompletion?.authorizedBy" name="authorizedBy" class="form-control"
+               autocomplete="off" readonly/>
+            </div>
+            <div class="form-group col-md-6" hidden>
+              <label for="name">Authorized Date</label>
+              <input type="text" [ngModel]="maintenancecompletion?.authorizedDate" name="authorizedDate" class="form-control"
+               autocomplete="off" readonly/>
+            </div> -->
+            <div class="form-group col-md-6" hidden>
+              <label for="name">Technical By</label>
+              <input type="text" [ngModel]="maintenancecompletion?.technicalBy" name="technicalBy" class="form-control"
+               autocomplete="off" readonly/>
+            </div>
+            <div class="form-group col-md-6" hidden>
+              <label for="name">Technical Date</label>
+              <input type="text" [ngModel]="maintenancecompletion?.technicalRespondDate" name="technicalRespondDate" class="form-control"
+               autocomplete="off" readonly/>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="name">Plate Number</label>
+              <input type="text" [ngModel]="plateNo" name="plateNo" class="form-control"
+               autocomplete="off" readonly/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="name">Date Taken For Garage</label>
+              <input type="date" [(ngModel)]="completion.dateTaken" name="dateTaken" class="form-control" autocomplete="off"
+                required #dateTaken="ngModel"
+                [ngModel]="dateGarage | date: 'yyyy-MM-dd'"
+                [ngClass]="{'is-invalid': addCompletion.submitted && dateTaken.invalid }"
+                [class.is-invalid]="dateTaken.invalid && dateTaken.touched" readonly/>
+              <div *ngIf="dateTaken.errors && (dateTaken.invalid && dateTaken.touched)">
+                <small class="text-danger" *ngIf="dateTaken.errors.required">Date Taken For Garage is required</small>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="name">Date From Garage</label>
+              <input type="date" [(ngModel)]="completion.dateFromGarage" name="dateFromGarage" class="form-control" autocomplete="off"
+                required #dateFromGarage="ngModel"
+                [ngClass]="{'is-invalid': addCompletion.submitted && dateFromGarage.invalid }"
+                [class.is-invalid]="dateFromGarage.invalid && dateFromGarage.touched" />
+              <div *ngIf="dateFromGarage.errors && (dateFromGarage.invalid && dateFromGarage.touched)">
+                <small class="text-danger" *ngIf="dateFromGarage.errors.required">Date From Garage is required</small>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="name">Maintenance Cost</label>
+              <input type="text" [(ngModel)]="completion.maintenanceCost" name="maintenanceCost" class="form-control" autocomplete="off"
+                required #maintenanceCost="ngModel" pattern="^[0-9\.]*$"
+                [ngClass]="{'is-invalid': addCompletion.submitted && maintenanceCost.invalid }"
+                [class.is-invalid]="maintenanceCost.invalid && maintenanceCost.touched" />
+              <div *ngIf="maintenanceCost.errors && (maintenanceCost.invalid && maintenanceCost.touched)">
+                <small class="text-danger" *ngIf="maintenanceCost.errors.required">Maintenance Cost is required</small>
+                <small class="text-danger" *ngIf="maintenanceCost.errors.pattern">Only numeric values allowed</small>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="name">Date From TechnicalService</label>
+              <input type="date" [(ngModel)]="completion.dateFromTechnical" name="dateFromTechnical" class="form-control" autocomplete="off"
+                required #dateFromTechnical="ngModel"
+                [ngClass]="{'is-invalid': addCompletion.submitted && dateFromTechnical.invalid }"
+                [class.is-invalid]="dateFromTechnical.invalid && dateFromTechnical.touched" />
+              <div *ngIf="dateFromTechnical.errors && (dateFromTechnical.invalid && dateFromTechnical.touched)">
+                <small class="text-danger" *ngIf="dateFromTechnical.errors.required">Date From Technical Service is required</small>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button [disabled]="addCompletion.form.invalid" type="submit" class="btn btn-primary btn-sm"
+          data-dismiss="modal" (click)="completeMaintenances(addCompletion.value)">Return</button>
+          <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">No</button>
+        </div>
+       </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+<!-- <div id="maintenancecompletion" class="container">
+  <div class="card card-sm shadow">
+    <div class="card-header">
+      <h2>Maintenance Completion Form</h2>
+    </div>
+
+    <form #addCompletion="ngForm" (ngSubmit)="maintenanceCompletion(addCompletion)">
+      <div class="card-body">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="name">Requester ID</label>
+            <input type="text" [(ngModel)]="completion.requestId" name="requestId" class="form-control" autocomplete="off"
+              required #requestId="ngModel"
+              [ngClass]="{'is-invalid': addCompletion.submitted && requestId.invalid }"
+              [class.is-invalid]="requestId.invalid && requestId.touched" />
+            <div *ngIf="requestId.errors && (requestId.invalid && requestId.touched)">
+              <small class="text-danger" *ngIf="requestId.errors.required">requestId is required</small>
+              <small class="text-danger" *ngIf="fullName.errors.pattern">incorrect fullName format</small>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="name">Maintenance Cost</label>
+            <input type="text" [(ngModel)]="completion.maintenanceCost" name="maintenanceCost" class="form-control" autocomplete="off"
+              required #maintenanceCost="ngModel"
+              [ngClass]="{'is-invalid': addCompletion.submitted && maintenanceCost.invalid }"
+              [class.is-invalid]="maintenanceCost.invalid && maintenanceCost.touched" />
+            <div *ngIf="maintenanceCost.errors && (maintenanceCost.invalid && maintenanceCost.touched)">
+              <small class="text-danger" *ngIf="maintenanceCost.errors.required">Maintenance Cost is required</small>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="name">Date Taken For Garage</label>
+            <input type="date" [(ngModel)]="completion.dateTakenForGarage" name="dateTakenForGarage" class="form-control" autocomplete="off"
+              required #dateTakenForGarage="ngModel"
+              [ngClass]="{'is-invalid': addCompletion.submitted && dateTakenForGarage.invalid }"
+              [class.is-invalid]="dateTakenForGarage.invalid && dateTakenForGarage.touched" />
+            <div *ngIf="dateTakenForGarage.errors && (dateTakenForGarage.invalid && dateTakenForGarage.touched)">
+              <small class="text-danger" *ngIf="dateTakenForGarage.errors.required">Date Taken For Garage is required</small>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="name">Date From Garage</label>
+            <input type="date" [(ngModel)]="completion.dateFromGarage" name="dateFromGarage" class="form-control" autocomplete="off"
+              required #dateFromGarage="ngModel"
+              [ngClass]="{'is-invalid': addCompletion.submitted && dateFromGarage.invalid }"
+              [class.is-invalid]="dateFromGarage.invalid && dateFromGarage.touched" />
+            <div *ngIf="dateFromGarage.errors && (dateFromGarage.invalid && dateFromGarage.touched)">
+              <small class="text-danger" *ngIf="dateFromGarage.errors.required">Date From Garage is required</small>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="name">Plate Number</label>
+            <input type="text" [(ngModel)]="completion.plateNo" name="plateNo" class="form-control" autocomplete="off"
+              required #plateNo="ngModel"
+              [ngClass]="{'is-invalid': addCompletion.submitted && plateNo.invalid }"
+              [class.is-invalid]="plateNo.invalid && plateNo.touched" />
+            <div *ngIf="plateNo.errors && (plateNo.invalid && plateNo.touched)">
+              <small class="text-danger" *ngIf="plateNo.errors.required">Plate Number is required</small>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="name">Date From TechnicalService</label>
+            <input type="date" [(ngModel)]="completion.dateFromTechnical" name="dateFromTechnical" class="form-control" autocomplete="off"
+              required #dateFromTechnical="ngModel"
+              [ngClass]="{'is-invalid': addCompletion.submitted && dateFromTechnical.invalid }"
+              [class.is-invalid]="dateFromTechnical.invalid && dateFromTechnical.touched" />
+            <div *ngIf="dateFromTechnical.errors && (dateFromTechnical.invalid && dateFromTechnical.touched)">
+              <small class="text-danger" *ngIf="dateFromTechnical.errors.required">Date From Technical Service is required</small>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="card-footer">
+        <button [disabled]="addCompletion.form.invalid" type="submit" class="btn btn-success btn-raised btn-sm col-md-2"
+          style="float: right">Submit</button>
+      </div>
+    </form>
+
+
+  </div>
+</div> -->

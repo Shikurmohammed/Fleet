@@ -1,0 +1,408 @@
+<div class="container" id="viewrequest">
+  <div class="card card-shadow">
+    <div class="card-header">
+      <h4 class="text-center">My Field Requests</h4>
+      <!-- <button class="btn btn-primary btn-sm" style="float: right;"><i class="fa fa-plus"></i> Add Request</button> -->
+    </div>
+    <div class="card-body">
+      <div *ngIf="myfieldLenth !=0">
+        <table class="table table-bordered table-condenced table striped table-sm table-hover table-shadow" id="myrequestdatatable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Date</th>
+              <th>Passengers</th>
+              <!-- <th>TransportMode</th> -->
+              <th>RequestedFor</th>
+              <th>DestBranch</th>
+              <th>Requested By</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let req of request">
+              <!-- <ng-container *ngIf="req.requestedBy ==username "> -->
+                <td>{{req.id}}</td>
+                <td>{{req.date|date}}</td>
+                <td>{{req.passengers}}</td>
+                <!-- <td>{{req.transportMode}}</td> -->
+                <td>{{req.requestedFor}}</td>
+                <td>{{req.destBranch}}</td>
+                <td>{{req.requestedBy}}</td>
+                <td class="text-center">
+                  <div *ngIf="req.status=='Unauthorized'" style="background-color: orange; color: white;">
+                    {{req.status}}
+                  </div>
+                  <div *ngIf="req.status=='Rejected'" style="background-color: red; color: white;">
+                    {{req.status}}
+                  </div>
+                  <div *ngIf="req.status=='Approved'" style="background-color: dodgerblue; color: white;">
+                    {{req.status}}
+                  </div>
+                  <div *ngIf="req.status=='Authorized' ||req.status=='Checked' " style="background-color: lightskyblue; color: white;">
+                       Authorized
+                  </div>
+                </td>
+                <td>
+                  <div class="form-group">
+                    <button *ngIf="req.status=='Unauthorized' " class="btn btn-outline-primary btn-sm"
+                      style="margin-left: 4px; margin-top: 2px;" (click)="onOpenModal(req,'updaterequest')">Update
+                    </button>
+                  </div>
+                  <div class="form-group">
+                    <button *ngIf="req.status=='Unauthorized' " class="btn btn-outline-danger btn-sm"
+                      (click)="onOpenModal(req,'deleterequest')" style="margin-left: 4px; margin-top: 2px;">Cancel
+                    </button>
+                  </div>
+                  <div class="form-group">
+                    <button class="btn btn-outline-success btn-sm"
+                      (click)="onOpenModal(req,'viewrequest')" style="margin-left: 4px; margin-top: 2px;">Detail
+                    </button>
+                  </div>
+                  <div class="form-group" *ngIf="req.status=='Approved'">
+                    <button class="btn btn-outline-primary btn-sm" (click)="printDetail(req.id)"
+                     style="margin-left: 4px; margin-top: 2px;">Print/Export
+                    </button>
+                  </div>
+                </td>
+              <!-- </ng-container> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="myfieldLenth==0">
+        <div class="bd-callout bd-callout-info">
+          <p class="text-center">No Field Request Found</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- *********************DELETE REQUEST INFO MODAL***************************************** -->
+
+<div class="container" id="maindriver">
+  <div class="modal fade" id="deleterequestModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModelLabel" style="margin-left: 150px;">Delete Request</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: red;">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Are you sure you want to delete Requester:<strong> {{ deleterequest?.requestedBy }} ?</strong>
+          </p>
+          <div class="modal-footer">
+            <button (click)="deleteRequestData(deleterequest?.id)" class="btn btn-primary"
+            data-dismiss="modal">Yes</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- =======================================UPDATE Request INFORMATION MODAL======================= -->
+  <div class="modal fade in" id="updateRequestModal" tabindex="-1" role="dialog"
+    aria-labelledby="updatedriverModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateModal" style="margin-left: 250px;">
+            Edit Request Data
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: red;">&times;</span>
+          </button>
+        </div>
+        <form #editFormRequest="ngForm">
+          <div class="modal-body">
+            <div class="form-row" hidden>
+              <div class="form-group col-md-4">
+                <label for="fullname">ID</label>
+                <input type="text" [ngModel]="updaterequest?.id" name="id" class="form-control" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="fullname">Date Requested</label>
+                <input type="date" [ngModel]="updaterequest?.date" name="date" class="form-control"/>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="Telephone">Passenger(s)</label>
+                <input type="text" [ngModel]="updaterequest?.passengers" name="passengers" class="form-control" />
+              </div>
+              <div class="form-group col-md-4">
+                <label for="passTelephone">Passenger's Telephone</label>
+                <input
+                  type="text"
+                  [ngModel]="updaterequest?.passTelephone"
+                  name="passTelephone"
+                  id="passTelephone"
+                  class="form-control"
+                  required
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label for="Residence">Material Loaded.</label>
+                <input type="number" [ngModel]="updaterequest?.materialloaded" name="materialloaded"
+                  class="form-control" />
+              </div>
+              <div class="form-group col-md-4">
+                <label for="Residence">Transport Mode.</label>
+                <ng-select appearance="outline" class="custom"  [ngModel]="updaterequest?.transportMode" name="transportMode">
+                  <ng-option value="Vehicle">Vehicle</ng-option>
+                  <ng-option value="Airplane">Airplane</ng-option>
+                </ng-select>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="Telephone">Claim</label>
+                <input type="text" [ngModel]="updaterequest?.expence"
+                 name="expence" class="form-control"/>
+              </div>
+
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="fullname">Departure Date</label>
+                <input type="date" [ngModel]="updaterequest?.departureDate" [min]="dateToday"
+                name="departureDate" class="form-control" (change)="getDeparture($event)"/>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="Telephone">Return Date</label>
+                <input type="date" [ngModel]="updaterequest?.returnDate" [min]="departDate"
+                 name="returnDate" class="form-control" (change)="getReturnDate($event)"/>
+
+              </div>
+              <div class="form-group col-md-4">
+                <label for="Residence">NoOfDaysRequested.</label>
+                <input type="number" readonly [ngModel]="updaterequest?.noOfDaysRequested"
+                 name="noOfDaysRequested"
+                  class="form-control" [ngModel]="noOfdays" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="fullname">Requested For</label>
+                <ng-select appearance="outline" class="custom"  [ngModel]="updaterequest?.requestedFor" name="requestedFor">
+                  <ng-option value="Transportaion">Transportaion</ng-option>
+                  <ng-option value="Loading">Loading</ng-option>
+                  <ng-option value="Crane">Crane</ng-option>
+                  <ng-option value="Both">Both</ng-option>
+               </ng-select>
+             </div>
+              <div class="form-group col-md-4">
+                <label for="Telephone">Purpose</label>
+                <input type="text" [ngModel]="updaterequest?.purpose" name="purpose" class="form-control" />
+              </div>
+              <div class="form-group col-md-4">
+                <label for="fullname">Destination Branch</label>
+                <input type="text" [ngModel]="updaterequest?.destBranch" name="destBranch" class="form-control" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="Telephone">Destination City</label>
+                <input type="text" [ngModel]="updaterequest?.destCity" name="destCity" class="form-control" />
+              </div>
+              <div class="form-group col-md-4">
+                <label for="fullname">KM</label>
+                <input type="number" [ngModel]="updaterequest?.destKM"
+                name="destKM" class="form-control"
+                #initialKM (keyup)="getKM(initialKM.value)"/>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="Telephone">Contingency</label>
+                <input type="text" [ngModel]="updaterequest?.contingency"
+                 name="contingency" class="form-control"
+                 #contin (keyup)="getContingency(contin.value)"/>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="Residence">Total Km.</label>
+                <input type="number" readonly [ngModel]="updaterequest?.totalKM" [ngModel]="totalKM"
+                name="totalKM" class="form-control" />
+              </div>
+
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="submit" data-dismiss="modal" (click)="updateRequest(editFormRequest.value)"
+              class="btn btn-primary btn-sm">
+              Update
+            </button>
+            <button type="button" id="edit-vehicle-form" data-dismiss="modal" class="btn btn-danger btn-sm">
+              Close
+            </button>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================================VIEW USER REQUEST INFORMATION MODAL======================= -->
+
+  <div
+  class="modal fade in"
+  id="viewrequestModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="detailModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <strong>
+          <h5 class="modal-title text-center" id="updateModal" style="margin-left: 250px;">
+            View Request Detail
+          </h5>
+        </strong>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="color: red;">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p>Date  :  <strong><span>{{ viewrequest?.date|date }}</span></strong> </p>
+          </div>
+          <div class="col-md-6">
+            <p>Requested Time  :  <strong><span>{{ viewrequest?.requestedTime | convertFrom24To12Format}}</span></strong> </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p>Directorate  : <strong><span>{{ viewrequest?.directorate }}</span></strong> </p>
+          </div>
+          <div class="col-md-6">
+            <p>Requested By :<strong><span>{{ viewrequest?.requestedBy }}</span></strong> </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p>Passenger(s)  :<strong><span>{{ viewrequest?.passengers }}</span></strong> </p>
+          </div>
+          <div class="col-md-6">
+            <p>Passenger's Telephone  :<strong><span>{{ viewrequest?.passTelephone }}</span></strong> </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p>RequestedFor  :  <strong><span>{{ viewrequest?.requestedFor }}</span></strong> </p>
+          </div>
+          <div class="col-md-6">
+            <p>Purpose  : <strong><span>{{ viewrequest?.purpose }}</span></strong> </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p>NoOFDays  :  <strong><span>{{ viewrequest?.noOfDaysRequested }} day(s)</span></strong> </p>
+          </div>
+          <div class="col-md-6">
+            <p>DestBranch  : <strong><span>{{ viewrequest?.destBranch }}</span></strong> </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p>DestCity  :  <strong><span>{{ viewrequest?.destCity }}</span></strong> </p>
+          </div>
+          <div class="col-md-6">
+            <p>Transport Mode  : <strong><span>{{ viewrequest?.transportMode }}</span></strong> </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p>Departure Date  :  <strong><span>{{ viewrequest?.departureDate|date }}</span></strong> </p>
+          </div>
+          <div class="col-md-6">
+            <p>Return Date  : <strong><span>{{ viewrequest?.returnDate|date }}</span></strong> </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p>KM  :  <strong><span>{{ viewrequest?.destKM }} km</span></strong> </p>
+          </div>
+          <div class="col-md-6">
+            <p>Contingency  : <strong><span>{{ viewrequest?.contingency }} km</span></strong> </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <p>Total Km  :  <strong><span>{{ viewrequest?.totalKM }} km</span></strong> </p>
+          </div>
+          <div class="col-md-6">
+            <p>Material Loaded  : <strong><span>{{ viewrequest?.materialloaded }} kg</span></strong> </p>
+          </div>
+        </div>
+        <div class="row" *ngIf="viewrequest?.status=='Approved'">
+          <div class="col-md-6">
+            <p>Approved By  :  <strong><span>{{ viewrequest?.approvedBy }} </span></strong> </p>
+          </div>
+          <div class="col-md-6">
+            <p>Approved Date  : <strong><span>{{ viewrequest?.approvedDate|date }}</span></strong> </p>
+          </div>
+        </div>
+        <div class="row" *ngIf="viewrequest?.status=='Rejected' && viewrequest?.approvedBy==null ">
+          <div class="col-md-6">
+            <p>Rejected By  :  <strong><span>{{ viewrequest?.authorizedBy }} </span></strong> </p>
+          </div>
+          <div class="col-md-6">
+            <p>Rejected Date  : <strong><span>{{ viewrequest?.authorizedDate|date }}</span></strong> </p>
+          </div>
+        </div>
+        <div class="row" *ngIf="viewrequest?.status=='Rejected' && viewrequest?.approvedBy!=null ">
+          <div class="col-md-6">
+            <p>Rejected By  :  <strong><span>{{ viewrequest?.approvedBy }} </span></strong> </p>
+          </div>
+          <div class="col-md-6">
+            <p>Rejected Date  : <strong><span>{{ viewrequest?.approvedDate|date }}</span></strong> </p>
+          </div>
+        </div>
+        <div class="row" *ngIf="viewrequest?.status=='Rejected'">
+          <div class="col-md-12">
+            <p>Reason For Rejection  :  <strong><span>{{ viewrequest?.reasonOfRejection }} </span></strong> </p>
+          </div>
+        </div>
+        <div class="row" *ngIf="viewrequest?.status=='Authorized'">
+          <div class="col-md-6">
+            <p>Authorized By  :  <strong><span>{{ viewrequest?.authorizedBy }} </span></strong> </p>
+          </div>
+          <div class="col-md-6">
+            <p>Authorized Date  : <strong><span>{{ viewrequest?.authorizedDate|date }}</span></strong> </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <p>Claim  :  <strong><span>{{ viewrequest?.expence }} </span></strong> </p>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button style="float: right;" data-dismiss="modal" class="btn btn-primary btn-sm">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>

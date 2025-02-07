@@ -1,0 +1,105 @@
+<div class="container" id="completemaintenance">
+  <div class="card card-shadow">
+    <div class="card-header">
+      <h5 class="text-center">Vehicle Maintenance Completion</h5>
+      <!-- <button class="btn btn-primary btn-sm" style="float: right;"><i class="fa fa-plus"></i> Add Request</button> -->
+    </div>
+    <div class="card-body">
+      <div *ngIf="completionlength !=0">
+        <table class="table table-bordered table-condenced table striped table-sm table-hover table-shadow" id="managecompletiondatatable">
+          <thead>
+            <tr>
+
+              <th>Plate No</th>
+              <th>Maintenance Cost</th>
+              <th>Date Taken For Garage</th>
+              <th>Date From Garage</th>
+              <th>Date From TechnicalService</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let req of maintenance">
+              <td>{{req.plateNo}}</td>
+              <td>{{req.maintenanceCost}}</td>
+              <td>{{req.dateTaken}}</td>
+              <td>{{req.dateFromGarage}}</td>
+              <td>{{req.dateFromTechnical}}</td>
+              <td>
+                <div class="text-center" style="background-color: deepskyblue;">
+                  {{req.status}}
+                </div>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-outline-primary" (click)="openEditModal(req,'modify')">Update</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="completionlength==0">
+        <div class="bd-callout bd-callout-info">
+          <p class="text-center">No Authorized Vehicle Maintenance Request Found</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- *********************MODIFY MAINTENANCE COMPLETION MODAL***************************************** -->
+
+<div class="container" id="mainmodify">
+  <div class="modal fade" id="modifycompletion" tabindex="-1" role="dialog"
+    aria-labelledby="maintenancerequestModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="" style="margin-left: 150px;">Update Maintenance Completion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" style="color: red;">&times;</span>
+          </button>
+        </div>
+        <form #updateComp="ngForm">
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-group col-md-6" hidden>
+                <label for="fullname">ID</label>
+                <input type="text" [ngModel]="completes?.id" name="id" class="form-control" />
+              </div>
+              <div class="form-group col-md-6"  *ngIf="completes?.status=='Completed'" >
+                <label for="fullname">Date From TechnicalService</label>
+                <input type="date" [ngModel]="completes?.dateFromTechnical" name="dateFromTechnical" class="form-control" />
+              </div>
+              <div class="form-group col-md-6">
+                <label for="fullname">Maintenance Cost</label>
+                <input type="text" [ngModel]="completes?.maintenanceCost" name="maintenanceCost" class="form-control" />
+              </div>
+            </div>
+            <div class="form-row" *ngIf="completes?.status=='Completed'" >
+              <div class="form-group col-md-6">
+                <label for="fullname">Date Taken For Garage</label>
+                <input type="date" [ngModel]="completes?.dateTaken" name="dateTaken" class="form-control" readonly/>
+              </div>
+              <div  *ngIf="completes?.status=='Completed'" class="form-group col-md-6">
+                <label for="fullname">Date From Garage</label>
+                <input type="date" [ngModel]="completes?.dateFromGarage" name="dateFromGarage" class="form-control" />
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" type="submit" (click)="updateCompletion(updateComp.value)" data-dismiss="modal">Update</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,316 @@
+<div class="container" id="detailrequest">
+  <div class="card shadow">
+    <div class="card-header">
+      <h3 class="text-center">Incity Request Detail</h3>
+      <button (click)="backView()" class="btn btn-sm btn-info" style="float: left;">Back</button>
+    </div>
+    <div class="card-body">
+
+      <table class="table table-condenced table-sm table-shadow">
+        <tbody>
+          <tr *ngFor="let req of approve">
+            <ng-container *ngIf="req.id==id">
+              <td>Requested By:</td>
+              <th>{{req.requestBy}}</th>
+              <td>Directorate/Branch:</td>
+              <th>{{req.directorate}}</th>
+              <td> Passenger (s):</td>
+              <th>{{req.passenger}}</th>
+            </ng-container>
+          </tr>
+
+          <tr *ngFor="let req of approve">
+            <ng-container *ngIf="req.id==id">
+              <td>Destination:</td>
+              <th>{{req.destination}}</th>
+              <td>Vehicle Needed From Date:</td>
+              <th>{{req.dateFrom | date}}</th>
+              <td>Vehicle Needed From:</td>
+              <th>{{req.requestTimeFrom | convertFrom24To12Format}}</th>
+            </ng-container>
+          </tr>
+
+          <tr *ngFor="let req of approve">
+            <ng-container *ngIf="req.id==id">
+              <td>Vehicle Needed To Date:</td>
+              <th>{{req.dateTo | date}}</th>
+              <td>Vehicle Needed To:</td>
+              <th>{{req.requestTimeTo | convertFrom24To12Format}}</th>
+              <td>Purpose Of Travel:</td>
+              <th>{{req.purpose}}</th>
+            </ng-container>
+          </tr>
+
+          <tr *ngFor="let req of approve">
+            <ng-container *ngIf="req.id==id">
+              <td>Status:</td>
+              <th>{{req.status}}</th>
+              <td>Authorized Date:</td>
+              <th>{{req.authorizedDate | date: 'yyyy-MM-dd'}}</th>
+              <td>Authorized By:</td>
+              <th>{{req.authorizedBy}}</th>
+            </ng-container>
+          </tr>
+          <tr *ngFor="let req of approve">
+            <ng-container *ngIf="req.id==id">
+              <td>Requested Date:</td>
+              <th>{{req.requestedDate|date}}</th>
+              <td>Requested Time:</td>
+              <th>{{req.requestedTime|convertFrom24To12Format}}</th>
+              <td> Passenger Telephone:</td>
+              <th>{{req.passTelephone}}</th>
+            </ng-container>
+          </tr>
+          <tr *ngFor="let req of approve">
+            <ng-container *ngIf="req.id==id">
+              <td>Requested For:</td>
+              <th>{{req.requestedFor}}</th>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+      <div style="float: right;">
+        <td>
+          <button class="btn btn-sm btn-primary btn-raised" data-toggle="modal" data-target="#approve"
+            style="margin-left: 10px;">Approve</button>
+
+          <button class="btn btn-sm btn-danger btn-raised" data-toggle="modal" data-target="#reject"
+            style="margin-left: 10px;">Reject</button>
+        </td>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- ************************APPROVE USER REQUEST************************************** -->
+<div class="modal fade" id="approve" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>Incity Request Approval Form</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="color:darkblue;">&times;</span>
+        </button>
+      </div>
+      <form #approveForm="ngForm">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group col-md-12" hidden>
+              <label for="name">Requested By</label>
+              <input type="text" [(ngModel)]="requestor" name="requestBy" class="form-control" autocomplete="off"
+                required readonly />
+            </div>
+            <div class="form-group col-md-12" hidden>
+              <label for="requesterId">Requester Id</label>
+              <input type="number" [(ngModel)]="id" name="requesterId" class="form-control"
+              autocomplete="off"
+              required
+              readonly
+              >
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="">Vehicle Type</label>
+              <ng-select 
+              ngModel
+              name="vehicleType"
+              id="vehicleType"
+              class="form Select"
+              (change)="getVehiclePlateNo($event)"
+              >
+              <ng-option  *ngFor="let driv of vehicletype" value="{{driv?.vehicleType}}">{{driv?.vehicleType}}</ng-option>
+              </ng-select>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="plateNumber">Vehicle Plate Number</label>
+              <ng-select 
+              ngModel 
+              name="plateNumber" 
+              id="plateNumber"
+              class="form select"
+              (change)="getDepartureKm($event)">
+                <ng-option *ngFor="let driv of vehicle" value="{{driv?.plateNo}}">{{driv?.plateNo}}</ng-option>
+              </ng-select>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="driverName">Assigned Driver Name</label>
+              <ng-select
+              ngModel
+              name="driverName" 
+              [(ngModel)]="checkDriver"
+              id="driverName"
+              class="form select"
+              >
+              <ng-option *ngFor="let driv of driver" value="{{driv?.fullName}}">{{driv?.fullName}}</ng-option>
+            </ng-select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="departureDate">Departure Date</label>
+              <input type="date" [(ngModel)]="depDate" [ngModel]="depDate | date: 'yyyy-MM-dd'" name="departureDate" class="form-control"
+              id="departureDate" placeholder="departure date" autocomplete="off" 
+                #departureDate="ngModel"
+                [ngClass]="{'is-invalid':approveForm.submitted && departureDate.invalid}"
+                [class.is-invalid]="departureDate.invalid && departureDate.touched" required />
+              <div *ngIf="departureDate.errors && (departureDate.invalid && departureDate.touched)">
+                <small class="text-danger">Departure date is required</small>
+              </div>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="departureTime">Departure Time</label>
+              <input type="time" [(ngModel)]="depTime" name="departureTime" class="form-control"
+                id="departureTime" autocomplete="off" placeholder="departure time" 
+                #departureTime="ngModel"
+                [ngClass]="{'is-invalid':approveForm.submitted && departureTime.invalid }"
+                [class.is-invalid]="departureTime.invalid && departureTime.touched" required />
+              <div *ngIf="departureTime.errors && (departureTime.invalid && departureTime.touched)">
+                <small class="text-danger">Departure time is required</small>
+              </div>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="departureKm">Departure KM</label>
+              <input type="number" [ngModel]="depkm" name="departureKm" class="form-control"
+                id="departureKm" autocomplete="off" placeholder="departure km"
+                 required readonly/> 
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="returnDate">Return Date</label>
+              <input type="date" [(ngModel)]="retDate" [ngModel]="retDate | date: 'yyyy-MM-dd'" name="returnDate" class="form-control"
+                id="returnDate" placeholder="return date" autocomplete="off"
+                 #returnDate="ngModel"
+                [ngClass]="{'is-invalid':approveForm.submitted && returnDate.invalid}"
+                [class.is-invalid]="returnDate.invalid && returnDate.touched" required />
+              <div *ngIf="returnDate.errors && (returnDate.invalid && returnDate.touched)">
+                <small class="text-danger">Return date is required</small>
+              </div>
+            </div>
+
+            <div class="form-group col-md-4">
+              <label for="returnTime">Return Time</label>
+              <input type="time" [(ngModel)]="retTime" name="returnTime" class="form-control"
+                id="returnTime" placeholder="return time" autocomplete="off" #returnTime="ngModel"
+                [ngClass]="approveForm.submitted && returnTime.invalid"
+                [class.is-invalid]="returnTime.invalid && returnTime.touched" required />
+              <div *ngIf="returnTime.errors && (returnTime.invalid && returnTime.touched)">
+                <small class="text-danger">Return time is required</small>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-4">
+              <label for="approvedBy">Approved By</label>
+              <input type="text" [ngModel]="userName" name="approvedBy" class="form-control" id="approvedBy"
+                placeholder="Approved By" autocomplete="off" required readonly />
+            </div>
+          
+        
+            <div class="form-group col-md-4" hidden>
+              <label for="approvedDate">Approved Date</label>
+              <input type="date" [ngModel]="currentDay" name="approvedDate" class="form-control" id="approvedDate"
+              autocomplete="off" required readonly/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="remark">Reason</label>
+              <input type="text" [(ngModel)]="fieldapprove.remark" name="remark" #remark="ngModel"
+                [ngClass]="{'is-invalid':approveForm.submitted && remark.invalid}"
+                [class.is-invalid]="remark.invalid && remark.touched" minlength="1" [(ngModel)]="requestapprove.remark"
+                name="remark" class="form-control" id="remark" placeholder="reason" autocomplete="off" required />
+              <div *ngIf="remark.errors && (remark.invalid && remark.touched)">
+                <small class="text-danger" *ngIf="remark.errors.minlength">Minimum length not reached</small>
+                <small class="text-danger" *ngIf="remark.errors.required">Remark is required</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button  [disabled]="approveForm.form.invalid" data-dismiss="modal" (click)="saveApproval(approveForm.value)" type="submit" class="btn btn-primary">Approve</button>
+          <button  type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- **************************************Reject USER REQUEST************************************** -->
+<div class="modal fade" id="reject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>Incity Request Rejection Form</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="color:red;">&times;</span>
+        </button>
+      </div>
+
+      <form #rejectForm="ngForm">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="reasonOfRejection">Reason For Rejection</label>
+              <textarea type="text" [(ngModel)]="requestapprove.reasonForRejection" name="reasonForRejection"
+                class="form-control" id="reasonOfRejection" autocomplete="off" placeholder="reason for rejection"
+                #reasonOfRejection="ngModel" [ngClass]="rejectForm.submitted && reasonOfRejection.invalid"
+                [class.is-ivalid]="reasonOfRejection.invalid && reasonOfRejection.touched"
+                 minlength="4" required></textarea>
+              <div *ngIf="reasonOfRejection.errors && (reasonOfRejection.invalid && reasonOfRejection.touched)">
+                <small class="text-danger" *ngIf="reasonOfRejection.errors.minlength">Minimum length is not
+                  reached</small>
+                <small class="text-danger" *ngIf="reasonOfRejection.errors.required">Reason for rejection is required
+                </small>
+              </div>
+            </div>
+         
+
+            <div class="form-group col-md-6" hidden>
+              <label for="approvedDate">Rejected Date</label>
+              <input type="date" [ngModel]="currentDay" name="approvedDate" class="form-control"
+                id="approvedDate" placeholder="approved date" autocomplete="off" #approvedDate="ngModel"
+                [ngClass]="{'is-invalid':rejectForm.submitted && approvedDate.invalid}"
+                [class.is-invalid]="approvedDate.invalid && approvedDate.touched" required />
+              <div *ngIf="approvedDate.errors && (approvedDate.invalid && approvedDate.touched)">
+                <small class="text-danger" *ngIf="approvedDate.errors.required">Approved date is required</small>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6" hidden>
+              <label for="rejectedBy">Rejected By</label>
+              <input type="text" [(ngModel)]="userName" name="rejectedBy" class="form-control" id="rejectedBy" readonly
+                autocomplete="off" 
+               />
+            </div>
+            <div class="form-group col-md-6" hidden>
+              <label for="rejectedBy">Requester Id</label>
+              <input type="text" [(ngModel)]="id" name="id" class="form-control" id="ids" readonly
+                autocomplete="off" 
+               />
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button [disabled]="rejectForm.form.invalid" (click)="reject(rejectForm.value)" data-dismiss="modal" type="submit" class="btn btn-info">Reject</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
