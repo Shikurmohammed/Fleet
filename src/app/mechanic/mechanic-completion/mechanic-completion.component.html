@@ -4,11 +4,10 @@
     <ng-container *ngIf = "completedRequest.length>0">
     <div
       id="RequestTable"
-      style="margin-left: 190px"
       class="col-lg-12 col-md-12 col-xl-12"
     >
       <hr/>
-      <h2 style="text-align: center">Vehicles Maintenance Submission</h2>
+      <h6 style="text-align: center">Vehicles Maintenance Submission</h6>
       <hr/>
       <table
         class="table table-hover table-bordered table-condenced table-sm table-shadow"
@@ -51,7 +50,7 @@
                     >
                       Detail
                     </a>
-      
+
                     <a *ngIf="request.status=='Completed'"
                       (click)="onOpenModal(request, 'submit')"
                       class="btn btn-outline-danger"
@@ -64,9 +63,9 @@
                     data-original-title="Maintenance"
                     >Update</a
                   >
-                  
+
                   </span>
-                  
+
                 </td>
               </tr>
         </tbody>
@@ -84,7 +83,7 @@
       </div>
     </ng-container>
     <!-- End of vehicle displayer -->
-   
+
 
     <div class="container" id="main-container">
      <!-- This is maintenance submission form -->
@@ -112,22 +111,22 @@
               </button>
             </div>
             <div class="modal-body">
-              <form 
+              <form
               [compareMilege] = "['previousMil', 'currentMilege']"
               #maintenanceSubmissionForm="ngForm"
               >
                 <div class="form-row">
-                  <input type="hidden" ngModel="{{modifyForm.id}}" 
+                  <input type="hidden" ngModel="{{modifyForm.id}}"
                        name="id" class="form-control" autocomplete="off"
-                       #id="ngModel" 
+                       #id="ngModel"
                        readonly/>
-                       <input type="hidden" ngModel="{{modifyForm.modifiedBy}}" 
+                       <input type="hidden" ngModel="{{modifyForm.modifiedBy}}"
                        name="modifiedBy" class="form-control" autocomplete="off"
-                       #modifiedBy="ngModel" 
+                       #modifiedBy="ngModel"
                        readonly/>
-                       <input type="hidden" ngModel="{{modifyForm.requestId}}" 
+                       <input type="hidden" ngModel="{{modifyForm.requestId}}"
                        name="requestId" class="form-control" autocomplete="off"
-                       #requestId="ngModel" 
+                       #requestId="ngModel"
                        readonly/>
                   <div class="form-group col-md-8">
                     <label for="name">Directorate</label>
@@ -137,9 +136,9 @@
                   </div>
                   <div class="form-group col-md-4">
                     <label for="name">Plate No</label>
-                    <input type="text" ngModel="{{modifyForm.plateNo}}" 
+                    <input type="text" ngModel="{{modifyForm.plateNo}}"
                        name="plateNo" class="form-control" autocomplete="off"
-                       #plateNo="ngModel" 
+                       #plateNo="ngModel"
                        readonly/>
                   </div>
                 </div>
@@ -152,35 +151,35 @@
                   </div>
                   <div class="form-group col-md-4">
                     <label for="name">Date Sent To Garage</label>
-                    <input type="text" ngModel="{{modifyForm.dateTaken | date}}" 
+                    <input type="text" ngModel="{{modifyForm.dateTaken | date}}"
                        name="dateTaken" class="form-control" autocomplete="off"
-                       #dateTaken="ngModel" 
+                       #dateTaken="ngModel"
                        required="" readonly
                        />
                   </div>
-                  
+
                 </div>
-                <input type="text" ngModel [ngModel]="previousMilege" 
+                <input type="text" ngModel [ngModel]="previousMilege"
                 name="previousMil" class="form-control" autocomplete="off"
-                #previousMil="ngModel" 
+                #previousMil="ngModel"
                   required="" hidden
                 />
                 <div class ="row">
                   <div class="form-group col-md-6">
                     <label for="name">Date Out Of Garage</label>
-                    <input type="text" ngModel="{{modifyForm.dateFromGarage | date}}" 
+                    <input type="text" ngModel="{{modifyForm.dateFromGarage | date}}"
                        name="dateFromGarage" class="form-control" autocomplete="off"
-                       #dateFromGarage="ngModel" 
+                       #dateFromGarage="ngModel"
                          required="" readonly
                        />
                   </div>
                   <div class="form-group col-md-6">
                     <label for="name">Current Millage(KM)</label>
-                    <input type="text" ngModel="{{modifyForm.currentMilege}}" 
+                    <input type="text" ngModel="{{modifyForm.currentMilege}}"
                        name="currentMilege" class="form-control" autocomplete="off"
-                       #currentMilege="ngModel" 
+                       #currentMilege="ngModel"
                        pattern = "^\d+\.?\d*$"
-                       [class.is-invalid]="(currentMilege.invalid && currentMilege.touched) || currentMilege.errors" 
+                       [class.is-invalid]="(currentMilege.invalid && currentMilege.touched) || currentMilege.errors"
                        required=""
                        />
                        <div *ngIf="currentMilege.errors && (currentMilege.invalid)">
@@ -198,23 +197,23 @@
                       name="petrolAmount" class="form-control" autocomplete="off"
                       placeholder="petrol amount..."  #petrolAmount="ngModel"
                       pattern = "^\d+\.?\d*$"
-                      [class.is-invalid]="petrolAmount.invalid && petrolAmount.touched" 
+                      [class.is-invalid]="petrolAmount.invalid && petrolAmount.touched"
                       required=""/>
-            
+
                     <div *ngIf="petrolAmount.errors && (petrolAmount.invalid && petrolAmount.touched)">
                       <small class="text-danger" *ngIf="petrolAmount.errors.required">petrol amount is required</small>
                       <small class="text-danger" *ngIf="petrolAmount.errors.pattern">incorrect petrol amount format</small>
                     </div>
-      
+
                  </div>
                   <div class="form-group col-md-6">
                     <label for="name">Vehicle Received By</label>
                     <input type="text" ngModel="{{modifyForm.vehicleReceivedBy}}"
                       name="vehicleReceivedBy" class="form-control" autocomplete="off"
                       placeholder="vehicle received by..."  #vehicleReceivedBy="ngModel"
-                    
+
                       [class.is-invalid]="vehicleReceivedBy.invalid && vehicleReceivedBy.touched" required=""/>
-          
+
                     <div *ngIf="vehicleReceivedBy.errors && (vehicleReceivedBy.invalid && vehicleReceivedBy.touched)">
                       <small class="text-danger" *ngIf="vehicleReceivedBy.errors.required">vehicle received by is required</small>
                     </div>
@@ -226,9 +225,9 @@
                       <input type="text" ngModel="{{modifyForm.vehicleGivenBy}}"
                         name="vehicleGivenBy" class="form-control" autocomplete="off"
                         placeholder="vehicle given by..."  #vehicleGivenBy="ngModel"
-                      
+
                         [class.is-invalid]="vehicleGivenBy.invalid && vehicleGivenBy.touched" required=""/>
-            
+
                       <div *ngIf="vehicleGivenBy.errors && (vehicleGivenBy.invalid && vehicleGivenBy.touched)">
                         <small class="text-danger" *ngIf="vehicleGivenBy.errors.required">vehicle given by is required</small>
                       </div>
@@ -239,9 +238,9 @@
                         [ngModel]="modifyForm.vehicleReceivedDate | date: 'yyyy-MM-dd'"
                       name="vehicleReceivedDate" class="form-control" autocomplete="off"
                       #vehicleReceivedDate="ngModel"
-                    
+
                       [class.is-invalid]="vehicleReceivedDate.invalid && vehicleReceivedDate.touched" required=""/>
-          
+
                     <div *ngIf="vehicleReceivedDate.errors && (vehicleReceivedDate.invalid && vehicleReceivedDate.touched)">
                       <small class="text-danger" *ngIf="vehicleReceivedDate.errors.required">vehicle given date is required</small>
                     </div>
@@ -256,7 +255,7 @@
                   >
                     Close
                   </button>
-                  <button data-dismiss="modal" (click)="submitMaintenanceRequest(maintenanceSubmissionForm)" [disabled]="maintenanceSubmissionForm.invalid || isLessthan" type="submit" class="btn btn-primary" >Submit Vehicle</button>                
+                  <button data-dismiss="modal" (click)="submitMaintenanceRequest(maintenanceSubmissionForm)" [disabled]="maintenanceSubmissionForm.invalid || isLessthan" type="submit" class="btn btn-primary" >Submit Vehicle</button>
                 </div>
               </form>
             </div>
@@ -276,7 +275,7 @@
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                <div class="modal-header">
-                  <h5 class="modal-title" 
+                  <h5 class="modal-title"
                   id="detailsMaintenanceModalLabel">
                   Vehicle Maintenance Submission Details
                 </h5>
@@ -322,7 +321,7 @@
                         <p>
                           Fuel On Technical: <strong><span>{{ fuelTechnical}}</span></strong>
                         </p>
-                        
+
                         <p *ngIf="details?.status=='Completed'">
                             Status: <strong><span style="color: rgb(98, 45, 45)
                             ;">{{ details?.status }}</span></strong>
@@ -336,7 +335,7 @@
                             ;">{{ details?.status }}</span></strong>
                         </p>
 
-                      
+
                     </div>
                     <div class="col-md-6">
 
@@ -362,7 +361,7 @@
                               Authorized Date: <strong><span>{{ details?.authorizedDate | date}}</span></strong>
                             </p>
                         </ng-container>
-                        
+
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -371,7 +370,7 @@
                 </div>
               </div>
             </div>
-          </div> 
+          </div>
       <!-- End of maintenance request details-->
 
     </div>

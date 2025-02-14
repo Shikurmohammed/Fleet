@@ -1,5 +1,5 @@
-#mainRequests{
-    margin-top:80px; 
+/* #mainRequests{
+    margin-top:80px;
     margin-right: 220px;
 }
 #RequestTable{
@@ -9,4 +9,19 @@
     padding-bottom: 100px;
     margin-bottom: 20px;
     background-color: #fff;
-   }
+   } */
+table {
+  border-spacing: 0;
+  border-collapse: separate;
+  width: 100%;
+  width: 100vw;
+  overflow: scroll;
+  padding: 20px;
+  background: blue;
+}
+td,
+th {
+  text-overflow: ellipsis;
+  word-wrap: nowrap;
+  white-space: nowrap;
+}

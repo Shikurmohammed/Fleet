@@ -1,5 +1,5 @@
-#mainRequests{
-    margin-top:80px; 
+/* #mainRequests{
+    margin-top:80px;
     margin-right: 220px;
 }
 #RequestTable{
@@ -9,15 +9,18 @@
     padding-bottom: 100px;
     margin-bottom: 20px;
     background-color: #fff;
-   }
-   table, td, th {  
+   } */
+   table, td, th {
     border: 1px solid #ddd;
     text-align: left;
   }
   .myPrint{
     display: none;
   }
-  
+  .custom{
+    min-width:100%;
+  }
+
   @media print {
     .myPrint {
       display: table;

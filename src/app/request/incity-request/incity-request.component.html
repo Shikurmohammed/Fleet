@@ -40,18 +40,16 @@
 
           <div class="form-group col-md-4">
             <label for="passTelephone">Passenger's Telephone No</label>
-            <input type="text" [(ngModel)]="incity.passTelephone" 
-            pattern="^[0-9]{10}$"
-            name="passTelephone" placeholder="enter passenger's tel. No."
-              class="form-control" #passTelephone="ngModel"
+            <input type="text" [(ngModel)]="incity.passTelephone" pattern="^[0-9]{10}$" name="passTelephone"
+              placeholder="enter passenger's tel. No." class="form-control" #passTelephone="ngModel"
               [ngClass]="{'is-invalid':addForm.submitted && passTelephone.invalid}"
-              [class.is-invalid]="passTelephone.invalid && passTelephone.touched"  required />
+              [class.is-invalid]="passTelephone.invalid && passTelephone.touched" required />
             <div *ngIf="passTelephone.errors && (passTelephone.invalid && passTelephone.touched)">
               <small class="text-danger" *ngIf="passTelephone.errors.required">Passenger's tel. No is required</small>
               <small class="text-danger" *ngIf="passTelephone.errors.pattern">Enter valid telephone No.!</small>
             </div>
           </div>
-        
+
           <div class="form-group col-md-4">
             <label for="destination">Destination</label>
             <input type="text" [(ngModel)]="incity.destination" name="destination" class="form-control" id="destination"
@@ -69,9 +67,7 @@
           <div class="form-group col-md-4">
             <label for="date">Vehicle Needed From Date</label>
             <input type="date" [(ngModel)]="incity.dateFrom" class="form-control" id="date" name="dateFrom"
-              [ngModel]="incity.dateFrom | date: 'yyyy-MM-dd'"
-              [min]="currentDate"
-              #dFrom (change)="getDateFrom($event)"
+              [ngModel]="incity.dateFrom | date: 'yyyy-MM-dd'" [min]="currentDate" #dFrom (change)="getDateFrom($event)"
               #dateFrom="ngModel" [ngClass]="{'is-invalid':addForm.submitted && dateFrom.invalid}"
               [class.is-invalid]="dateFrom.invalid && dateFrom.touched" required>
             <div *ngIf="dateFrom.errors && (dateFrom.invalid && dateFrom.touched)">
@@ -81,10 +77,8 @@
           <div class="form-group col-md-4">
             <label for="fromTime">Vehicle Needed To Date</label>
             <input type="date" [(ngModel)]="incity.dateTo" class="form-control" id="dateTo" name="dateTo"
-            [ngModel]="incity.dateTo | date: 'yyyy-MM-dd'"
-            [min]="from"
-            #dTo (change)="getDateTo($event)"
-            #dateTo="ngModel" [ngClass]="{'is-invalid':addForm.submitted && dateTo.invalid}"
+              [ngModel]="incity.dateTo | date: 'yyyy-MM-dd'" [min]="from" #dTo (change)="getDateTo($event)"
+              #dateTo="ngModel" [ngClass]="{'is-invalid':addForm.submitted && dateTo.invalid}"
               [class.is-invalid]="dateTo.invalid && dateTo.touched" required />
             <div *ngIf="dateTo.errors && (dateTo.invalid && dateTo.touched)">
               <small class="text-danger">Vehicle needed to date is required</small>
@@ -92,10 +86,10 @@
           </div>
           <div class="form-group col-md-4">
             <label for="toTime">Number of Days Vehicle Needed </label>
-            <input type="number" [(ngModel)]="incity.numberOfDays" [ngModel]="noOfDays" class="form-control" id="numberOfDays"
-              name="numberOfDays" required readonly>
+            <input type="number" [(ngModel)]="incity.numberOfDays" [ngModel]="noOfDays" class="form-control"
+              id="numberOfDays" name="numberOfDays" required readonly>
           </div>
-        
+
 
         </div>
 

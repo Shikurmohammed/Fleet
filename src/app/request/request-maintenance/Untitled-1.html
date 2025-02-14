@@ -1,0 +1,176 @@
+
+mat-toolbar {
+    background-color: #21205f;
+    color: #fff;
+}
+
+mat-sidenav-container {
+    /* height: calc(100vh - 64px); */
+    height: 100vh;
+    overflow: hidden;
+    /* overflow-y: scroll; */
+    display: flex; /* Use flexbox to layout the container */
+    flex-direction: column; /* Stack children vertically */
+}
+
+mat-sidenav {
+    width: 200px;
+    color: #fff;
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent scrolling */
+    text-overflow: ellipsis;
+    word-wrap: unset;
+    white-space: nowrap;
+}
+.custom-sidenav {
+    overflow: hidden; /* Prevent scrolling */
+   
+    transition: width 0.3s ease;
+  }
+mat-sidenav-content {
+  display: flex; /* Flexbox for the content area */
+  flex-direction: column; /* Stack content vertically */
+  flex-grow: 1; /* Allow this area to grow */
+  transition: margin-left 0.3s ease;
+  
+}
+.main-content{
+    flex: 1; /* This will take up the remaining space */
+  padding: 20px; /* Padding for the main content */
+}
+
+/* app.component.css */
+
+:host ::ng-deep .mat-menu-panel {
+    background-color: #f0f0f0;
+    /* Custom background color */
+}
+
+:host ::ng-deep .mat-menu-item {
+    color: #333;
+    /* Custom text color */
+}
+
+:host ::ng-deep .mat-menu-item:hover {
+    background-color: #e0e0e0;
+    /* Background on hover */
+    color: #000;
+    /* Text color on hover */
+}
+
+:host ::ng-deep .mat-menu-item mat-icon {
+    font-size: 20px;
+    /* Custom icon size */
+    margin-right: 8px;
+    /* Space between icon and text */
+}
+
+:host ::ng-deep .mat-menu-item {
+    padding: 12px 16px;
+    /* Custom padding for menu items */
+}
+
+.toolbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+
+
+a {
+    color: #fff;
+}
+
+a:hover {
+    color: #fff;
+}
+
+aside a {
+    color: #fff;
+}
+
+aside li {
+    color: #fff;
+}
+
+#examples {
+    background-color: #f79239;
+}
+
+#miscel {
+    background-color: #f79239;
+}
+
+@media screen and (max-width: 600px) {
+    /* .toolbar-content {
+        flex-direction: column;
+    } */
+     /* .custom-sidenav{
+        width: 70px;
+     } */
+    
+}
+
+
+
+
+
+
+
+
+
+
+<mat-toolbar class="mat-elevation-z13">
+<div class="toolbar-content">
+    <div>
+        <button mat-icon-button (click)="toggleSidebar()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <span>Awash Fleet!</span>
+
+    </div>
+    <div style="display: flex; align-items: center; justify-content: flex-end; padding: 10px;">
+        <i style="font-size: 12px; margin-right: 10px;"> {{currentDate | date:'dd-MMM-YY,HH:mm:ss' }}</i>
+        <button mat-icon-button matBadge="0">
+            <mat-icon>notifications</mat-icon>
+        </button>
+
+        <!-- <button mat-button (click)="toggleDarkMode()">
+<mat-icon>{{ isDarkModeEnabled() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+</button> -->
+        <button mat-icon-button [matMenuTriggerFor]="profilemenu">
+            <mat-icon>account_circle</mat-icon>
+        </button>
+        <mat-menu style=" background-color: red;" #profilemenu="matMenu">
+            <a mat-menu-item routerLink="/changePassword" style="color:black">
+                <mat-icon>lock</mat-icon>
+                Change Password
+            </a>
+            <a mat-menu-item [href]="userguide!" target="_blank" style="color:black">
+                <mat-icon>help</mat-icon>
+                Help
+            </a>
+            <button mat-menu-item (click)="logout()" style="color:black">
+                <mat-icon>logout</mat-icon>
+                <span>Logout</span>
+            </button>
+        </mat-menu>
+    </div>
+</div>
+</mat-toolbar>
+<mat-sidenav-container>
+<mat-sidenav #sidenav opened mode="side" [style.width]="isOpen ? '260px' : '70px'" class="custom-sidenav">
+    <app-sidebar [isOpen]="isOpen"></app-sidebar>
+</mat-sidenav>
+<mat-sidenav-content class="content" [style.marginLeft]="isOpen ? '260px' : '70px'">
+    <div class="main-content">
+        <router-outlet>
+            <ngx-ui-loader></ngx-ui-loader>
+        </router-outlet>
+    </div>
+    <app-footer [isOpen]="isOpen"></app-footer>
+
+</mat-sidenav-content>
+</mat-sidenav-container>

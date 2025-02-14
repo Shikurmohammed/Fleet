@@ -1,10 +1,7 @@
 <div id="vehicle">
-  <div style="margin-left: 50%; margin-top: 100px">
-    <h3>Vehicle Details</h3>
-  </div>
+    <h5 style="text-align: center;">Vehicle Details</h5>
   <div
     id="userTable"
-    style="margin-left: 190px"
     class="col-lg-12 col-md-12 col-xl-12"
   >
     <hr />
@@ -133,7 +130,7 @@
                 class="form-control"
                 id="id"
               />
-              <input type = "hidden" 
+              <input type = "hidden"
                 ngModel="{{editVehicle?.status}}"
                 name = "status"
                 class="form-control"
@@ -165,7 +162,7 @@
                 <div class="form-group col-md-4">
                   <div class="form-group">
                     <label for="model">Model</label>
-      
+
                     <input
                       type="text"
                       ngModel = "{{editVehicle?.model}}"
@@ -194,7 +191,7 @@
                 <div class="form-group col-md-4">
                   <div class="form-group">
                     <label for="yearOfMake">Year Of Make</label>
-                    
+
                     <input
                       type="number"
                       ngModel = "{{editVehicle?.yearOfMake}}"
@@ -211,7 +208,7 @@
                 <div class="form-group col-md-4">
                   <div class="form-group">
                     <label for="engineNo">Engine Number</label>
-      
+
                     <input
                       type="text"
                       ngModel = "{{editVehicle?.engineNo}}"
@@ -227,7 +224,7 @@
                 <div class="form-group col-md-4">
                   <div class="form-group">
                     <label for="chassisNo">Chassis Number</label>
-      
+
                     <input
                       type="text"
                       ngModel = "{{editVehicle?.chassisNo}}"
@@ -241,7 +238,7 @@
                 <div class="form-group col-md-4">
                   <div class="form-group">
                     <label for="plateNo">Plate Number</label>
-      
+
                     <input
                       type="text"
                       ngModel = "{{editVehicle?.plateNo}}"
@@ -290,7 +287,7 @@
                 <div class="form-group col-md-4">
                   <div class="form-group">
                     <label for="disPerLit">Distance Per Litter</label>
-      
+
                     <input
                       type="text"
                       ngModel = "{{editVehicle?.disPerLit}}"
@@ -304,7 +301,7 @@
                 <div class="form-group col-md-4">
                   <div class="form-group">
                     <label for="carryingCapacity">Carrying Capacity</label>
-      
+
                     <input
                       type="text"
                       ngModel="{{editVehicle?.carryingCapacity}}"
@@ -315,13 +312,13 @@
                     />
                   </div>
                 </div>
-                
+
               </div>
               <div *ngIf="role==='Senior Transport Officer'" class="row">
                 <div class="form-group col-md-4">
                   <div class="form-group">
                     <label for="lastMilege">Kilometer</label>
-      
+
                     <input
                       type="text"
                       ngModel = "{{editVehicle?.lastMilege}}"
@@ -334,7 +331,7 @@
                 <div class="form-group col-md-4">
                   <div class="form-group">
                     <label for="lmGenService">Last Service Mileage</label>
-      
+
                     <input
                       type="text"
                       ngModel = "{{editVehicle?.lmGenService}}"
@@ -348,7 +345,7 @@
                 <div class="form-group col-md-4">
                   <div class="form-group">
                     <label for="lmTyresChange">Last Tyres Mileage</label>
-      
+
                     <input
                       type="text"
                       ngModel = "{{editVehicle?.lmTyresChange}}"
@@ -365,7 +362,7 @@
                   <div class="form-group col-md-4">
                     <div class="form-group">
                       <label for="lastMilege">Kilometer</label>
-        
+
                       <input
                         type="text"
                         ngModel = "{{editVehicle?.lastMilege}}"
@@ -378,7 +375,7 @@
                   <div class="form-group col-md-4">
                     <div class="form-group">
                       <label for="lmGenService">Last Service Mileage</label>
-        
+
                       <input
                         type="text"
                         ngModel = "{{editVehicle?.lmGenService}}"
@@ -392,7 +389,7 @@
                   <div class="form-group col-md-4">
                     <div class="form-group">
                       <label for="lmTyresChange">Last Tyres Mileage</label>
-        
+
                       <input
                         type="text"
                         ngModel = "{{editVehicle?.lmTyresChange}}"
@@ -407,7 +404,7 @@
                 <div *ngIf="role==='Senior Transport Officer'" class="form-group col-md-4">
                   <div class="form-group">
                     <label for="lmVehicleBody">Last Body Mileage</label>
-      
+
                     <input
                       type="text"
                       ngModel = "{{editVehicle?.lmVehicleBody}}"
@@ -421,19 +418,19 @@
                 <div *ngIf="role!='Senior Transport Officer'" class="form-group col-md-4">
                   <div class="form-group">
                     <label for="lmVehicleBody">Last Body Mileage</label>
-      
+
                     <input
                       type="text"
                       ngModel = "{{editVehicle?.lmVehicleBody}}"
                       class="form-control"
                       name="lmVehicleBody"
                       id="lmVehicleBody"
-                      required="" readonly 
+                      required="" readonly
                     />
                   </div>
                 </div>
                 <div class="form-group col-md-8">
-                  <label for="custodian">Custodian</label> 
+                  <label for="custodian">Custodian</label>
                   <ng-select
                     ngModel="{{editVehicle?.custodian}}"
                     name="custodian"
@@ -476,7 +473,7 @@
                 <div class="form-group col-md-4">
                   <div class="form-group">
                     <label for="policyNo">Policy Number</label>
-      
+
                     <input
                       type="text"
                       ngModel="{{editVehicle?.policyNo}}"
@@ -491,7 +488,7 @@
               <div class = "row">
                 <div class="form-group col-md-4">
                   <label for="vehicleTypeString">Vehicle Type</label>
-                  <ng-select 
+                  <ng-select
                     name="vehicleTypeString"
                     id="vehicleTypeString"
                     ngModel="{{vehicleTypeValue}}"
@@ -510,7 +507,7 @@
                 <ng-container *ngIf="isGeneral">
                   <div class="form-group col-md-4">
                     <label for="isStandBy">Is Stand By</label>
-                    <ng-select 
+                    <ng-select
                       name="isStandBy"
                       id="isStandBy"
                       ngModel="{{editVehicle?.isStandBy}}"
@@ -531,7 +528,7 @@
                     </ng-select>
                   </div>
                 </ng-container>
-               
+
               </div>
 
 
@@ -751,7 +748,7 @@
                 <p>
                   Fuel Type:
 
-                  <strong 
+                  <strong
                     ><span>{{fuelValue!}}</span></strong
                   >
                 </p>

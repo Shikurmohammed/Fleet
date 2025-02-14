@@ -1,0 +1,131 @@
+/* General Styles */
+.sidenav-container {
+  min-height: 100%; /* Full viewport height */
+  width: 100vw;
+  /* min-width: 100%; */
+  z-index: 1000;
+  margin-top: 10px;
+  height: 100%;
+  overflow: scroll;
+}
+
+.mat-sidenav {
+  height: auto; /* Full height */
+  min-height: 100%;
+  z-index: 1000;
+}
+/* Use this to allow scrolling for content within the sidenav */
+::ng-deep .mat-drawer-container {
+  height: 100% !important;
+}
+::ng-deep .mat-drawer-inner-container {
+  /* overflow: hidden !important;  */
+  width: 100%;
+  height: 100%; /* Ensure it takes full height */
+  -webkit-overflow-scrolling: touch;
+}
+.content {
+  height: 100%; /* Full height */
+  overflow: scroll; /* Prevent scrolling */
+  margin-top: 5px;
+}
+
+/* Toolbar styling */
+mat-toolbar {
+  background-color: #21205f;
+
+  color: #fff;
+  position: sticky; /* Fixes the toolbar to the top */
+  top: 0; /* Aligns it to the top */
+  left: 0; /* Aligns it to the left */
+  width: 100%; /* Full width */
+  z-index: 1020; /* Ensures it appears above other content */
+}
+
+.toolbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 16px;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.current-date {
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+.menu-item {
+  color: black;
+}
+.sidenav-container {
+  position: relative; /* Establish a positioning context */
+  height: 100vh; /* Full height of the viewport */
+}
+
+.sidenav-content {
+  position: relative;
+  padding-bottom: 50px; /* Space for the footer */
+  height: 100%; /* Full height of the container */
+  overflow: auto; /* Enable scrolling if content overflows */
+}
+
+.footer {
+  position: absolute; /* Absolute positioning */
+  bottom: 0; /* Stick to the bottom */
+  left: 0; /* Align to the left */
+  right: 0; /* Align to the right */
+  background-color: #f1f1f1; /* Background color for the footer */
+  padding: 10px; /* Padding for the footer */
+  text-align: center; /* Center the text */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .custom-sidenav {
+    width: 200px; /* Adjusted width for smaller screens */
+  }
+
+  .content {
+    margin-left: 200px; /* Adjusted margin for smaller screens */
+  }
+
+  mat-sidenav {
+    max-width: 150px;
+  }
+  mat-sidenav-content {
+    margin-left: 30px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .toggle-sidenav {
+    display: none;
+  }
+  .custom-sidenav {
+    width: 150px; /* Further reduced width */
+  }
+
+  .content {
+    margin-left: 150px; /* Further reduced margin */
+  }
+
+  .current-date {
+    font-size: 10px; /* Smaller date text */
+  }
+
+  .toolbar-right {
+    flex-direction: row; /* Stack buttons vertically */
+    align-items: flex-start;
+  }
+}

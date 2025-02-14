@@ -1,0 +1,17 @@
+#mapping{
+  height: 100%; /* Full height of the parent */
+    width: 100%;  /* Full width of the parent */
+    padding: 16px; /* Optional: Add some padding */
+    box-sizing: border-box; /* Ensure padding is included in the total width and height */
+}
+#mapping h5{
+  text-align: center;
+}
+#mapping .content{
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+}

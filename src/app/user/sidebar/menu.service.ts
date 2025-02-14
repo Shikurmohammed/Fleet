@@ -48,13 +48,7 @@ export class MenuService {
       roles: ['Senior Transport Officer'],
       icon: 'dashboard'
     },
-    {
-      id: 1,
-      name: 'Dashboard',
-      url: '/officerHome',
-      roles: ['Senior Transport Officer'],
-      icon: 'dashboard'
-    },
+
     {
       id: 1,
       name: 'Dashboard',
@@ -85,7 +79,7 @@ export class MenuService {
       roles: ['Admin'],
       icon: 'people',
       subMenu: [
-        { id: 4, name: 'New user', url: '/user', roles: ['Admin'], icon: 'add_circle' },
+        // { id: 4, name: 'New user', url: '/user', roles: ['Admin'], icon: 'add_circle' },
         { id: 5, name: 'Manage User', url: '/manageuser', roles: ['Admin'], icon: 'settings' },
         { id: 6, name: ' Advance Approver', url: '/mappapprover', roles: ['Admin'], icon: 'settings' },
         { id: 7, name: ' Report', url: '/userProfileListing', roles: ['Admin'], icon: 'summarize' }
@@ -474,9 +468,9 @@ export class MenuService {
         const filteredSubMenu = item.subMenu?.filter(subItem => subItem.roles?.includes(userRole.trim())) || [];
         // Check if the item is accessible based on delegation
         // Check if the item is accessible based on delegation if it has delegatedRoles
-        /*If item.delegatedRoles?.includes(userRole.trim()) 
+        /*If item.delegatedRoles?.includes(userRole.trim())
         is a ternory opertor to check if the item's delegatedRoles property has value which is equal to the given role
-        .i.e if 
+        .i.e if
         */
         const isDelegatedAccessible = item.delegatedRoles?.includes(userRole.trim()) ? isDelegated === 1 : true;
         if (item.name == "Authorization") {

@@ -62,17 +62,17 @@ export class ManageVehicleComponent implements OnInit {
           processing: true,
           lengthMenu: [5, 10, 25],
 
-          buttons: [
-            { extend: 'copy', text: 'Copy', className: 'btn btn-primary' },
-            { extend: 'excel', text: 'Excel', className: 'btn btn-success' },
-            { extend: 'pdf', text: 'PDF', className: 'btn btn-danger' },
+          // buttons: [
+          //   { extend: 'copy', text: 'Copy', className: 'btn btn-primary' },
+          //   { extend: 'excel', text: 'Excel', className: 'btn btn-success' },
+          //   { extend: 'pdf', text: 'PDF', className: 'btn btn-danger' },
 
-            {
-              extend: 'colvis',
-              text: 'Choose Columns',
-              columns: ':not(:first-child)' // Exclude the first column if needed
-            }
-          ],
+          //   {
+          //     extend: 'colvis',
+          //     text: 'Choose Columns',
+          //     columns: ':not(:first-child)' // Exclude the first column if needed
+          //   }
+          // ],
           dom: 'Bfrtip', // Add buttons to the table UI
           order: [[1, 'desc']],
 
