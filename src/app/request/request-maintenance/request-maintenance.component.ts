@@ -10,6 +10,9 @@ import { RequestMaintenanceService } from './request-maintenance.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { VehicleDetailsComponent } from './vehicle-details/vehicle-details.component';
+import { VehicleRequestComponent } from './vehicle-request/vehicle-request.component';
 
 
 @Component({
@@ -25,31 +28,26 @@ export class RequestMaintenanceComponent implements OnInit {
   director: any;
   username: any;
   serviceMaintenanceType: MaintenanceType[];
-  isLessthan: boolean = false;
+
   existingKm: number = 0;
   constructor(
     private router: Router,
     private alert: AlertService,
-    private requestService: RequestMaintenanceService
+    private requestService: RequestMaintenanceService,
+    private dialog: MatDialog,
   ) { }
-@ViewChild(MatSort) sort!:MatSort;
-@ViewChild(MatPaginator) pagintor!:MatPaginator;
-searchQuery:any;
-  displayedColumns: string[] = ['id','plateNo','insExpDate','insRenewalDate','lastMilege','lmGenService','lmTyresChange','action'];
- public dataSource = new MatTableDataSource<Vehicle>([]);
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) pagintor!: MatPaginator;
+  searchQuery: any;
+  displayedColumns: string[] = ['id', 'plateNo', 'insExpDate', 'insRenewalDate', 'lastMilege', 'lmGenService', 'lmTyresChange', 'action'];
+  public dataSource = new MatTableDataSource<Vehicle>([]);
 
   ngOnInit(): void {
-// Populate dataSource with data
-
-
+    // Populate dataSource with data
     if (sessionStorage.getItem("role") == "Requester" || sessionStorage.getItem("role") == "Senior Transport Officer") {
       this.director = sessionStorage.getItem("directorate");
       this.username = sessionStorage.getItem("username");
       this.getMyVehicles();
-      if (sessionStorage.getItem("requested") != null) {
-        this.alert.sucessAlert(sessionStorage.getItem("requested"));
-        sessionStorage.removeItem("requested");
-      }
     } else {
       this.router.navigate(['/home']);
     }
@@ -61,9 +59,9 @@ searchQuery:any;
       this.vehicles = ret;
 
       setTimeout(() => {
-        this.dataSource.data=ret;
-        this.dataSource.sort=this.sort;
-        this.dataSource.paginator=this.pagintor;
+        this.dataSource.data = ret;
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.pagintor;
         $('#ServiceDataTable').DataTable({
           pagingType: 'full_numbers',
           pageLength: 10,
@@ -99,60 +97,46 @@ searchQuery:any;
     });
 
   }
-  RequestMaintenance() {
-    this.requestService.sendMaintenanceRequest(this.requistionForm).subscribe(
-      (res: RequestMaintenance) => {
-        sessionStorage.setItem("requested", "Maintenance Request Successfully Sent");
-        window.location.reload();
-      },
-      (error: HttpErrorResponse) => {
-        this.alert.errorAlert("Server Error");
-      }
-    );
-  }
-  //check milege not less than previous
-  checkMilege(current: any) {
-    if (current.target.value < this.existingKm) {
-      this.isLessthan = true;
-    } else {
-      this.isLessthan = false;
-    }
-  }
-  public onOpenModal(vehicle: Vehicle, mode: string): void {
-    const container = document.getElementById('main-container');
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.style.display = 'none';
-    button.setAttribute('data-toggle', 'modal');
-    if (mode === 'request') {
-      this.requestMaintenance = vehicle;
-      this.requistionForm.requestedBy = this.username;
-      this.requistionForm.reqDirectorate = this.director;
-      //To Get Already Existing Vehicle Details
-      this.requistionForm.plateNo = this.requestMaintenance.plateNo;
-      //I have corrected the previous milege
-      this.requistionForm.previousServiceMilage = this.requestMaintenance.lmVehicleBody;
-      this.requistionForm.currentMilage = this.requestMaintenance.lastMilege;
-      this.requistionForm.milageDifference = this.requistionForm.currentMilage - this.requistionForm.previousServiceMilage;
-      this.requistionForm.model = this.requestMaintenance.model;
-      this.requistionForm.chassisNo = this.requestMaintenance.chassisNo;
-      this.requistionForm.engineNo = this.requestMaintenance.engineNo;
-      this.requistionForm.previousServiceDate = this.requestMaintenance.previousServiceDate;
-      this.existingKm = this.requestMaintenance.lastMilege;
-
-      button.setAttribute('data-target', '#maintenanceRequestModal');
-    }
-    if (mode === 'view') {
-      this.details = vehicle;
-      button.setAttribute('data-target', '#detailsVehicleServiceModal');
-    }
-    container?.appendChild(button);
-    button.click();
-  }
-
   //search
-  search(){
+  search() {
     console.log(this.searchQuery);
-    this.dataSource.filter= this.searchQuery.trim().toLowerCase();
+    this.dataSource.filter = this.searchQuery.trim().toLowerCase();
   }
+
+  vehicleDetailsDialog(vehicle: Vehicle) {
+    const dialogRef = this.dialog.open(VehicleDetailsComponent, {
+      data: vehicle
+    });
+    dialogRef.afterClosed().subscribe({
+      next: (res) => {
+        console.log("Vechile details component closed", res);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
+  }
+
+  vehicleRequestDialog(vehicle: Vehicle) {
+    console.log(vehicle)
+    const dialogRef = this.dialog.open(VehicleRequestComponent, {
+      data: vehicle
+    });
+    dialogRef.afterClosed().subscribe({
+      next: (res) => {
+        console.log("Vechile details component closed", res);
+       // this.alert.sucessAlert(res);
+        if (sessionStorage.getItem("requested") != null) {
+          this.alert.sucessAlert(sessionStorage.getItem("requested"));
+          sessionStorage.removeItem("requested");
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+
+  }
+
 }

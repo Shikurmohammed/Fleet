@@ -3,42 +3,42 @@
     <mat-label>Search</mat-label>
     <input matInput [(ngModel)]="searchQuery" (keyup)="search()" placeholder="Ex. Plate No" />
   </mat-form-field>
-  <table mat-table [dataSource]=dataSource class="mat-elevation-z8 responsive-table" matSort>
+  <table mat-table [dataSource]=dataSource class="responsive-table" matSort>
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-      <td mat-cell *matCellDef="let element"> {{element.eid}} </td>
+      <td mat-cell *matCellDef="let vehicle"> {{vehicle.eid}} </td>
     </ng-container>
     <ng-container matColumnDef="plateNo">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Plate Number </th>
-      <td mat-cell *matCellDef="let element"> {{element.plateNo}} </td>
+      <td mat-cell *matCellDef="let vehicle"> {{vehicle.plateNo}} </td>
     </ng-container>
 
     <ng-container matColumnDef="insExpDate">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Insurance Expiry Date</th>
-      <td mat-cell *matCellDef="let element"> {{element.insExpDate}} </td>
+      <td mat-cell *matCellDef="let vehicle"> {{vehicle.insExpDate}} </td>
     </ng-container>
     <ng-container matColumnDef="insRenewalDate">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Insurance Renewal Date </th>
-      <td mat-cell *matCellDef="let element"> {{element.insRenewalDate}} </td>
+      <td mat-cell *matCellDef="let vehicle"> {{vehicle.insRenewalDate}} </td>
     </ng-container>
     <ng-container matColumnDef="lastMilege">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Mileage(KM) </th>
-      <td mat-cell *matCellDef="let element"> {{element.lastMilege}} </td>
+      <td mat-cell *matCellDef="let vehicle"> {{vehicle.lastMilege}} </td>
     </ng-container>
     <ng-container matColumnDef="lmGenService">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Mileage General Service(KM) </th>
-      <td mat-cell *matCellDef="let element"> {{element.lmGenService}} </td>
+      <td mat-cell *matCellDef="let vehicle"> {{vehicle.lmGenService}} </td>
     </ng-container>
     <ng-container matColumnDef="lmTyresChange">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Mileage Tyres(KM) </th>
-      <td mat-cell *matCellDef="let element"> {{element.lmTyresChange}} </td>
+      <td mat-cell *matCellDef="let vehicle"> {{vehicle.lmTyresChange}} </td>
     </ng-container>
 
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef> Action </th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-button>Edit</button>
-        <button mat-button>Delete</button>
+      <td mat-cell *matCellDef="let vehicle">
+        <button mat-button  (click)="vehicleDetailsDialog(vehicle)">Detail</button>
+        <button mat-button *ngIf="vehicle.status!='Maintenance'" (click)="vehicleRequestDialog(vehicle)">Request</button>
       </td>
     </ng-container>
 
@@ -48,5 +48,12 @@
 
   </table>
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
-
 </div>
+
+
+
+
+
+
+
+

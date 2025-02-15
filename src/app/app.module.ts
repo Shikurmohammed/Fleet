@@ -145,6 +145,11 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { RequestMaintenanceComponent } from './request/request-maintenance/request-maintenance.component';
+import { VehicleDetailsComponent } from './request/request-maintenance/vehicle-details/vehicle-details.component';
+import { VehicleRequestComponent } from './request/request-maintenance/vehicle-request/vehicle-request.component';
+import { DisposeVehicleComponent } from './officer/vehicle/manage-vehicle/dispose-vehicle/dispose-vehicle.component';
+import { UpdateVehicleComponent } from './officer/vehicle/manage-vehicle/update-vehicle/update-vehicle.component';
+import { CheckOfftimeRequestDetailsComponent } from './officer/check-requests/check-offtime-request-details/check-offtime-request-details.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: '#f79239',
@@ -281,7 +286,12 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     MenuItemComponent,
     UserTableComponent,
     UserEditComponent,
-    RequestMaintenanceComponent
+    RequestMaintenanceComponent,
+    VehicleDetailsComponent,
+    VehicleRequestComponent,
+    DisposeVehicleComponent,
+    UpdateVehicleComponent,
+    CheckOfftimeRequestDetailsComponent
   ],
   imports: [
     BrowserModule,

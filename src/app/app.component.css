@@ -51,7 +51,7 @@ mat-sidenav{
 /* mat-sidenav-content styles*/
 mat-sidenav-content {
   flex-grow: 1;
-  overflow-y: auto; /* Enables independent vertical scrolling */
+  overflow: auto; /* Enables independent vertical scrolling */
   height: 100vh;
   padding: 16px;
   width:100%;

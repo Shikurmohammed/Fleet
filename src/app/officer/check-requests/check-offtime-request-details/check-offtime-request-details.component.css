@@ -1,0 +1,27 @@
+/*
+mat-dialog-title{
+  text-align:center;
+}
+.vehicle-dialog {
+  max-width: 100%;
+  padding: 10px;
+}
+
+p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.dialog-actions {
+  text-align: right;
+  padding: 10px;
+}
+
+@media (max-width: 576px) {
+  .vehicle-dialog {
+    font-size: 12px;
+  }
+  p {
+    font-size: 13px;
+  }
+} */

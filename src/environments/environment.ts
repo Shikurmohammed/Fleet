@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-      apiBaseUrl:'http://10.36.30.249:8888'
-  // apiBaseUrl:'http://localhost:8888'//Change this to the IP address of the machine hosting the backend
+     //apiBaseUrl:'http://10.36.30.249:8888'
+   apiBaseUrl:'http://localhost:8888'//Change this to the IP address of the machine hosting the backend
   //apiBaseUrl:'http://192.168.177.212:8888'
   // apiBaseUrl:'http://10.37.30.159:8888'//Change this to the IP address of the machine hosting the backend
   //apiBaseUrl:'http://localhost:4200/fmsbackend'

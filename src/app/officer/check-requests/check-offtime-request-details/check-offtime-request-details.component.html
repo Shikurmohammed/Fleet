@@ -1,0 +1,39 @@
+<div class="vehicle-dialog">
+  <h6 mat-dialog-title>Offtime Request Details</h6>
+  <div mat-dialog-content>
+    <div class="row">
+      <!-- Left Column -->
+      <div class="col-12 col-md-6">
+        <p>Requested By: <strong><span>{{ data?.reqBy }}</span></strong></p>
+        <p>Requested Date: <strong><span>{{ data?.date | date }}</span></strong></p>
+        <p>Requested Time: <strong><span>{{ data?.requestedTime | convertFrom24To12Format
+              }}</span></strong></p>
+        <p>Directorate <strong><span>{{ directorName }}</span></strong></p>
+        <p>Telephone: <strong><span>{{ data?.telephone }}</span></strong></p>
+        <p>Departure Date: <strong><span>{{ data?.departureDate | date }}</span></strong></p>
+        <p>Residential Area: <strong><span>{{ data?.residentialArea }}</span></strong></p>
+        <p>KM: <strong><span>{{ data?.km }}</span></strong></p>
+        <p>Requested For: <strong><span>{{ data?.requestedFor }}</span></strong></p>
+      </div>
+    </div>
+    <!-- Right Column -->
+    <div class="col-12 col-md-6">
+      <p>Vehicle Needed From: <strong><span>{{ data?.vehicleNeededFrom |
+            convertFrom24To12Format}}</span></strong></p>
+      <p>Vehicle Needed To: <strong><span>{{ data?.vehicleNeededTo | convertFrom24To12Format
+            }}</span></strong></p>
+      <p>Return Date: <strong><span>{{ data?.returnDate | date }}</span></strong></p>
+      <p>Return Time: <strong><span>{{ data?.returnTime | convertFrom24To12Format }}</span></strong>
+      </p>
+      <p>Morning Time: <strong><span>{{ data?.morningTime | convertFrom24To12Format
+            }}</span></strong></p>
+      <p>Night Time: <strong><span>{{ data?.nightTime | convertFrom24To12Format }}</span></strong>
+      </p>
+      <p>Authorized By: <strong><span>{{ data?.authorizedBy }}</span></strong></p>
+      <p>Authorized Date: <strong><span>{{ data?.authorizedDate | date}}</span></strong></p>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions class="dialog-actions">
+  <button mat-button (click)="onClose()">Close</button>
+</div>
