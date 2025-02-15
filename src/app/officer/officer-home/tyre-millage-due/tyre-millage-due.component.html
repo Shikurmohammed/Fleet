@@ -3,11 +3,11 @@
     <ng-container *ngIf = "vehicles.length>0">
     <div
       id="VehiclesTable"
-      style="margin-left: 190px"
+
       class="col-lg-12 col-md-12 col-xl-12"
     >
       <hr/>
-      <h2 style="text-align: center">Vehicles Whose Tyres Service Mileage Is Due</h2>
+      <h5 style="text-align: center">Vehicles Whose Tyres Service Mileage Is Due</h5>
       <hr />
       <table
         class="table table-hover table-bordered table-condenced table-sm table-shadow"
@@ -73,7 +73,7 @@
                     >
                       Detail
                     </a>
-      
+
                     <a
                       (click)="onOpenModal(vehicle, 'request')"
                       class="btn btn-outline-danger"
@@ -98,10 +98,10 @@
       </div>
     </ng-container>
     <!-- End of vehicle displayer -->
-   
+
 
     <div class="container" id="main-container">
-          
+
           <!-- This is to show vehicles whose service mileage is due -->
             <div
             class="modal fade"
@@ -114,7 +114,7 @@
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                <div class="modal-header">
-                  <h5 class="modal-title" 
+                  <h5 class="modal-title"
                   id="detailsVehicleServiceModalLabel">
                   Vehicle Service Due Details
                 </h5>
@@ -158,7 +158,7 @@
                         </p>
                         <p>
                           Fuel Type:
-        
+
                           <strong *ngIf="details?.fuelType == 1"
                             ><span>Benzine</span></strong
                           >
@@ -180,7 +180,7 @@
                         </p>
                         <p>
                             Carrying Capacity: <strong><span>{{ details?.carryingCapacity}}</span></strong>
-                        
+
                         </p>
                     </div>
                   </div>
@@ -221,71 +221,71 @@
                     <div class="form-row">
                       <div class="form-group col-md-8">
                         <label for="name">Directorate</label>
-                        <input type="text" [(ngModel)]="requistionForm.reqDirectorate" 
+                        <input type="text" [(ngModel)]="requistionForm.reqDirectorate"
                            name="reqDirectorate" class="form-control" autocomplete="off"
-                           #reqDirectorate="ngModel" 
+                           #reqDirectorate="ngModel"
                            readonly/>
                       </div>
                       <div class="form-group col-md-4">
                         <label for="name">Plate Number</label>
-                        <input type="text" [(ngModel)]="requistionForm.plateNo" 
+                        <input type="text" [(ngModel)]="requistionForm.plateNo"
                            name="plateNo" class="form-control" autocomplete="off"
-                           #plateNo="ngModel" 
+                           #plateNo="ngModel"
                            readonly/>
                       </div>
                     </div>
                     <div class = "row">
                       <div class="form-group col-md-4">
                         <label for="name">Model/Type</label>
-                        <input type="text" [(ngModel)]="requistionForm.model" 
+                        <input type="text" [(ngModel)]="requistionForm.model"
                            name="model" class="form-control" autocomplete="off"
-                           #model="ngModel" 
+                           #model="ngModel"
                            readonly/>
                       </div>
                       <div class="form-group col-md-4">
                         <label for="name">Chassis Number</label>
-                        <input type="text" [(ngModel)]="requistionForm.chassisNo" 
+                        <input type="text" [(ngModel)]="requistionForm.chassisNo"
                            name="chassisNo" class="form-control" autocomplete="off"
-                           #chassisNo="ngModel" 
+                           #chassisNo="ngModel"
                            readonly/>
                       </div>
                       <div class="form-group col-md-4">
                         <label for="name">Motor Number</label>
-                        <input type="text" [(ngModel)]="requistionForm.engineNo" 
+                        <input type="text" [(ngModel)]="requistionForm.engineNo"
                            name="engineNo" class="form-control" autocomplete="off"
-                           #engineNo="ngModel" 
+                           #engineNo="ngModel"
                            readonly/>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-md-4">
                         <label for="name">Current Millage(KM)</label>
-                        <input type="text" [(ngModel)]="requistionForm.currentMilage" 
+                        <input type="text" [(ngModel)]="requistionForm.currentMilage"
                            name="currentMilage" class="form-control" autocomplete="off"
-                           #currentMilage="ngModel" 
+                           #currentMilage="ngModel"
                            readonly/>
                       </div>
                       <div class="form-group col-md-4">
                         <label for="name">Previous Millage(KM)</label>
-                        <input type="text" [(ngModel)]="requistionForm.previousServiceMilage" 
+                        <input type="text" [(ngModel)]="requistionForm.previousServiceMilage"
                            name="previousServiceMilage" class="form-control" autocomplete="off"
-                           #previousServiceMilage="ngModel" 
+                           #previousServiceMilage="ngModel"
                            readonly/>
                       </div>
                       <div class="form-group col-md-4">
                         <label for="name">Millage Difference(KM)</label>
-                        <input type="text" [(ngModel)]="requistionForm.milageDifference" 
+                        <input type="text" [(ngModel)]="requistionForm.milageDifference"
                            name="milageDifference" class="form-control" autocomplete="off"
-                           #milageDifference="ngModel" 
+                           #milageDifference="ngModel"
                            readonly/>
                       </div>
                     </div>
                     <div class="row">
                       <div class="form-group col-md-4">
                         <label for="name">Previous Millage Date</label>
-                        <input type="text" ngModel="{{requistionForm.previousServiceDate | date}}" 
+                        <input type="text" ngModel="{{requistionForm.previousServiceDate | date}}"
                            name="previousServiceDate" class="form-control" autocomplete="off"
-                           #previousServiceDate="ngModel" 
+                           #previousServiceDate="ngModel"
                            readonly/>
                       </div>
                       <div class="form-group col-md-4">
@@ -294,23 +294,23 @@
                           name="fuelGaugeInAmount" class="form-control" autocomplete="off"
                           placeholder="petrol amount..."  #fuelGaugeInAmount="ngModel"
                           pattern = "^\d+\.?\d*$"
-                          [class.is-invalid]="fuelGaugeInAmount.invalid && fuelGaugeInAmount.touched" 
+                          [class.is-invalid]="fuelGaugeInAmount.invalid && fuelGaugeInAmount.touched"
                           required=""/>
                         <!-- Error -->
                         <div *ngIf="fuelGaugeInAmount.errors && (fuelGaugeInAmount.invalid && fuelGaugeInAmount.touched)">
                           <small class="text-danger" *ngIf="fuelGaugeInAmount.errors.required">petrol amount is required</small>
                           <small class="text-danger" *ngIf="fuelGaugeInAmount.errors.pattern">incorrect petrol amount format</small>
                         </div>
-          
+
                      </div>
                      <div class="form-group col-md-4">
                       <label for="purposeoftravel">Maintenance Type</label>
                       <ng-select
-                       class="custom"  appearance="outline" 
+                       class="custom"  appearance="outline"
                        [(ngModel)]="requistionForm.maintenanceType"
                        name="maintenanceType"
                        required #maintenanceType="ngModel"
-      
+
                         [class.is-invalid]="maintenanceType.invalid && maintenanceType.touched">
                         <ng-option *ngFor="let serviceType of tyresMaintenanceType" value="{{serviceType.mainType}}">
                           {{serviceType.mainType}}
@@ -328,7 +328,7 @@
                         <textarea type="text" [(ngModel)]="requistionForm.workRepairRequested"
                           name="workRepairRequested" class="form-control" autocomplete="off"
                           placeholder="work/repair requested..."  #workRepairRequested="ngModel"
-                         
+
                           [class.is-invalid]="workRepairRequested.invalid && workRepairRequested.touched" required=""></textarea>
                         <!-- Error -->
                         <div *ngIf="workRepairRequested.errors && (workRepairRequested.invalid && workRepairRequested.touched)">
@@ -345,7 +345,7 @@
                       >
                         Close
                       </button>
-                      <button data-dismiss="modal" (click)="RequestTyresMaintenance(requestMaintenanceForm)" [disabled]="requestMaintenanceForm.invalid" type="submit" class="btn btn-primary" >Request</button>                
+                      <button data-dismiss="modal" (click)="RequestTyresMaintenance(requestMaintenanceForm)" [disabled]="requestMaintenanceForm.invalid" type="submit" class="btn btn-primary" >Request</button>
                     </div>
                   </form>
                 </div>

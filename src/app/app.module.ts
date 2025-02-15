@@ -14,6 +14,8 @@ import 'datatables.net';
 import 'datatables.net-buttons';
 import 'datatables.net-buttons/js/buttons.html5';
 import 'datatables.net-buttons/js/buttons.colVis';
+import 'datatables.net-responsive';
+
 
 import { jqxDataTableModule } from 'jqwidgets-ng/jqxdatatable';
 import { jqxButtonModule } from 'jqwidgets-ng/jqxbuttons';
@@ -24,11 +26,13 @@ import {
   NgxUiLoaderModule,
 } from 'ngx-ui-loader';
 import { UserComponent } from './user/user.component';
+import { UserModalComponent } from './user/user-modal/user-modal.component';
 import { ChangepasswordComponent } from './auth/changepassword/changepassword.component';
 import { MatchPasswordDirective } from './directives/match-password.directive';
 import { ManageuserComponent } from './user/manageuser/manageuser.component';
 import { OfftimeRequestComponent } from './request/offtime-request/offtime-request.component';
 import { IncityRequestComponent } from './request/incity-request/incity-request.component';
+
 import { VehcilefieldRequestComponent } from './request/field/vehcilefield-request/vehcilefield-request.component';
 import { AirplanefieldRequestComponent } from './request/field/airplanefield-request/airplanefield-request.component';
 import { ManageRequestComponent } from './request/offtime-request/manage-request/manage-request.component';
@@ -73,7 +77,6 @@ import { OfftimeModifyDispatchedComponent } from './dispatcher/offtime-dispatche
 import { IncityModifyDispatchedComponent } from './dispatcher/incity-dispatcher/incity-modify-dispatched/incity-modify-dispatched.component';
 import { FieldModifyDispatchedComponent } from './dispatcher/field-dispatcher/field-modify-dispatched/field-modify-dispatched.component';
 import { ManageMaintenanceRequestComponent } from './officer/officer-home/manage-maintenance-request/manage-maintenance-request.component';
-import { RequestMaintenanceComponent } from './request/request-maintenance/request-maintenance.component';
 import { ManageCustMaintenanceRequestComponent } from './request/request-maintenance/manage-cust-maintenance-request/manage-cust-maintenance-request.component';
 import { GarageComponent } from './technical-service/garage/garage.component';
 import { ManageGarageComponent } from './technical-service/garage/manage-garage/manage-garage.component';
@@ -132,6 +135,21 @@ import { SidebarComponent } from './user/sidebar/sidebar.component';
 import { MaterialModule } from './material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MenuItemComponent } from './user/sidebar/menu-item/menu-item.component';
+import { MatDialogModule, } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { UserTableComponent } from './user/manageuser/user-table/user-table.component';
+import { UserEditComponent } from './user/manageuser/user-edit/user-edit.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { RequestMaintenanceComponent } from './request/request-maintenance/request-maintenance.component';
+import { VehicleDetailsComponent } from './request/request-maintenance/vehicle-details/vehicle-details.component';
+import { VehicleRequestComponent } from './request/request-maintenance/vehicle-request/vehicle-request.component';
+import { DisposeVehicleComponent } from './officer/vehicle/manage-vehicle/dispose-vehicle/dispose-vehicle.component';
+import { UpdateVehicleComponent } from './officer/vehicle/manage-vehicle/update-vehicle/update-vehicle.component';
+import { CheckOfftimeRequestDetailsComponent } from './officer/check-requests/check-offtime-request-details/check-offtime-request-details.component';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   bgsColor: '#f79239',
@@ -168,6 +186,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     DashboardComponent,
     HomeComponent,
     UserComponent,
+    UserModalComponent,
     ChangepasswordComponent,
     MatchPasswordDirective,
     ManageuserComponent,
@@ -212,7 +231,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     IncityModifyDispatchedComponent,
     FieldModifyDispatchedComponent,
     ManageMaintenanceRequestComponent,
-    RequestMaintenanceComponent,
+
     ManageCustMaintenanceRequestComponent,
     GarageComponent,
     ManageGarageComponent,
@@ -264,7 +283,15 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     FooterComponent,
     MapApproverComponent,
     SidebarComponent,
-    MenuItemComponent
+    MenuItemComponent,
+    UserTableComponent,
+    UserEditComponent,
+    RequestMaintenanceComponent,
+    VehicleDetailsComponent,
+    VehicleRequestComponent,
+    DisposeVehicleComponent,
+    UpdateVehicleComponent,
+    CheckOfftimeRequestDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -277,10 +304,19 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     ReactiveFormsModule,
     NgSelect2Module,
     NgSelectModule,
+
     // AlertModule.forRoot({maxMessages: 5, timeout: 5000, positionX: 'right',positionY: 'top'}),
-    ReactiveFormsModule,
+
     HttpClientModule,
     BrowserAnimationsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+
+    MatFormFieldModule,
     NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
     NgxUiLoaderHttpModule.forRoot({
       showForeground: true,

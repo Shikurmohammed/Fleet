@@ -13,6 +13,7 @@ import { VehicleType } from 'src/app/types/VehicleType';
 import { UserService } from 'src/app/user/user.service';
 import { VehicleService } from './vehicle.service';
 import { FuelDetail } from 'src/app/types/FuelDetail';
+import { error } from 'jquery';
 
 @Component({
   selector: 'app-vehicle',
@@ -25,6 +26,7 @@ export class VehicleComponent implements OnInit {
   exists = false;
   directorates: DirectorateType[];
   vehicleTypes: VehicleType[];
+  newVehicleType: any;
   fuelTypes: FuelDetail[];
   constructor(
     private formBuilder: FormBuilder,
@@ -32,7 +34,7 @@ export class VehicleComponent implements OnInit {
     private alertService: AlertService,
     private router: Router,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getDirectorates();
@@ -68,10 +70,10 @@ export class VehicleComponent implements OnInit {
       description: ['', Validators.required],
       purposeOfUsage: ['', Validators.required],
       custodian: ['', Validators.required],
-      vehicleTypeString:['', Validators.required],
+      vehicleTypeString: ['', Validators.required],
       owner: [''],
-      isStandBy:['no', Validators.required],
-      createdBy:['']
+      isStandBy: ['no', Validators.required],
+      createdBy: ['']
     });
   }
 
@@ -101,9 +103,15 @@ export class VehicleComponent implements OnInit {
   addVehicle(): void {
     this.submitted = true;
     this.form.controls.createdBy.setValue(sessionStorage.getItem("username"));
+    console.log("******************FORM VALUE**********************************");
     console.log(this.form.value);
+    const vehicleData = {
+      ...this.form.value,
+      vehicleTypeString: this.form.value.vehicleTypeString?.label || this.form.value.vehicleTypeString
+    };
+
     if (this.form.valid) {
-      this.vehicleService.addVehicle(this.form.value).subscribe({
+      this.vehicleService.addVehicle(vehicleData).subscribe({
         next: () => {
           this.alertService.sucessAlert('Vehicle Successfully Added.');
           this.router.navigate(['/manageVehicle']);
@@ -148,4 +156,28 @@ export class VehicleComponent implements OnInit {
       }
     );
   }
+  selectedType: any;
+  //replacedText: any;
+  onAddVehicleType(newVehicleType: { label: string }) {
+
+    let newVehicleTypeValue = newVehicleType?.label;
+    if (newVehicleTypeValue) {
+      const isTypeExists = this.vehicleTypes.some(v => v.vehicleType?.toLowerCase === newVehicleTypeValue?.toLocaleLowerCase);
+      if (!isTypeExists) {
+        this.vehicleService.addVehicleType(newVehicleTypeValue).subscribe({
+          next: (res) => {
+            console.log(res);
+            this.alertService.sucessAlert(res.toString());
+          },
+          error: (error) => {
+            console.log(error);
+            this.alertService.errorAlert(error.toString());
+          }
+        });
+      }
+      //console.log("Vehicle aready exists!", newVehicleTypeValue);
+
+    }
+  }
+
 }

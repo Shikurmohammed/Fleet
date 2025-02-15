@@ -4,13 +4,12 @@
     <ng-container *ngIf = "isOnView && report.length>0">
      <div
        id="RequestTable"
-       style="margin-left: 190px"
        class="col-lg-12 col-md-12 col-xl-12"
      >
        <hr/>
         <span><button class="btn btn-primary" (click)="changeView()">Back</button></span> <h2 style="text-align: center">{{request.mechanicReport}} Mechanics' Maintenance Requests</h2>
        <hr/>
-       <div style="margin-left: 500px;">
+       <div >
         <button (click)="printExcel()" class="btn btn-success btn-sm"
           style="float: left;margin-right: 10px; height: 40px;width: 40px;">
           <i class="fa fa-file-excel"></i>
@@ -30,9 +29,9 @@
      >
        <thead>
          <tr class="myPrint" style="border: none; margin-bottom: 30px;">
-             <th colspan="2" style="border: none;">  
+             <th colspan="2" style="border: none;">
               <img src="./assets/img/awashlogo.png" class="img" alt="AB Logo" style="width: 200px; height: 50px; ">
-             </th> 
+             </th>
              <th style="border: none;" colspan="2">{{request.mechanicReport}} Mechanics' Maintenance Requests</th>
              <th style="border: none;">Report Date: {{myDate | date}}</th>
           </tr>
@@ -55,9 +54,9 @@
        </tbody>
      </table>
      </div>
-</ng-container> 
+</ng-container>
 <ng-container *ngIf = "report.length==0 && isOnView">
-  <div style="margin-left: 300px;">
+  <div >
       <hr/>
       <span><button class="btn btn-primary" (click)="changeView()">Back</button></span> <h2 style="text-align: center">{{request.mechanicReport}} Mechanics' Maintenance Requests</h2>
       <hr />
@@ -65,9 +64,9 @@
         <p>No {{request.mechanicReport}} Mechanics' Maintenance Requests</p>
       </div>
   </div>
-</ng-container>    
+</ng-container>
  <ng-container *ngIf = "!isOnView">
-     <div style="margin-left: 300px;">
+     <div >
        <hr/>
        <h2 style="text-align: center">Mechanics' Requests Report</h2>
         <hr />
@@ -78,11 +77,11 @@
                <div class="form-group col-md-6">
                  <label for="name">Report By</label>
                  <ng-select
-                    type="text" [(ngModel)]="request.reportType" 
+                    type="text" [(ngModel)]="request.reportType"
                     name="reportType"
                     class="custom"  appearance="outline"
                     autocomplete="off"
-                    #reportType="ngModel" 
+                    #reportType="ngModel"
                     >
                     <ng-option value="" disabled selected>Select report type </ng-option>
                     <ng-option value="all">All</ng-option>
@@ -92,7 +91,7 @@
                <div class="form-group col-md-6">
                 <label for="name">Mechanic Report</label>
                 <ng-select
-                  type="text" [(ngModel)]="request.mechanicReport" 
+                  type="text" [(ngModel)]="request.mechanicReport"
                    name="mechanicReport"
                    class="custom"  appearance="outline"
                    autocomplete="off"
@@ -110,29 +109,29 @@
 
                     <div class="form-group col-md-6">
                         <label for="name">Date From</label>
-                        <input type="date" [(ngModel)]="request.from" 
+                        <input type="date" [(ngModel)]="request.from"
                            name="from" class="form-control" autocomplete="off"
-                           #from="ngModel" 
+                           #from="ngModel"
                            />
                       </div>
                       <div class="form-group col-md-6">
                         <label for="name">Date To</label>
-                        <input type="date" [(ngModel)]="request.to" 
+                        <input type="date" [(ngModel)]="request.to"
                            name="to" class="form-control" autocomplete="off"
-                           #to="ngModel" 
+                           #to="ngModel"
                            />
                      </div>
 
              </div>
-               <button 
+               <button
                 [disabled]="reportForm.invalid"
                   type="submit"
                   class="btn btn-primary btn-right" >
                   View Report
-              </button>                
-         
+              </button>
+
            </form>
-             
+
        </div>
      </div>
    </ng-container>

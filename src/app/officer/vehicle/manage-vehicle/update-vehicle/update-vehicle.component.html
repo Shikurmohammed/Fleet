@@ -1,0 +1,238 @@
+<div>
+  <h1 mat-dialog-title> Update Details of Vehicle</h1>
+  <div mat-dialog-content>
+
+    <form #editForm="ngForm">
+      <input type="hidden" ngModel="{{ data?.id }}" name="id" class="form-control" id="id" />
+      <input type="hidden" ngModel="{{data?.status}}" name="status" class="form-control" id="status" />
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="insExpDate">Insurance Expiry Date</label>
+          <input type="date" ngModel="{{ data?.insExpDate }}" name="insExpDate" class="form-control" id="insExpDate"
+            required />
+        </div>
+        <div class="form-group col-md-4">
+          <label for="insRenewalDate">Insurance Renewal Date</label>
+          <input type="date" ngModel="{{ data?.insRenewalDate }}" name="insRenewalDate" class="form-control"
+            id="insRenewalDate" required />
+        </div>
+        <div class="form-group col-md-4">
+          <div class="form-group">
+            <label for="model">Model</label>
+            <input type="text" ngModel="{{data?.model}}" class="form-control" name="model" id="model" required />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-4">
+          <div class="form-group">
+            <label for="make">Make</label>
+            <input type="text" ngModel="{{data?.make}}" class="form-control" name="make" id="make" required />
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <div class="form-group">
+            <label for="yearOfMake">Year Of Make</label>
+
+            <input type="number" ngModel="{{data?.yearOfMake}}" min="1900" max="2080" step="1" class="form-control"
+              name="yearOfMake" id="yearOfMake" required />
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <div class="form-group">
+            <label for="engineNo">Engine Number</label>
+
+            <input type="text" ngModel="{{data?.engineNo}}" class="form-control" name="engineNo" id="engineNo" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="form-group col-md-4">
+          <div class="form-group">
+            <label for="chassisNo">Chassis Number</label>
+
+            <input type="text" ngModel="{{data?.chassisNo}}" class="form-control" name="chassisNo" id="chassisNo" />
+
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <div class="form-group">
+            <label for="plateNo">Plate Number</label>
+
+            <input type="text" ngModel="{{data?.plateNo}}" class="form-control" name="plateNo" id="plateNo" readonly />
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <div class="form-group">
+            <label for="cc">CC</label>
+            <input type="text" ngModel="{{data?.cc}}" class="form-control" name="cc" id="cc" required />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-4">
+          <div class="form-group">
+            <label for="fuelType">Fuel Type</label>
+            <ng-select ngModel="{{data?.fuelType}}" class="custom" appearance="outline" name="fuelType" id="fuelType">
+              <ng-option value="" disabled selected>Select fuel type</ng-option>
+              <ng-option *ngFor="let fuelType of fuelTypes" value="{{ fuelType!.id }}">
+                {{ fuelType!.typeOfFuel }}
+              </ng-option>
+            </ng-select>
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <div class="form-group">
+            <label for="disPerLit">Distance Per Litter</label>
+
+            <input type="text" ngModel="{{data?.disPerLit}}" class="form-control" name="disPerLit" id="disPerLit"
+              required />
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <div class="form-group">
+            <label for="carryingCapacity">Carrying Capacity</label>
+
+            <input type="text" ngModel="{{data?.carryingCapacity}}" class="form-control" name="carryingCapacity"
+              id="carryingCapacity" required />
+          </div>
+        </div>
+
+      </div>
+      <div *ngIf="role==='Senior Transport Officer'" class="row">
+        <div class="form-group col-md-4">
+          <div class="form-group">
+            <label for="lastMilege">Kilometer</label>
+
+            <input type="text" ngModel="{{data?.lastMilege}}" class="form-control" name="lastMilege" id="lastMilege" />
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <div class="form-group">
+            <label for="lmGenService">Last Service Mileage</label>
+
+            <input type="text" ngModel="{{data?.lmGenService}}" class="form-control" name="lmGenService"
+              id="lmGenService" required="" />
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <div class="form-group">
+            <label for="lmTyresChange">Last Tyres Mileage</label>
+
+            <input type="text" ngModel="{{data?.lmTyresChange}}" class="form-control" name="lmTyresChange"
+              id="lmTyresChange" required="" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div *ngIf="role!='Senior Transport Officer'" class="row">
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="lastMilege">Kilometer</label>
+
+              <input type="text" ngModel="{{data?.lastMilege}}" class="form-control" name="lastMilege" id="lastMilege"
+                readonly />
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="lmGenService">Last Service Mileage</label>
+
+              <input type="text" ngModel="{{data?.lmGenService}}" class="form-control" name="lmGenService"
+                id="lmGenService" required="" readonly />
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-group">
+              <label for="lmTyresChange">Last Tyres Mileage</label>
+
+              <input type="text" ngModel="{{data?.lmTyresChange}}" class="form-control" name="lmTyresChange"
+                id="lmTyresChange" required="" readonly />
+            </div>
+          </div>
+        </div>
+        <div *ngIf="role==='Senior Transport Officer'" class="form-group col-md-4">
+          <div class="form-group">
+            <label for="lmVehicleBody">Last Body Mileage</label>
+
+            <input type="text" ngModel="{{data?.lmVehicleBody}}" class="form-control" name="lmVehicleBody"
+              id="lmVehicleBody" required="" />
+          </div>
+        </div>
+        <div *ngIf="role!='Senior Transport Officer'" class="form-group col-md-4">
+          <div class="form-group">
+            <label for="lmVehicleBody">Last Body Mileage</label>
+
+            <input type="text" ngModel="{{data?.lmVehicleBody}}" class="form-control" name="lmVehicleBody"
+              id="lmVehicleBody" required="" readonly />
+          </div>
+        </div>
+        <div class="form-group col-md-8">
+          <label for="custodian">Custodian</label>
+          <ng-select ngModel="{{data?.custodian}}" name="custodian" id="custodian" class="custom" appearance="outline">
+            <ng-option value="" disabled selected>Select custodian..</ng-option>
+            <ng-option *ngFor="let custod of directorates" value="{{ custod!.directorate }}">
+              {{ custod!.directorate }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label for="owner">Owner</label>
+          <input type="text" ngModel="{{data?.owner}}" name="owner" class="form-control" id="owner" />
+        </div>
+        <div class="form-group col-md-4">
+          <label for="purposeOfUsage">Purpose of Usage</label>
+          <input type="text" ngModel="{{data?.purposeOfUsage}}" name="purposeOfUsage" class="form-control"
+            id="purposeOfUsage" required />
+        </div>
+        <div class="form-group col-md-4">
+          <div class="form-group">
+            <label for="policyNo">Policy Number</label>
+
+            <input type="text" ngModel="{{data?.policyNo}}" class="form-control" name="policyNo" id="policyNo"
+              required="" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label for="vehicleTypeString">Vehicle Type</label>
+          <ng-select name="vehicleTypeString" id="vehicleTypeString" ngModel="{{vehicleTypeValue}}" class="custom"
+            appearance="outline">
+            <ng-option value="" disabled selected>select vehicle type ..</ng-option>
+            <ng-option *ngFor="let vehiclesType of vehicleTypes" value="{{ vehiclesType!.vehicleType }}">
+              {{ vehiclesType!.vehicleType }}
+            </ng-option>
+          </ng-select>
+        </div>
+        <ng-container *ngIf="isGeneral">
+          <div class="form-group col-md-4">
+            <label for="isStandBy">Is Stand By</label>
+            <ng-select name="isStandBy" id="isStandBy" ngModel="{{data?.isStandBy}}" class="custom"
+              appearance="outline">
+              <ng-option value="" disabled selected>is vehicle stand by ..</ng-option>
+              <ng-option value="yes">
+                Stand By
+              </ng-option>
+              <ng-option value="no">
+                Not Stand By
+              </ng-option>
+            </ng-select>
+          </div>
+        </ng-container>
+
+      </div>
+      <div mat-dialog-actions class="modal-footer">
+        <button mat-button (click)="onClose()">
+          Close
+        </button>
+        <button mat-button (click)="onUpdateVehicle(editForm?.value)"  >
+          Update Vehicle
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

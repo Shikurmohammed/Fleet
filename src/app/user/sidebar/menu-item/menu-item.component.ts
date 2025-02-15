@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Menu } from 'src/app/types/Menu';
 
@@ -9,20 +9,20 @@ import { Menu } from 'src/app/types/Menu';
 })
 export class MenuItemComponent implements OnInit {
   @Input() item: Menu = { id: 0, name: '', icon: '', url: '', subMenu: [], roles: [], order_index: 0, parent_id: 0, query_param: {} };
-@Input() isOpen:boolean;
-  constructor() { }
+  @Input() index: number;
+  @Input() nestedMenuOpen: BehaviorSubject<number | null>;
+  @Output() toggle = new EventEmitter<void>(); // Emit an event when toggled
+@Input() isOpen :boolean;
+  isMenOpen: boolean = false;
 
-  ngOnInit(): void {
+  ngOnInit() {
+      this.nestedMenuOpen.subscribe(index => {
+          this.isMenOpen = index === this.index;
+      });
   }
 
-  nestedMenuOpen: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  nestedMenuOpen$= this.nestedMenuOpen.asObservable();//observable to subscribe to nestedMenuOpen
   toggleNestedMenu() {
-   // console.log("nestedMenuOpen Before",this.nestedMenuOpen.getValue());
-    if(!this.item.subMenu){
-      return;
-    }
-    this.nestedMenuOpen.next(!this.nestedMenuOpen.value);
-    //console.log("nestedMenuOpen After",this.nestedMenuOpen.getValue());
+      // Emit toggle event to parent
+      this.toggle.emit();
   }
 }

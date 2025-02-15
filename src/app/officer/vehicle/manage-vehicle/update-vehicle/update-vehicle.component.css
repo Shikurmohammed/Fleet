@@ -1,0 +1,56 @@
+/* Ensure the dialog is responsive */
+.mat-dialog-container {
+  max-width: 90vw; /* Adjust width based on screen */
+  width: 80%;
+  overflow: hidden;
+}
+
+/* Ensure rows and form groups adjust dynamically */
+.row, .form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Make form groups flexible for responsiveness */
+.form-group {
+  flex: 1;
+  min-width: 250px; /* Prevents excessive shrinking */
+}
+
+/* Ensure form controls take up full width */
+.form-control, ng-select {
+  width: 100%;
+}
+
+/* Dialog content should have a max height with scrolling */
+.mat-dialog-content {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Make buttons responsive */
+.mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Prevent buttons from shrinking */
+.mat-dialog-actions button {
+  min-width: 120px;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .mat-dialog-container {
+    width: 95%;
+  }
+
+  /* Stack form groups vertically on small screens */
+  .row, .form-row {
+    flex-direction: column;
+  }
+}

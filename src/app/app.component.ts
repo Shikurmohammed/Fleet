@@ -14,6 +14,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { ViewEncapsulation } from '@angular/core';
 import { ThemeService } from './user/sidebar/theme.service';
 import { LoginStatusService } from './auth/LoginStatus';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -47,6 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private requesterService: RequestService,
     private themeService: ThemeService,
     private loginStatus: LoginStatusService,
+    private loaderService:NgxUiLoaderService
   ) { }
   title = 'myAngularLte';
   userName: any;
@@ -60,6 +62,12 @@ export class AppComponent implements OnInit, OnDestroy {
   //Toggle sidebar width
   toggleSidebar() {
     this.isOpen = !this.isOpen;
+
+    if (this.isOpen) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
   }
   //Theme toggling
   isDarkModeEnabled() {
@@ -180,5 +188,20 @@ export class AppComponent implements OnInit, OnDestroy {
       const now = new Date();
       this.currentDate = now.toLocaleString();
     }, 1000);//1=> updates every milisecond
+  }
+
+  //NgxUiLoader config
+  startLoading(){
+    this.loaderService.start();
+  }
+  stopLoading(){
+    this.loaderService.stop();
+  }
+  performAsynOperation(){
+    this.startLoading();
+    setTimeout(()=>{
+      this.stopLoading();//Stop loading after completion
+
+    },3000)
   }
 }

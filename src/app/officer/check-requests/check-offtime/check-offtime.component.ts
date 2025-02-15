@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CheckService } from '../check.service';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/app/alert.service';
@@ -8,6 +8,11 @@ import { RequestService } from 'src/app/request/request-home/request.service';
 import { DispatcherGuard } from 'src/app/guards/dispatcher.guard';
 import { UserService } from 'src/app/user/user.service';
 import { DirectorateType } from 'src/app/types/Directorate';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { CheckOfftimeRequestDetailsComponent } from '../check-offtime-request-details/check-offtime-request-details.component';
 
 @Component({
   selector: 'app-check-offtime',
@@ -21,68 +26,80 @@ export class CheckOfftimeComponent implements OnInit {
   directorName: String;
 
   constructor(
-    private checkService:CheckService,
-    private route:Router,
-    private alert:AlertService,
-    private requesterService:RequestService,
-    private dispatcherGuard:DispatcherGuard,
-    private userService:UserService
-  ) {}
+    private checkService: CheckService,
+    private route: Router,
+    private alert: AlertService,
+    private requesterService: RequestService,
+    private dispatcherGuard: DispatcherGuard,
+    private userService: UserService,
+    private dialog:MatDialog,
+  ) { }
 
   offTimeRequests: any = [];
   public offTimeAuthorize: OffTimeRequest | undefined;
   public rejectOffTime: OffTimeRequest | undefined;
   public detailsOffTime: OffTimeRequest | undefined;
+
+
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) pagintor!: MatPaginator;
+  searchQuery: any;
+  displayedColumns: string[] = ['reqBy', 'date', 'nameOfPassengers', 'departureDate', 'reason', 'action'];
+  public dataSource = new MatTableDataSource<OffTimeRequest>([]);
+
   ngOnInit(): void {
     this.isDelegated();
-    if(sessionStorage.getItem("role")=="Senior Transport Officer"
-    || (sessionStorage.getItem("delegated") == '1') && this.dispatcherGuard.canActivate()
-   ){
-    this.getOffTimeRequestsOnDataTable();
-  }else{
-     this.route.navigate(['/home']);
-   }
-    if(sessionStorage.getItem("Checked")!=null){
+    if (sessionStorage.getItem("role") == "Senior Transport Officer"
+      || (sessionStorage.getItem("delegated") == '1') && this.dispatcherGuard.canActivate()
+    ) {
+      this.getOffTimeRequestsOnDataTable();
+    } else {
+      this.route.navigate(['/home']);
+    }
+    if (sessionStorage.getItem("Checked") != null) {
       this.alert.sucessAlert(sessionStorage.getItem("Checked"));
       sessionStorage.removeItem("Checked");
     }
-    if(sessionStorage.getItem("officerRejected")!=null){
+    if (sessionStorage.getItem("officerRejected") != null) {
       this.alert.sucessAlert(sessionStorage.getItem("officerRejected"));
       sessionStorage.removeItem("officerRejected");
     }
     this.getDirectorates();
   }
   director: any = sessionStorage.getItem('directorate');
-  isDelegated():any{
+  isDelegated(): any {
     this.requesterService.isDelegated(sessionStorage.getItem("username")).subscribe(
-    (res:any)=>{   
-      this.delegated = res;
-      if(sessionStorage.getItem('role')=='Dispatcher' && res=='0'){
-        window.location.reload();
-      }
-    },
-    (error:HttpErrorResponse)=>{
-      
-    }
-   );
-  }
-    //Inorder to get directorates
-    public getDirectorates() {
-      this.userService.getDirectorate().subscribe(
-        (response: DirectorateType[]) => {
-          this.directorates = response;
-        },
-        (error: HttpErrorResponse) => {
-          alert(error.message);
+      (res: any) => {
+        this.delegated = res;
+        if (sessionStorage.getItem('role') == 'Dispatcher' && res == '0') {
+          window.location.reload();
         }
-      );
-    }
+      },
+      (error: HttpErrorResponse) => {
+
+      }
+    );
+  }
+  //Inorder to get directorates
+  public getDirectorates() {
+    this.userService.getDirectorate().subscribe(
+      (response: DirectorateType[]) => {
+        this.directorates = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
   //To display offtime requests by user's directorate on data tables
   public getOffTimeRequestsOnDataTable(): void {
     this.checkService
       .getOffTimeRequests()
       .subscribe((ret: OffTimeRequest[]) => {
         this.offTimeRequests = ret;
+        this.dataSource.data = ret;
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.pagintor;
         console.log(this.offTimeRequests);
         setTimeout(() => {
           $('#OfftimeDataTable').DataTable({
@@ -104,7 +121,7 @@ export class CheckOfftimeComponent implements OnInit {
     offtime.approvedBy = approver!;
     this.checkService.authorizeOffTimeRequests(offtime).subscribe(
       (ret: OffTimeRequest) => {
-        sessionStorage.setItem("Checked",'You Have Successfully Approved Off-time Request By ' +offtime.reqBy);
+        sessionStorage.setItem("Checked", 'You Have Successfully Approved Off-time Request By ' + offtime.reqBy);
         window.location.reload();
       },
       (error: HttpErrorResponse) => {
@@ -117,12 +134,14 @@ export class CheckOfftimeComponent implements OnInit {
     var approver = sessionStorage.getItem('username');
     offtime.approvedBy = approver!;
     this.checkService.rejectOffTimeRequests(offtime).subscribe(
-      (ret: OffTimeRequest) => {
-        sessionStorage.setItem("officerRejected",'You Have Successfully Rejected Off-time Request By ' + offtime.reqBy);
-        window.location.reload();
-      },
-      (error: HttpErrorResponse) => {
-        this.alert.errorAlert('Server Error');
+      {
+        next: (ret: OffTimeRequest) => {
+          sessionStorage.setItem("officerRejected", 'You Have Successfully Rejected Off-time Request By ' + offtime.reqBy);
+          window.location.reload();
+        },
+        error: (error: HttpErrorResponse) => {
+          this.alert.errorAlert('Server Error');
+        }
       }
     );
   }
@@ -144,12 +163,29 @@ export class CheckOfftimeComponent implements OnInit {
     }
     if (mode === 'view') {
       this.detailsOffTime = offtime;
-       this.dir = this.directorates.filter(x => x.id === this.detailsOffTime.directorate);
-        this.directorName = this.dir[0].directorate;
+      this.dir = this.directorates.filter(x => x.id === this.detailsOffTime.directorate);
+      this.directorName = this.dir[0].directorate;
       button.setAttribute('data-target', '#detailsOffTimeRequestModal');
     }
     container?.appendChild(button);
     button.click();
+  }
+
+
+  //search
+  search() {
+    console.log(this.searchQuery);
+    this.dataSource.filter = this.searchQuery.trim().toLowerCase();
+  }
+  //openOfftimeDetails Dialog
+  openOfftimeRequestDetils(offtime:OffTimeRequest){
+    const dialogRef= this.dialog.open(CheckOfftimeRequestDetailsComponent,{
+      data:offtime
+    })
+    dialogRef.afterClosed().subscribe({
+      next:()=>{console.log('Dialog closing')}
+    });
+
   }
 
 }

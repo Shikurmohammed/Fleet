@@ -1,11 +1,11 @@
 <div class="sidenav-header">
-    <img src="assets/img/AB1.png" alt="logo" [width]="!isOpen ? '25':'60'" [height]="!isOpen ? '25':'60'" />
-    <div class="sidenav-header-title" [style.overflow]="isOpen ? 'auto' : 'hidden'"
-        [class.ide-sidenav-header-text]="!isOpen">
-        Welcome,{{userName}}!
-    </div>
-    <i> {{currentRole}}</i>
+  <div class="sidenav-header-title" [class.hide-sidenav-header-text]="!isOpen">
+    <h6> Welcome {{userName}}, </h6>
+    <span>{{currentRole}}!</span>
+
+  </div>
 </div>
-<mat-nav-list class="transition-all duration-300" *ngFor="let item of menuItems">
-    <app-menu-item [item]="item" [isOpen]="isOpen" style="overflow-y:scroll ;"></app-menu-item>
+<mat-nav-list class="transition-all duration-300" *ngFor="let item of menuItems; let i=index">
+  <app-menu-item [item]="item" [index]="i" [nestedMenuOpen]="nestedMenuOpen$" (toggle)="toggleNestedMenu(i)"
+    [isOpen]="isOpen"></app-menu-item>
 </mat-nav-list>

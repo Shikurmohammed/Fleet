@@ -1,113 +1,74 @@
-
-mat-toolbar {
-    background-color: #21205f;
-    color: #fff;
-}
-
 mat-sidenav-container {
-    height: calc(100vh - 64px);
-    overflow: hidden;
-    /* overflow-y: scroll; */
-    display: flex; /* Use flexbox to layout the container */
-    flex-direction: column; /* Stack children vertically */
+  display: flex;
+  flex-grow: 1;
+  margin-top: 15px; /* Same height as toolbar */
+  height: calc(100vh - 64px); /* Take remaining height */
+  overflow: hidden; /* Prevent unwanted scrolling */
+
 }
 
-mat-sidenav {
-    width: 200px;
-    height: 100%;
-    color: #fff;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-wrap: unset;
-    white-space: nowrap;
+/* Toolbar styles */
+mat-toolbar {
+  background-color: #21205f;
+  color: #fff;
+  position: sticky; /* Fixes the toolbar to the top */
+  top: 0; /* Aligns it to the top */
+  left: 0; /* Aligns it to the left */
+  width: 100%; /* Full width */
+  z-index:1020;
+ /* Ensures it appears above other content   z-index: 1020; */
+  margin-bottom:auto;
 }
-.custom-sidenav {
-    overflow: hidden; /* Prevent scrolling */
-    height: 100%; /* Full height */
-    transition: width 0.3s ease;
-  }
-mat-sidenav-content {
-  display: flex; /* Flexbox for the content area */
-  flex-direction: column; /* Stack content vertically */
-  flex-grow: 1; /* Allow this area to grow */
-  transition: margin-left 0.3s ease;
-  
-}
-.main-content{
-    flex: 1; /* This will take up the remaining space */
-  padding: 20px; /* Padding for the main content */
-}
-
-/* app.component.css */
-
-:host ::ng-deep .mat-menu-panel {
-    background-color: #f0f0f0;
-    /* Custom background color */
-}
-
-:host ::ng-deep .mat-menu-item {
-    color: #333;
-    /* Custom text color */
-}
-
-:host ::ng-deep .mat-menu-item:hover {
-    background-color: #e0e0e0;
-    /* Background on hover */
-    color: #000;
-    /* Text color on hover */
-}
-
-:host ::ng-deep .mat-menu-item mat-icon {
-    font-size: 20px;
-    /* Custom icon size */
-    margin-right: 8px;
-    /* Space between icon and text */
-}
-
-:host ::ng-deep .mat-menu-item {
-    padding: 12px 16px;
-    /* Custom padding for menu items */
-}
-
 .toolbar-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 16px;
+}
+.toolbar-left {
+  display: flex;
+  align-items: center;
 }
 
+.toolbar-right {
+  display: flex;
+  align-items: center;
+}
+/* End toolbar styling */
+
+/*mat-sidevnav styles*/
 
 
-a {
-    color: #fff;
+
+/*mat-sidenva styling end*/
+mat-sidenav{
+  overflow-y: auto; /* Enables independent vertical scrolling */
+  height: calc(100vh-64px);
+  background: #f4f4f4;
+
+}
+/* mat-sidenav-content styles*/
+mat-sidenav-content {
+  flex-grow: 1;
+  overflow: auto; /* Enables independent vertical scrolling */
+  height: 100vh;
+  padding: 16px;
+  width:100%;
+
+
+}
+/*End of mat-sidenav-content styles*/
+
+/*Media Queries*/
+@media (min-width: 768px) {
+
+}
+@media (max-width: 768px) {
+
 }
 
-a:hover {
-    color: #fff;
-}
+@media (max-width: 480px) {
 
-aside a {
-    color: #fff;
 }
-
-aside li {
-    color: #fff;
-}
-
-#examples {
-    background-color: #f79239;
-}
-
-#miscel {
-    background-color: #f79239;
-}
-
-@media screen and (max-width: 600px) {
-    /* .toolbar-content {
-        flex-direction: column;
-    } */
-     /* .custom-sidenav{
-        width: 70px;
-     } */
-    
-}
+/*End of Media Queries*/

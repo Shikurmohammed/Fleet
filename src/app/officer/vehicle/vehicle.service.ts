@@ -11,11 +11,20 @@ import { environment } from 'src/environments/environment';
 })
 export class VehicleService {
   private baseurl = environment.apiBaseUrl;
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   addVehicle(vehicle: Vehicle): Observable<Object> {
     console.log(vehicle);
     return this.httpClient.post(`${this.baseurl}/vehicle/add`, vehicle);
+  }
+  //Save new vehicle type
+  addVehicleType(vehicle: string): Observable<Object> {
+    console.log(vehicle);
+    return this.httpClient.post(`${this.baseurl}/vehicle/vehicleTypes`, vehicle, {
+      headers: { 'Content-Type': 'text/plain' },
+      responseType: 'text' // Specify that the response is expected as text
+    });
+
   }
 
   public getVehicles(): Observable<Vehicle[]> {
@@ -46,11 +55,11 @@ export class VehicleService {
       `${this.baseurl}/vehicle/exists/${plateNo}`
     );
   }
-      //This method is api call that fetch all vehicle types 
-      public getVehicleTypes():Observable<VehicleType[]>{
-        return this.httpClient.get<VehicleType[]>(`${this.baseurl}/vehicle/vehicleTypes`);
-     }
-   public  getFuelType():Observable<FuelDetail[]>{
+  //This method is api call that fetch all vehicle types
+  public getVehicleTypes(): Observable<VehicleType[]> {
+    return this.httpClient.get<VehicleType[]>(`${this.baseurl}/vehicle/vehicleTypes`);
+  }
+  public getFuelType(): Observable<FuelDetail[]> {
     return this.httpClient.get<FuelDetail[]>(`${this.baseurl}/vehicle/fuelTypes`);
-   }
+  }
 }

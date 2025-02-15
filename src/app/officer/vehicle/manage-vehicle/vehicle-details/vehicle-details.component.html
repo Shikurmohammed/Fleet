@@ -1,0 +1,37 @@
+<div class="vehicle-dialog">
+  <h5 mat-dialog-title style="text-align:center;">Full Vehicle Detail</h5>
+  <div mat-dialog-content>
+    <div class="row">
+      <!-- Left Column -->
+      <div class="col-12 col-md-6">
+        <p>Plate Number: <strong>{{ data?.plateNo }}</strong></p>
+        <p>Vehicle Type: <strong>{{ vehicleTypeValue! }}</strong></p>
+        <p>Engine Number: <strong>{{ data?.engineNo }}</strong></p>
+        <p>Chassis Number: <strong>{{ data?.chassisNo }}</strong></p>
+        <p>CC: <strong>{{ data?.cc }}</strong></p>
+        <p>Make: <strong>{{ data?.make }}</strong></p>
+        <p>Model: <strong>{{ data?.model }}</strong></p>
+        <p>Year Of Make: <strong>{{ data?.yearOfMake }}</strong></p>
+        <p>Purpose Of Usage: <strong>{{ data?.purposeOfUsage }}</strong></p>
+        <p>Distance Per Litre: <strong>{{ data?.disPerLit }}</strong></p>
+        <p>Carrying Capacity: <strong>{{ data?.carryingCapacity }}</strong></p>
+      </div>
+      <!-- Right Column -->
+      <div class="col-12 col-md-6">
+        <p>Last Mileage: <strong>{{ data?.lastMilege }}</strong></p>
+        <p>Insurance Expiry Date: <strong>{{ data?.insExpDate }}</strong></p>
+        <p>Insurance Renewal Date: <strong>{{ data?.insRenewalDate }}</strong></p>
+        <p>Policy Number: <strong>{{ data?.policyNo }}</strong></p>
+        <p>Last Mileage General Service: <strong>{{ data?.lmGenService }}</strong></p>
+        <p>Last Mileage Tyres: <strong>{{ data?.lmTyresChange }}</strong></p>
+        <p>Last Mileage Vehicle Body: <strong>{{ data?.lmVehicleBody }}</strong></p>
+        <p>Custodian: <strong>{{ data?.custodian }}</strong></p>
+        <p>Fuel Type: <strong>{{ fuelValue! }}</strong></p>
+        <p>Status: <strong>{{ data?.status }}</strong></p>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions class="dialog-actions">
+    <button mat-button (click)="onClose()">Close</button>
+  </div>
+</div>

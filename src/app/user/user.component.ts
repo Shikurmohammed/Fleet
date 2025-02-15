@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormControl, FormGroup, NgForm, Validators, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AlertService } from '../alert.service';
@@ -14,6 +14,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css'],
+
 })
 export class UserComponent implements OnInit {
   roles: RoleType[] = [];
@@ -22,24 +23,20 @@ export class UserComponent implements OnInit {
   pipe = new DatePipe('en-US');
   userForm!: FormGroup;
   userId: any;
-  userInput:any;
-  usernameError:any;
-  isExist:boolean;
+  userInput: any;
+  usernameError: any;
+  isExist: boolean;
   constructor(
-    private userService: UserService, 
+    private userService: UserService,
     private route: Router,
-    private alert:AlertService,
-    private dialogRef: MatDialogRef<UserComponent>
-    ) {}
+    private alert: AlertService,
+    private dialogRef: MatDialogRef<UserComponent>,
+  ) { }
 
-    // onClose(): void {
-    //   this.dialogRef.close();
-    // }
-  
-    // onSave(): void {
-    //   // Perform save action
-    //   this.dialogRef.close('Saved!');
-    // }
+
+  onClose() {
+    this.dialogRef.close();
+  }
 
   ngOnInit(): void {
     if (sessionStorage.getItem('jwt') == null) {
@@ -48,8 +45,6 @@ export class UserComponent implements OnInit {
       this.getRoles();
       this.getDirectorates();
       this.userId = sessionStorage.getItem('username');
-      // console.log(this.userId);
-      // this.date = this.pipe.transform(Date.now(), 'dd/MM/yyyy');
     }
 
     //Form Validation
@@ -90,46 +85,50 @@ export class UserComponent implements OnInit {
     );
   }
   //This will check if the username will exist before
-  isUsernameExist():boolean{
-     
-      this.userService.isUsernameExist(this.userInput).subscribe(
-        (res:boolean)=>{
-          console.log(res);
-          this.isExist = res;
-         
-        },
-        (error:HttpErrorResponse)=>{
-            this.isExist = false;
-           
-        }
-      );
-      return this.isExist;
+  isUsernameExist(): boolean {
+
+    this.userService.isUsernameExist(this.userInput).subscribe(
+      (res: boolean) => {
+        console.log(res);
+        this.isExist = res;
+
+      },
+      (error: HttpErrorResponse) => {
+        this.isExist = false;
+
+      }
+    );
+    return this.isExist;
   }
   //This will add user
   onAddUser(addForm: NgForm): void {
+    console.log(addForm);
+
     document.getElementById('add-user-form')?.click();
     //console.log(addForm.value);
-     
-        this.userService.addUser(addForm.value).subscribe(
-          (response: UserType) => {
-            if(response!=null){
-              this.alert.sucessAlert('User Successfully Registered!');
-              addForm.reset();
-              this.route.navigate(['manageuser']);
-            }else{
-              this.usernameError = "Username already exist";
-            }
-          },
-          (error: HttpErrorResponse) => {
-            this.alert.errorAlert("Server Error");
+
+    if (!addForm.value) {
+      this.userService.addUser(addForm.value).subscribe(
+        (response: UserType) => {
+          if (response != null) {
+            this.alert.sucessAlert('User Successfully Registered!');
+            addForm.reset();
+            this.route.navigate(['manageuser']);
+          } else {
+            this.usernameError = "Username already exist";
           }
-        );
-       
-  
+        },
+        (error: HttpErrorResponse) => {
+          this.alert.errorAlert("Server Error");
+        }
+      );
+    }
+
+
   }
 
-  removeUsernameError(){
+  removeUsernameError() {
     this.usernameError = null;
-   return this.usernameError;
+    return this.usernameError;
   }
 }

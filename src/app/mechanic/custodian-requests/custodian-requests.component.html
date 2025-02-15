@@ -4,11 +4,10 @@
     <ng-container *ngIf = "custRequests.length>0">
     <div
       id="RequestTable"
-      style="margin-left: 190px"
       class="col-lg-12 col-md-12 col-xl-12"
     >
       <hr/>
-      <h2 style="text-align: center">Custodian's Requests That Need Your Reply</h2>
+      <h6 style="text-align: center">Custodian's Requests That Need Your Reply</h6>
       <hr/>
       <table
         class="table table-hover table-bordered table-condenced table-sm table-shadow"
@@ -54,7 +53,7 @@
                     >
                       Detail
                     </a>
-      
+
                     <a
                       (click)="onOpenModal(request, 'Verify')"
                       class="btn btn-outline-danger"
@@ -79,7 +78,7 @@
       </div>
     </ng-container>
     <!-- End of vehicle displayer -->
-   
+
 
     <div class="container" id="main-container">
      <!-- This is to view details of maintenance request -->
@@ -94,7 +93,7 @@
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                <div class="modal-header">
-                  <h5 class="modal-title" 
+                  <h5 class="modal-title"
                   id="detailsVehicleServiceModalLabel">
                   Vehicle Maintenance Request Details
                 </h5>
@@ -124,7 +123,7 @@
                             ;">{{ details?.status }}</span></strong>
                         </p>
 
-                      
+
                     </div>
                     <div class="col-md-6">
                         <p>
@@ -156,7 +155,7 @@
                 </div>
               </div>
             </div>
-          </div> 
+          </div>
       <!-- End of maintenance request details-->
         <div
         class="modal fade"
@@ -182,64 +181,64 @@
               </button>
             </div>
             <div class="modal-body">
-              <form 
+              <form
               #editrequestMaintenanceForm="ngForm"
               name="form"
               [compareMilege] = "['currentMilage', 'kmInsp']"
               >
                 <div class="form-row">
-                  <input type="hidden" ngModel="{{modifyForm.id}}" 
+                  <input type="hidden" ngModel="{{modifyForm.id}}"
                        name="id" class="form-control" autocomplete="off"
-                       #id="ngModel" 
+                       #id="ngModel"
                        readonly/>
-                       <input type="hidden" ngModel="{{modifyForm.modifiedBy}}" 
+                       <input type="hidden" ngModel="{{modifyForm.modifiedBy}}"
                        name="modifiedBy" class="form-control" autocomplete="off"
-                       #modifiedBy="ngModel" 
+                       #modifiedBy="ngModel"
                        readonly/>
                   <div class="form-group col-md-8">
                     <label for="name">Directorate</label>
-                    <input type="text" ngModel="{{modifyForm.reqDirectorate}}" 
+                    <input type="text" ngModel="{{modifyForm.reqDirectorate}}"
                        name="reqDirectorate" class="form-control" autocomplete="off"
-                       #reqDirectorate="ngModel" 
+                       #reqDirectorate="ngModel"
                        readonly/>
                   </div>
                   <div class="form-group col-md-4">
                     <label for="name">Plate No</label>
-                    <input type="text" ngModel="{{modifyForm.plateNo}}" 
+                    <input type="text" ngModel="{{modifyForm.plateNo}}"
                        name="plateNo" class="form-control" autocomplete="off"
-                       #plateNo="ngModel" 
+                       #plateNo="ngModel"
                        readonly/>
                   </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-4">
                     <label for="name">Current Millage(KM)</label>
-                    <input type="text" ngModel="{{modifyForm.currentMilage}}" 
+                    <input type="text" ngModel="{{modifyForm.currentMilage}}"
                        name="currentMilage" class="form-control" autocomplete="off"
-                       #currentMilage="ngModel" 
+                       #currentMilage="ngModel"
                        readonly/>
                   </div>
                   <div class="form-group col-md-4">
                     <label for="name">Previous Millage(KM)</label>
-                    <input type="text" ngModel="{{modifyForm.previousServiceMilage}}" 
+                    <input type="text" ngModel="{{modifyForm.previousServiceMilage}}"
                        name="previousServiceMilage" class="form-control" autocomplete="off"
-                       #previousServiceMilage="ngModel" 
+                       #previousServiceMilage="ngModel"
                        readonly/>
                   </div>
                   <div class="form-group col-md-4">
                     <label for="name">Millage Difference(KM)</label>
-                    <input type="text" ngModel="{{modifyForm.milageDifference}}" 
+                    <input type="text" ngModel="{{modifyForm.milageDifference}}"
                        name="milageDifference" class="form-control" autocomplete="off"
-                       #milageDifference="ngModel" 
+                       #milageDifference="ngModel"
                        readonly/>
                   </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label for="name">Previous Millage Date</label>
-                    <input type="text" ngModel="{{modifyForm.previousServiceDate | date}}" 
+                    <input type="text" ngModel="{{modifyForm.previousServiceDate | date}}"
                        name="previousServiceDate" class="form-control" autocomplete="off"
-                       #previousServiceDate="ngModel" 
+                       #previousServiceDate="ngModel"
                        readonly/>
                   </div>
                   <div class="form-group col-md-6">
@@ -248,24 +247,24 @@
                       name="fuelGaugeInAmount" class="form-control" autocomplete="off"
                       placeholder="petrol amount..."  #fuelGaugeInAmount="ngModel"
                       pattern = "^\d+\.?\d*$"
-                      [class.is-invalid]="fuelGaugeInAmount.invalid && fuelGaugeInAmount.touched" 
+                      [class.is-invalid]="fuelGaugeInAmount.invalid && fuelGaugeInAmount.touched"
                       required=""/>
-            
+
                     <div *ngIf="fuelGaugeInAmount.errors && (fuelGaugeInAmount.invalid && fuelGaugeInAmount.touched)">
                       <small class="text-danger" *ngIf="fuelGaugeInAmount.errors.required">petrol amount is required</small>
                       <small class="text-danger" *ngIf="fuelGaugeInAmount.errors.pattern">incorrect petrol amount format</small>
                     </div>
-      
+
                  </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="name">Insurance Status</label>
-                        <ng-select  type="text" ngModel="{{modifyForm.isInsured}}" 
+                        <ng-select  type="text" ngModel="{{modifyForm.isInsured}}"
                            name="isInsured"  class="custom"  appearance="outline"
                            autocomplete="off"
                            #isInsured="ngModel"
-                           [class.is-invalid]="isInsured.invalid && isInsured.touched" required="" 
+                           [class.is-invalid]="isInsured.invalid && isInsured.touched" required=""
                            >
                            <ng-option value="" selected disabled>select insurance status..</ng-option>
                            <ng-option value="1">Insured</ng-option>
@@ -278,9 +277,9 @@
                       </div>
                       <div class="form-group col-md-6">
                         <label for="name">KM Inspection</label>
-                        <input type="text" ngModel="{{modifyForm.kmInsp}}" 
+                        <input type="text" ngModel="{{modifyForm.kmInsp}}"
                            name="kmInsp" class="form-control" autocomplete="off"
-                           #kmInsp="ngModel" 
+                           #kmInsp="ngModel"
                            #cm (change)="checkMilege($event)"
                            [ngModel]="modifyForm.currentMilage"
                            pattern = "^\d+\.?\d*$"
@@ -301,9 +300,9 @@
                     <textarea type="text" ngModel="{{modifyForm.workRepairRequested}}"
                       name="workRepairRequested" class="form-control" autocomplete="off"
                       placeholder="work/repair requested..."  #workRepairRequested="ngModel"
-                     
+
                       [class.is-invalid]="workRepairRequested.invalid && workRepairRequested.touched" required=""></textarea>
-           
+
                     <div *ngIf="workRepairRequested.errors && (workRepairRequested.invalid && workRepairRequested.touched)">
                       <small class="text-danger" *ngIf="workRepairRequested.errors.required">work/repair is required</small>
                     </div>
@@ -318,7 +317,7 @@
                   >
                     Close
                   </button>
-                  <button data-dismiss="modal" (click)="EditMaintenanceRequest(editrequestMaintenanceForm)" [disabled]="editrequestMaintenanceForm.invalid||isLessthan" type="submit" class="btn btn-primary" >Verify Request</button>                
+                  <button data-dismiss="modal" (click)="EditMaintenanceRequest(editrequestMaintenanceForm)" [disabled]="editrequestMaintenanceForm.invalid||isLessthan" type="submit" class="btn btn-primary" >Verify Request</button>
                 </div>
               </form>
             </div>

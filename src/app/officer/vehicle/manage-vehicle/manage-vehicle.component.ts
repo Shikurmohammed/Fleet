@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/app/alert.service';
 import { DirectorateType } from 'src/app/types/Directorate';
@@ -8,6 +8,13 @@ import { VehicleType } from 'src/app/types/VehicleType';
 import { UserService } from 'src/app/user/user.service';
 import { VehicleService } from '../vehicle.service';
 import { FuelDetail } from 'src/app/types/FuelDetail';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { DisposeVehicleComponent } from './dispose-vehicle/dispose-vehicle.component';
+import { VehicleDetailsComponent } from './vehicle-details/vehicle-details.component';
+import { UpdateVehicleComponent } from './update-vehicle/update-vehicle.component';
 
 @Component({
   selector: 'app-manage-vehicle',
@@ -32,28 +39,40 @@ export class ManageVehicleComponent implements OnInit {
 
   constructor(
     private vehicleService: VehicleService,
-    private router: Router,
     private alertService: AlertService,
-    private userService: UserService
-  ) { }
+    private dialog:MatDialog,
 
+  ) { }
+ @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) pagintor!: MatPaginator;
+  searchQuery: any;
+  displayedColumns: string[] = ['id', 'plateNo', 'model', 'make', 'lastMilege', 'insExpDate', 'insRenewalDate','policyNo','status', 'action'];
+  public dataSource = new MatTableDataSource<Vehicle>([]);
   ngOnInit(): void {
-    this.getUserOnDataTable();
-    this.getDirectorates();
-    this.getVehicleTypes();
-    this.getFuelType();
+    this.vehicleDataTable();
+
     this.role = sessionStorage.getItem("role");
     if (sessionStorage.getItem("updated") != null) {
       this.alertService.sucessAlert(sessionStorage.getItem("updated"));
       sessionStorage.removeItem("updated");
     }
   }
-
-  public getUserOnDataTable(): void {
+  isDispatcher() {
+    if (sessionStorage.getItem('role') == 'Dispatcher') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  public vehicleDataTable(): void {
     this.vehicleService.getVehicles().subscribe((ret: Vehicle[]) => {
       this.vehicles = ret;
+     // this.dataSource.data=ret
 
       setTimeout(() => {
+        this.dataSource.data = ret;
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.pagintor;
         $('#datatableexample').DataTable({
           //pagingType: 'full_numbers',
           pageLength: 5,
@@ -62,17 +81,17 @@ export class ManageVehicleComponent implements OnInit {
           processing: true,
           lengthMenu: [5, 10, 25],
 
-          buttons: [
-            { extend: 'copy', text: 'Copy', className: 'btn btn-primary' },
-            { extend: 'excel', text: 'Excel', className: 'btn btn-success' },
-            { extend: 'pdf', text: 'PDF', className: 'btn btn-danger' },
+          // buttons: [
+          //   { extend: 'copy', text: 'Copy', className: 'btn btn-primary' },
+          //   { extend: 'excel', text: 'Excel', className: 'btn btn-success' },
+          //   { extend: 'pdf', text: 'PDF', className: 'btn btn-danger' },
 
-            {
-              extend: 'colvis',
-              text: 'Choose Columns',
-              columns: ':not(:first-child)' // Exclude the first column if needed
-            }
-          ],
+          //   {
+          //     extend: 'colvis',
+          //     text: 'Choose Columns',
+          //     columns: ':not(:first-child)' // Exclude the first column if needed
+          //   }
+          // ],
           dom: 'Bfrtip', // Add buttons to the table UI
           order: [[1, 'desc']],
 
@@ -81,117 +100,54 @@ export class ManageVehicleComponent implements OnInit {
     });
   }
 
-  public getDirectorates() {
-    this.userService.getDirectorate().subscribe(
-      (response: DirectorateType[]) => {
-        this.directorates = response;
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    );
-  }
-  public getVehicleTypes() {
-    this.vehicleService.getVehicleTypes().subscribe(
-      (response: VehicleType[]) => {
-        this.vehicleTypes = response;
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    );
-  }
-  public getFuelType() {
-    this.vehicleService.getFuelType().subscribe(
-      (response: FuelDetail[]) => {
-        this.fuelTypes = response;
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    );
-  }
+//search
+search() {
+  console.log(this.searchQuery);
+  this.dataSource.filter = this.searchQuery.trim().toLowerCase();
+}
 
-  public onOpenModal(vehicle: Vehicle, mode: string): void {
-    const container = document.getElementById('main-container');
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.style.display = 'none';
-    button.setAttribute('data-toggle', 'modal');
-    if (mode === 'edit') {
-      //console.log(this.vehicleTypes.find(item => item.id === vehicle.vehicleType));
-      //  this.vehicleTypeValue = this.vehicleTypeObject.vehicleType;
-      // console.log(this.vehicleTypeObject);
-      this.editVehicle = vehicle;
-      if (
-        this.editVehicle.status === 'Assigned to Respective'
-        || this.editVehicle.status === 'Maintenance'
-        || this.editVehicle.status === 'Dispatched'
-      ) {
-        this.isGeneral = false;
-      } else {
-        this.isGeneral = true;
-      }
-      if (this.editVehicle.status === 'StandBy') {
-        this.editVehicle.isStandBy = 'yes';
-      } else if (this.editVehicle.status != 'StandBy') {
-        this.editVehicle.isStandBy = 'no';
-      }
-      this.vehicleTypeObject = this.vehicleTypes.filter(x => x.id === this.editVehicle.vehicleType);
-      this.vehicleTypeValue = this.vehicleTypeObject[0].vehicleType;
-      button.setAttribute('data-target', '#updateVehicleModal');
-    }
-    if (mode === 'dispose') {
-      this.disposeVehicle = vehicle;
-      button.setAttribute('data-target', '#disposeVehicleModal');
-    }
-    if (mode === 'view') {
-      this.viewDetail = vehicle;
-      this.vehicleTypeObject = this.vehicleTypes.filter(x => x.id === this.viewDetail.vehicleType);
-      this.vehicleTypeValue = this.vehicleTypeObject[0].vehicleType;
-      this.fuelObject = this.fuelTypes.filter(x => x.id === this.viewDetail.fuelType);
-      this.fuelValue = this.fuelObject[0].typeOfFuel;
-      button.setAttribute('data-target', '#detailVehicleModal');
-    }
-    container?.appendChild(button);
-    button.click();
-  }
+//Dispose
+dispose(vehicle:Vehicle){
+  this.dialog.open(DisposeVehicleComponent,{
+    data:vehicle
+  });
 
-  public onUpdateVehicle(vehicle: Vehicle): void {
-    vehicle.createdBy = sessionStorage.getItem("username");
-    this.vehicleService.updateVehicle(vehicle).subscribe(
-      (response: Vehicle) => {
-        sessionStorage.setItem("updated", "Vehicle Successfully Updated");
-        window.location.reload();
-      },
-      (error: HttpErrorResponse) => {
-        //alert(error.message);
-        this.alertService.errorAlert('Vehicle Could not be Updated.');
-        this.router.navigate(['/manageVehicle']);
-      }
-    );
-  }
+}
+detail(vehicle:Vehicle){
+  // this.viewDetail = vehicle;
+  //     this.vehicleTypeObject = this.vehicleTypes.filter(x => x.id === this.viewDetail.vehicleType);
+  //     this.vehicleTypeValue = this.vehicleTypeObject[0].vehicleType;
+  //     this.fuelObject = this.fuelTypes.filter(x => x.id === this.viewDetail.fuelType);
+  //     this.fuelValue = this.fuelObject[0].typeOfFuel;
+  this.dialog.open(VehicleDetailsComponent,{
+    data:vehicle
+  });
 
-  public onDisposeVehicle(id: any): void {
-    this.vehicleService.disposeVehicle(id).subscribe(
-      (response: any) => {
-        this.alertService.sucessAlert('Vehicle Successfully Disposed.');
-        window.location.reload();
-      },
-      (error: HttpErrorResponse) => {
-        //alert(error.message);
-        this.alertService.errorAlert('Vehicle Could not be Disposed.');
-        window.location.reload();
-      }
-    );
-  }
+}
+update(vehicle:Vehicle){
+  // this.editVehicle = vehicle;
+  // if (
+  //   this.editVehicle.status === 'Assigned to Respective'
+  //   || this.editVehicle.status === 'Maintenance'
+  //   || this.editVehicle.status === 'Dispatched'
+  // ) {
+  //   this.isGeneral = false;
+  // } else {
+  //   this.isGeneral = true;
+  // }
+  // if (this.editVehicle.status === 'StandBy') {
+  //   this.editVehicle.isStandBy = 'yes';
+  // } else if (this.editVehicle.status != 'StandBy') {
+  //   this.editVehicle.isStandBy = 'no';
+  // }
+  // this.vehicleTypeObject = this.vehicleTypes.filter(x => x.id === this.editVehicle.vehicleType);
+  // this.vehicleTypeValue = this.vehicleTypeObject[0].vehicleType;
+  console.log(vehicle);
 
-  isDispatcher() {
-    if (sessionStorage.getItem('role') == 'Dispatcher') {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  this.dialog.open(UpdateVehicleComponent,{
+    data:vehicle
+  });
+}
+
 
 }

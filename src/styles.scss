@@ -1,178 +1,244 @@
 /* You can add global styles to this file, and also import other style files */
 
-
 /*Theme Toggling css*/
-@import '~material-design-icons/iconfont/material-icons.css';
-@import '~material-icons/iconfont/material-icons.css';
-
-@import 'theme';
+@import "material-design-icons/iconfont/material-icons.css";
+@import "material-icons/iconfont/material-icons.css";
+@import "datatables.net-dt/css/jquery.dataTables.css";
+@import "datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css";
+@import "theme";
+* {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: #e5e7eb;
+  font-family: 'Times New Roman', Times, serif;
+}
 body {
-    background-color: white;
-    color: #1e1e1e;
-    transition: background-color 0.3s, color 0.3s;
-    
+  background-color: white;
+  color: #1e1e1e;
+  transition: background-color 0.3s, color 0.3s;
+
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* Prevent entire page scrolling */
 }
 
 body.dark-mode {
-    background-color: #1e1e1e;
-    color: white;
+  background-color: #1e1e1e;
+  color: white;
 }
-
 
 /* Increase specificity for Angular Material components */
 
 body.dark-mode .mat-toolbar {
-    background-color: #1e1e1e !important;
-    color: white !important;
+  background-color: #1e1e1e !important;
+  color: white !important;
 }
 
 body.dark-mode .mat-sidenav-container,
 body.dark-mode .mat-sidenav {
-    background-color: #2c2c2c !important;
-    color: white !important;
+  background-color: #2c2c2c !important;
+  color: white !important;
 }
 
 body.dark-mode .main-header {
-    background-color: #1e1e1e;
-    color: #ffffff;
+  background-color: #1e1e1e;
+  color: #ffffff;
 }
 
 body.dark-mode .content-wrapper {
-    background-color: #2c2c2c;
-    color: #ffffff;
-}
-// .mat-drawer-inner-container{
-//     overflow-x: hidden !important;
-//     font: optional;
-
-// }
-
-/*Theme Toggling css End*/
-
-#vehicle {
-    margin-top: 80px;
-    margin-left: 5%;
-    margin-right: 15%;
-    width: auto;
+  background-color: #2c2c2c;
+  color: #ffffff;
 }
 
-.detail {
-    background-color: #dbdfe2ef;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    height: 30px;
+select.customDropdown {
+  outline: none;
+  overflow: hidden;
+  text-indent: 0.01px;
+  text-overflow: "";
+  background: url("/assets/img/sort-down.png") no-repeat right #fff;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
 }
 
+
+
+
+.mat-dialog-container {
+  z-index: 1050 !important; /* Angular Material modal */
+}
+.modal-backdrop {
+  z-index: 1040 !important; /* Bootstrap modal backdrop */
+}
+.modal-backdrop {
+  /* bug fix - no overlay */
+  display: none;
+}
+
+.modal {
+  /* bug fix - custom overlay */
+  z-index: 1090 !important;
+  overflow: hidden;
+  right: 10%;
+  bottom: 0;
+  transform: translateX(10%);
+  margin: auto;
+  margin-top: 5%;
+  max-width: 90%;
+}
+
+//Remove overlay on dialog box
+.cdk-global-scrollblock {
+  position: relative !important;
+}
+/*MatDialog css*/
+.custom-dialog-container {
+  position: relative; /* Ensure it is positioned relative to the viewport */
+  z-index: 2000; /* Ensure it is above other elements */
+  margin: auto;
+}
+.custom-dialog-backdrop {
+  z-index: 1999;
+}
+
+.mat-dialog-container1{
+    display: block;
+    padding: 24px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    overflow: auto;
+    outline: 0;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    max-height: 80vh !important;
+    /* max-height: inherit;*/
+}
+
+
+@media (max-width: 768px) {
+  .modal {
+    max-width: 90%;
+    left: 0;
+    right: 0;
+  }
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 10px; /* Width of the vertical scrollbar */
+  height: 2px; /* Height of the horizontal scrollbar */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track */
+  border-radius: 4px; /* Rounded corners */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: whitesmoke; /* Color of the scrollbar handle */
+  border-radius: 4px; /* Rounded corners */
+  height: 2px; /* Set a specific height for the thumb */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Darker color on hover */
+}
+
+/* For Firefox */
+html {
+  scrollbar-width: thin; /* Makes the scrollbar thinner */
+  // scrollbar-color: whitesmoke #f1f1f1; /* Thumb color and track color */
+  scrollbar-color: #888181 #f1f1f1;
+}
+
+/*table styles*/
+table {
+  border-spacing: 0;
+  border-collapse: separate;
+  overflow: scroll;
+  padding: 20px;
+  width: 100%;
+}
+td,
+th {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-wrap: nowrap;
+  white-space: nowrap;
+  font-size: 14px;
+  font-family: "Times New Roman", Times, serif;
+}
+
+
+.mat-toolbar {
+  position: fixed;
+  color: white !important;
+}
+
+
+/* Fix table styles */
+.mat-table-container{
+  width: 100%;
+  padding: 10px;
+  overflow: scroll;
+
+
+}
+.mat-table {
+  width: 100%;
+  border-collapse: collapse;
+  position: sticky;
+}
+
+.mat-header-row {
+  background: #f1f1f1 !important;
+}
+
+
+
+//status styles
 .status {
-    color: white;
-    padding: 5px;
+  color: white;
+  padding: 5px;
 }
 
 .unauthorized,
 .pool {
-    background-color: orange;
+  background-color: orange;
 }
 
 .rejected,
 .disposed {
-    background-color: red;
+  background-color: red;
 }
 
 .approved,
 .dispatched {
-    background-color: green;
+  background-color: green;
 }
 
 .authorized,
 .assigned {
-    background-color: dodgerblue;
+  background-color: dodgerblue;
 }
 
 .standby {
-    background-color: darkcyan;
+  background-color: darkcyan;
 }
 
 .maintenance {
-    background-color: brown;
-    color: white;
+  background-color: brown;
+  color: white;
 }
-
-select.customDropdown {
-    outline: none;
-    overflow: hidden;
-    text-indent: 0.01px;
-    text-overflow: '';
-    background: url("/assets/img/sort-down.png") no-repeat right #fff;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -ms-appearance: none;
-    -o-appearance: none;
-    appearance: none;
-}
-
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-td,
-th {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    word-wrap: nowrap;
-    white-space: nowrap;
-    font-size: 14px;
-    font-family: 'Times New Roman', Times, serif;
-}
+//
 
 
-/* Adjust spacing between buttons of datatable */
 
 
-/* .dt-buttons {
-    display: flex !important;
-    gap: 10px;
-} */
-
-
-/* Fix z-index conflicts */
-// .mat-dialog-container {
-//     z-index: 1050 !important; /* Angular Material modal */
-//   }
-//   .modal-backdrop {
-//     z-index: 1040 !important; /* Bootstrap modal backdrop */
-//   }
-  .modal-backdrop {
-    /* bug fix - no overlay */    
-    display: none;    
-}
-
-.modal{
-  /* bug fix - custom overlay */   
-//   background-color: rgba(10,10,10,0.45);
-  z-index: 1040 !important;
-//   overflow: hidden;
-  right: 10%;
-  transform: translateX(10%);
-  margin: auto;
-  max-width: 90%;
-}
-mat-sidenav{
-    z-index: 1000;
-}
-@media( max-width:768px ){
-    .modal{
-        max-width: 90%;
-        left: 0;
-        right: 0;
-    }
-    mat-sidenav{
-        max-width: 70px;
-
-    }
-    mat-sidenav-content {
-        margin-left: 70px !important;
-        // background-color: red;
-    }
-}

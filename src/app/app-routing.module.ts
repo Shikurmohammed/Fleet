@@ -633,9 +633,9 @@ const routes: Routes = [
   {
     path: 'mappapprover',
     component: MapApproverComponent,
-    canActivate: [AuthGuard,AdminGuard],
+    canActivate: [AuthGuard, AdminGuard],
   },
-  
+
   { path: '**', redirectTo: '/login', pathMatch: 'full' },
 ];
 
@@ -643,4 +643,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

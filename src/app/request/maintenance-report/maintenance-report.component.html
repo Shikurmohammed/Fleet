@@ -1,7 +1,7 @@
 <div id="mainRequests">
   <!-- This is report -->
   <ng-container *ngIf="!isOnView">
-    <div >
+    <div>
       <hr />
       <h5 style="text-align: center">Maintenance Request Report</h5>
       <hr />
@@ -43,7 +43,7 @@
     </div>
   </ng-container>
   <ng-container *ngIf="report.length>0 && isOnView">
-    <div id="RequestTable" style="margin-left: 190px" class="col-lg-12 col-md-12 col-xl-12">
+    <div id="RequestTable" class="col-lg-12 col-md-12 col-xl-12">
       <hr />
       <span><button class="btn btn-primary" (click)="changeView()">Back</button></span>
       <h2 style="text-align: center">{{request.directorate}}'s Maintenance Requests</h2>
@@ -104,7 +104,7 @@
                 taken for maintenance
               </div>
               <div *ngIf="response.status=='Completed'">
-                    {{response.status}}
+                {{response.status}}
               </div>
             </td>
           </tr>

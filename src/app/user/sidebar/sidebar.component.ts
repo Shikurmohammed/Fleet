@@ -8,6 +8,7 @@ import { RequestService } from 'src/app/request/request-home/request.service';
 import IdleTimer from "./../../IdleTimer";
 import { MenuService } from './menu.service';
 import { Menu } from '../../types/Menu';
+import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -19,10 +20,7 @@ export class SidebarComponent implements OnInit {
   currentRole: string = sessionStorage.getItem("role");
   userName: string = sessionStorage.getItem("username");
   delegated = +sessionStorage.getItem("delegated").toString();//I will consider this later
-
-
   userguide: string = "#";
-
   timer: any;
   constructor(
     private menuService: MenuService
@@ -31,7 +29,16 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.menuItems = this.menuService.getMenuItems(this.currentRole,this.delegated);
+    this.menuItems = this.menuService.getMenuItems(this.currentRole, this.delegated);
   }
+  nestedMenuOpen: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
+  nestedMenuOpen$ = this.nestedMenuOpen.asObservable(); // observable to subscribe to nestedMenuOpen
 
+  toggleNestedMenu(index: number) {
+    if (this.nestedMenuOpen.getValue() === index) {
+      this.nestedMenuOpen.next(null);
+    } else {
+      this.nestedMenuOpen.next(index);
+    }
+  }
 }

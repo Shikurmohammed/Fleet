@@ -1,0 +1,107 @@
+<div>
+  <h1 mat-dialog-title>Service Maintenance Requistion Form</h1>
+  <div mat-dialog-content>
+    <form [compareMilege]="['existing','currentMilage']" #requestMaintenanceForm="ngForm">
+      <div class="form-row">
+        <div class="form-group col-md-8">
+          <label for="name">Directorate</label>
+          <input type="text" [(ngModel)]="requistionForm.reqDirectorate" name="reqDirectorate" class="form-control"
+            autocomplete="off" #reqDirectorate="ngModel" readonly />
+        </div>
+        <div class="form-group col-md-4">
+          <label for="name">Plate Number</label>
+          <input type="text" [(ngModel)]="requistionForm.plateNo" name="plateNo" class="form-control" autocomplete="off"
+            #plateNo="ngModel" readonly />
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label for="name">Model/Type</label>
+          <input type="text" [(ngModel)]="requistionForm.model" name="model" class="form-control" autocomplete="off"
+            #model="ngModel" readonly />
+        </div>
+        <div class="form-group col-md-4">
+          <label for="name">Chassis Number</label>
+          <input type="text" [(ngModel)]="requistionForm.chassisNo" name="chassisNo" class="form-control"
+            autocomplete="off" #chassisNo="ngModel" readonly />
+        </div>
+        <div class="form-group col-md-4">
+          <label for="name">Motor Number</label>
+          <input type="text" [(ngModel)]="requistionForm.engineNo" name="engineNo" class="form-control"
+            autocomplete="off" #engineNo="ngModel" readonly />
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label for="name">Previous Millage Date</label>
+          <input type="text" ngModel="{{requistionForm.previousServiceDate | date}}" name="previousServiceDate"
+            class="form-control" autocomplete="off" #previousServiceDate="ngModel" readonly />
+        </div>
+        <div class="form-group col-md-4">
+          <label for="name">Previous Millage(KM)</label>
+          <input type="text" [(ngModel)]="requistionForm.previousServiceMilage" name="previousServiceMilage"
+            class="form-control" autocomplete="off" #previousServiceMilage="ngModel" readonly />
+        </div>
+        <div class="form-group col-md-4">
+          <label for="name">Millage Difference(KM)</label>
+          <input type="text" [(ngModel)]="requistionForm.milageDifference" name="milageDifference" class="form-control"
+            autocomplete="off" #milageDifference="ngModel" readonly />
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+
+          <label for="name">Current Millage(KM)</label>
+          <input [ngModel]="existingKm" ngModel name="existing" #existing="ngModel" hidden />
+          <input type="text" [(ngModel)]="requistionForm.currentMilage" name="currentMilage" class="form-control"
+            autocomplete="off" #cm (change)="checkMilege($event)" #currentMilage="ngModel" pattern="^\d+\.?\d*$"
+            [class.is-invalid]="(currentMilage.invalid && currentMilage.touched )|| currentMilage.errors" required="" />
+          <div *ngIf="currentMilage.errors && (currentMilage.invalid)">
+            <small class="text-danger" *ngIf="currentMilage.errors.required">current milege required</small>
+            <small class="text-danger" *ngIf="currentMilage.errors.pattern">incorrect current milege
+              format</small>
+            <small class="text-danger" *ngIf="currentMilage.errors['milege']">current milege can not be less
+              than {{existingKm}}</small>
+          </div>
+
+        </div>
+        <div class="form-group col-md-6">
+          <label for="name">Petrol Amount(%)</label>
+          <input type="text" [(ngModel)]="requistionForm.fuelGaugeInAmount" name="fuelGaugeInAmount"
+            class="form-control" autocomplete="off" placeholder="petrol amount..." #fuelGaugeInAmount="ngModel"
+            pattern="^\d+\.?\d*$" [class.is-invalid]="fuelGaugeInAmount.invalid && fuelGaugeInAmount.touched"
+            required="" />
+          <!-- Error -->
+          <div *ngIf="fuelGaugeInAmount.errors && (fuelGaugeInAmount.invalid && fuelGaugeInAmount.touched)">
+            <small class="text-danger" *ngIf="fuelGaugeInAmount.errors.required">petrol amount is
+              required</small>
+            <small class="text-danger" *ngIf="fuelGaugeInAmount.errors.pattern">incorrect petrol amount
+              format</small>
+          </div>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="name">Work/Repair Requested</label>
+          <textarea type="text" [(ngModel)]="requistionForm.workRepairRequested" name="workRepairRequested"
+            class="form-control" autocomplete="off" placeholder="work/repair requested..."
+            #workRepairRequested="ngModel"
+            [class.is-invalid]="workRepairRequested.invalid && workRepairRequested.touched" required=""></textarea>
+          <!-- Error -->
+          <div *ngIf="workRepairRequested.errors && (workRepairRequested.invalid && workRepairRequested.touched)">
+            <small class="text-danger" *ngIf="workRepairRequested.errors.required">work/repair is
+              required</small>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div mat-dialog-actions>
+          <button mat-button (click)="onSubmit()" [disabled]="requestMaintenanceForm.invalid">Submit</button>
+          <button mat-button (click)="onClose()">Close</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
